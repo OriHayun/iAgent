@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Text, Button } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-const trackListScreen = ({ navigation }) => {
+
+
+
+const indexScreen = ({ navigation }) => {
     return (
         <SafeAreaView forceInset={{ top: 'always' }}>
 
@@ -14,12 +17,14 @@ const trackListScreen = ({ navigation }) => {
     );
 }
 
-trackListScreen.navigationOptions = () => {
+indexScreen.navigationOptions = () => {
     return {
-        headerShown: false
+        title:'I Agent',
+        headerTitleAlign:'center'
+        //להוסיף טאב בצד ימין למעלה שישלח אותי למסך נוטיפיקציות
     };
 };
 
 const styles = StyleSheet.create({})
 
-export default trackListScreen;
+export default indexScreen;
