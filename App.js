@@ -13,23 +13,28 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/resolveAuthScreen';
 import { FontAwesome } from '@expo/vector-icons'
+import firebaseConfig from './src/api/firebase';
+import firebase from 'firebase';
 
-const trackListFlow = createStackNavigator({
+
+const MainFlow = createStackNavigator({
   Index: IndexScreen,
   TrackDetails: TrackDetailsScreen
 })
 
-trackListFlow.navigationOptions = () => {
+MainFlow.navigationOptions = () => {
   return {
     title: 'ראשי',
     activeColor: '#222222',
     tabBarOptions: {
-      tabStyle: { backgroundColor: '#b8b894'},
+      tabStyle: { backgroundColor: '#b8b894' },
       labelStyle: { fontSize: 16 },
     },
     tabBarIcon: <FontAwesome name='home' size={20} />
   }
 }
+
+
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
@@ -38,13 +43,14 @@ const switchNavigator = createSwitchNavigator({
     Signin: SigninScreen
   }),
   mainFlow: createBottomTabNavigator({
-    trackListFlow,
-    trips:tripsScreen,
+    MainFlow,
+    trips: tripsScreen,
     Chat: ChatScreen,
     Account: AccountScreen
 
   })
 });
+
 
 const App = createAppContainer(switchNavigator);
 
