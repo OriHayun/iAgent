@@ -16,6 +16,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import firebaseConfig from './src/api/firebase';
 import firebase from 'firebase';
 
+firebase.initializeApp(firebaseConfig);
 
 const MainFlow = createStackNavigator({
   Index: IndexScreen,
@@ -59,7 +60,7 @@ export default () => {
     <AuthProvider>
       <App
         ref={(navigator) => setNavigator(navigator)}
-      />
+      /> 
     </AuthProvider>
   );
 }
