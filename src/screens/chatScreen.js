@@ -1,64 +1,62 @@
 import React from 'react';
-import { StyleSheet, Platform, KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { FlatList, View, Platform, KeyboardAvoidingView, SafeAreaView, StyleSheet } from 'react-native';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
-import { GiftedChat } from 'react-native-gifted-chat-fix';
-
+import ChatInput from '../components/ChatInput';
+import Message from '../components/Message';
 
 class chatScreen extends React.Component {
 
+
+    
     constructor(props) {
         super(props)
 
         this.state = {
             messages: [],
+            //לקחת את היוזר שנמצא באפליקציה ולהחליף במקום 1
+            userId: 1,
             ref: firebase.database().ref('/chat')
         }
     }
 
     componentDidMount() {
-        const ref = this.state.ref;
-
-        ref.on('child_added', (snapshot) => {
-            let message = snapshot.val();
-            this.setState(previousState => ({
-                messages: GiftedChat.append(previousState.messages, message),
-            }))
+        firebase.database().ref('/chat').on('child_added', (snapshot) => {
+            this.setState({
+                messages: [snapshot.val(), ...this.state.messages]
+            })
         })
     }
 
     onSend(message) {
-        const ref = this.state.ref;
-        ref.push().set({
-            name: "Ori Hayun",
-            message,
+        firebase.database().ref('/chat').push().set({
+            //צריך פה להשתמש במזהה של היוזר שלנו כדי שנידע באיזה צד לשים את ההודעה
+            userId: 1,
+            message: message
         })
     }
 
     render() {
-
-        const chat = <GiftedChat
-            messages={this.state.messages}
-            onSend={message => this.onSend(message)}
-        />
-
-        if (Platform.OS === 'android') {
-            return (
-                <KeyboardAvoidingView
-                    style={{ flex: 1 , backgroundColor:'rgba(200,200,200,0.7)' }}
-                    behavior='height'
-                    keyboardVerticalOffset={40}
-                    enabled
-                >
-                    {chat}
-                </KeyboardAvoidingView>
-            );
-        }
         return (
-            <SafeAreaView style={{backgroundColor:'rgba(200,200,200,0.7)'}}>
-                {chat}
+            <SafeAreaView>
+                <View style={styles.messagesContainer}>
+                    <FlatList
+                        inverted
+                        data={this.state.messages}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => {
+                            return (
+                                <Message side={item.userId !== this.state.userId ? 'left' : 'right'} message={item.message} />
+                            )
+                        }}
+                    />
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <ChatInput sendMsg={this.onSend} />
+                </View>
             </SafeAreaView>
-        )
+        );
     }
 }
 
@@ -74,6 +72,22 @@ chatScreen.navigationOptions = () => {
     };
 };
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    messagesContainer: {
+        height: '100%',
+        paddingBottom: 100,
+    },
+    inputContainer: {
+        width: '100%',
+        height: 100,
+        position: 'absolute',
+        bottom: 0,
+        paddingVertical: 10,
+        paddingLeft: 20,
+        borderTopWidth: 1,
+        borderTopColor: 'grey'
+    }
+})
+
 
 export default chatScreen;

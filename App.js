@@ -16,6 +16,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import firebaseConfig from './src/api/firebase';
 import firebase from 'firebase';
 
+firebase.initializeApp(firebaseConfig);
 
 const MainFlow = createStackNavigator({
   Index: IndexScreen,
@@ -33,8 +34,6 @@ MainFlow.navigationOptions = () => {
     tabBarIcon: <FontAwesome name='home' size={20} />
   }
 }
-
-
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
