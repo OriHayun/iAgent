@@ -6,8 +6,9 @@ import AccountScreen from './src/screens/AccountScreen';
 import tripsScreen from './src/screens/tripsScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
-import TrackDetailsScreen from './src/screens/TrackDetailsScreen';
 import IndexScreen from './src/screens/IndexScreen';
+import NotificationScreen from './src/screens/NotificationScreen'
+import LocalHighlightDetailsScreen from './src/screens/localHighlightDetailsScreen';
 import ChatScreen from './src/screens/chatScreen'
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
@@ -20,7 +21,8 @@ firebase.initializeApp(firebaseConfig);
 
 const MainFlow = createStackNavigator({
   Index: IndexScreen,
-  TrackDetails: TrackDetailsScreen
+  Notification: NotificationScreen,
+  Details: LocalHighlightDetailsScreen
 })
 
 MainFlow.navigationOptions = () => {
