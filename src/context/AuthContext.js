@@ -43,6 +43,7 @@ const signup = dispatch => async (email, password) => {
     //make api request to sign up with that email & password
     try {
         const response = await trackerApi.post('/signup', { email, password });
+        insertTokenToDB(email, response.data.token);
         await AsyncStorage.setItem('token', response.data.token)
         dispatch({ type: 'signin', payload: response.data.token })
         navigate('Index', '')
@@ -53,8 +54,10 @@ const signup = dispatch => async (email, password) => {
 
 
 const signin = dispatch => async (email, password) => {
+    console.log('signin')
     try {
         const response = await trackerApi.post('/signin', { email, password })
+        insertTokenToDB(email, response.data.token);
         await AsyncStorage.setItem('token', response.data.token)
         dispatch({ type: 'signin', payload: response.data.token })
         navigate('Index', '')
@@ -69,6 +72,34 @@ const signout = dispatch => async () => {
     dispatch({ type: 'signout' });
     navigate('Signin', '')
 };
+
+const insertTokenToDB = (email, token) => {
+    console.log('insertTokenToDB')
+    let url = "http://localhost:50692/api/Auth";
+    const data = {
+        email,
+        token
+    }
+    console.log(data)
+    fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8'
+        })
+    })
+        .then(res => {
+            console.log('res=', res);
+            return res.json();
+        })
+        .then(
+            (result) => {
+                console.log("num of rows affected = ", result);
+            },
+            (error) => {
+                console.log("err post=", error);
+            });
+}
 
 
 export const { Provider, Context } = CreateDataContext(

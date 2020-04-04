@@ -6,6 +6,11 @@ const ChatInput = (props) => {
   const [message, setMessage] = useState('')
 
   const handlePress = () => {
+    const messageArr = message.split('')
+    console.log(messageArr)
+    if (message === ' ' || message === '') {
+      return;
+    }
     props.sendMsg(message)
     setMessage('');
   }
@@ -13,9 +18,13 @@ const ChatInput = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} value={message} onChangeText={setMessage} placeholder="Write you message" />
+        <TextInput
+          style={styles.input}
+          value={message}
+          onChangeText={setMessage}
+          placeholder="כתוב הודעה" />
       </View>
-      <Button title="Send" onPress={handlePress} />
+      <Button title="שלח" onPress={handlePress} />
     </View>
   )
 }

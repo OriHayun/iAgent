@@ -10,26 +10,26 @@ import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions';
 
 const accountScreen = ({ navigation }) => {
-    const { signout } = useContext(AuthContext);
+    const { state: { token }, signout } = useContext(AuthContext);
     const [img, setImg] = useState(null);
-    const customer = {
-        img,
-        fullName: 'אורי חיון',
-        email: 'hayun.ori@gmail.com',
-        birthdate: '04.08.1993',
-        age: null
-    }
-    const DOB = customer.birthdate.split('.')
-    const today = new Date();
-    let age = today.getFullYear() - DOB[2];
-    customer.age = age
+    const [url, setUrl] = useState()
+    const [customer, setCustomer] = useState({});
+    // const customer = {
+    //     img,
+    //     fullName: 'אורי חיון',
+    //     email: 'hayun.ori@gmail.com',
+    //     birthdate: '04.08.1993',
+    //     age: null
+    // }
+    // const DOB = customer.birthdate.split('.')
+    // const today = new Date();
+    // let age = today.getFullYear() - DOB[2];
+    // customer.age = age
 
-    useEffect(() => {
+    useEffect(() => { 
         // לגשת לשרת ולקחת את הפרטים של הלקוח ולאחסן בסטייט ולהציג על המסך
-
         getPermissionAsync();
     }, [])
-
 
     getPermissionAsync = async () => {
         if (Constants.platform.ios) {
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor:'rgba(200,200,200,0.7)'
+        backgroundColor: 'rgba(200,200,200,0.7)'
     },
     header: {
         alignSelf: 'center',

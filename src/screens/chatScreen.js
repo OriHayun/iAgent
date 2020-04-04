@@ -8,7 +8,7 @@ import Message from '../components/Message';
 class chatScreen extends React.Component {
 
 
-    
+
     constructor(props) {
         super(props)
 
@@ -38,24 +38,29 @@ class chatScreen extends React.Component {
 
     render() {
         return (
-            <SafeAreaView>
-                <View style={styles.messagesContainer}>
-                    <FlatList
-                        inverted
-                        data={this.state.messages}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => {
-                            return (
-                                <Message side={item.userId !== this.state.userId ? 'left' : 'right'} message={item.message} />
-                            )
-                        }}
-                    />
-                </View>
+            <KeyboardAvoidingView
+                behavior={Platform.Os == "ios" ? "padding" : "height"}
+                style={{ flex: 1 }}
+            >
+                <SafeAreaView>
+                    <View style={styles.messagesContainer}>
+                        <FlatList
+                            inverted
+                            data={this.state.messages}
+                            keyExtractor={(item) => item.id}
+                            renderItem={({ item }) => {
+                                return (
+                                    <Message side={item.userId !== this.state.userId ? 'left' : 'right'} message={item.message} />
+                                )
+                            }}
+                        />
+                    </View>
 
-                <View style={styles.inputContainer}>
-                    <ChatInput sendMsg={this.onSend} />
-                </View>
-            </SafeAreaView>
+                    <View style={styles.inputContainer}>
+                        <ChatInput sendMsg={this.onSend} />
+                    </View>
+                </SafeAreaView>
+            </KeyboardAvoidingView>
         );
     }
 }
