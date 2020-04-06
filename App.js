@@ -11,6 +11,7 @@ import NotificationScreen from './src/screens/NotificationScreen'
 import LocalHighlightDetailsScreen from './src/screens/localHighlightDetailsScreen';
 import ChatScreen from './src/screens/chatScreen'
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as CustomerProvider } from './src/context/CustomerContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/resolveAuthScreen';
 import { FontAwesome } from '@expo/vector-icons'
@@ -57,10 +58,12 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <AuthProvider>
-      <App
-        ref={(navigator) => setNavigator(navigator)}
-      />
-    </AuthProvider>
+    <CustomerProvider>
+      <AuthProvider>
+        <App
+          ref={(navigator) => setNavigator(navigator)}
+        />
+      </AuthProvider>
+    </CustomerProvider>
   );
 }

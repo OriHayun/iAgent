@@ -74,27 +74,26 @@ const signout = dispatch => async () => {
 };
 
 const insertTokenToDB = (email, token) => {
-    console.log('insertTokenToDB')
-    let url = "http://localhost:50692/api/Auth";
-    const data = {
-        email,
-        token
-    }
+
+    const data = { email, token }
+
     console.log(data)
-    fetch(url, {
+
+    const options = {
         method: "POST",
-        body: JSON.stringify(data),
         headers: new Headers({
             'Content-type': 'application/json; charset=UTF-8'
-        })
-    })
+        }),
+        body: JSON.stringify(data)
+    }
+
+    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/Auth`, options)
         .then(res => {
             console.log('res=', res);
-            return res.json();
         })
         .then(
-            (result) => {
-                console.log("num of rows affected = ", result);
+            () => {
+                console.log('success');
             },
             (error) => {
                 console.log("err post=", error);

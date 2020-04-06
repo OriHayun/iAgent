@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, Button, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
@@ -8,12 +8,14 @@ import * as Permissions from 'expo-permissions';
 import { key } from '../api/triposo';
 import { accountId } from '../api/triposo';
 import { Ionicons } from '@expo/vector-icons'
+import { Context as customerContext } from '../context/CustomerContext';
 
 const indexScreen = () => {
 
     const [location, setLocation] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [localHighlights, setLocalHighlights] = useState([]);
+    const { getCustomer } = useContext(customerContext)
 
     getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -39,6 +41,7 @@ const indexScreen = () => {
 
     useEffect(() => {
         getLocationAsync();
+        getCustomer();
     }, [])
 
     return (

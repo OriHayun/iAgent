@@ -4,30 +4,29 @@ import { Button, Text, Input } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation'
 import Spacer from '../components/spacer';
 import { Context as AuthContext } from '../context/AuthContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
 import { FontAwesome } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions';
 
 const accountScreen = ({ navigation }) => {
-    const { state: { token }, signout } = useContext(AuthContext);
-    const [img, setImg] = useState(null);
-    const [url, setUrl] = useState()
-    const [customer, setCustomer] = useState({});
-    // const customer = {
-    //     img,
-    //     fullName: 'אורי חיון',
-    //     email: 'hayun.ori@gmail.com',
-    //     birthdate: '04.08.1993',
-    //     age: null
-    // }
-    // const DOB = customer.birthdate.split('.')
-    // const today = new Date();
-    // let age = today.getFullYear() - DOB[2];
-    // customer.age = age
+    const { signout } = useContext(AuthContext);
+    const { state: {
+        firstName,
+        sureName,
+        birthdate,
+        email,
+        img }, changeImg } = useContext(CustomerContext);
 
-    useEffect(() => { 
-        // לגשת לשרת ולקחת את הפרטים של הלקוח ולאחסן בסטייט ולהציג על המסך
+
+    var today = new Date();
+    arrBirthdate = birthdate.split('-')
+    var YOB = arrBirthdate[2];
+    age = today.getFullYear() - YOB
+
+
+    useEffect(() => {
         getPermissionAsync();
     }, [])
 
@@ -48,8 +47,8 @@ const accountScreen = ({ navigation }) => {
             quality: 1
         });
         if (!result.cancelled) {
-            //להעלות אותה לשרת
-            setImg(result.uri)
+            console.log('accountScreen 51' , result.uri)
+            changeImg(result.uri)
         }
     };
 
@@ -58,17 +57,17 @@ const accountScreen = ({ navigation }) => {
             <Text h2 style={styles.header} >אזור אישי</Text>
             {img ?
                 <Image source={{ uri: img }} style={styles.image} />
-                : null
+                : <Image source={require('../../assets/defaultImage.png')} style={styles.image} />
             }
             <View style={styles.detailsView}>
                 <Spacer>
-                    <Text h3> {customer.fullName} </Text>
+                    <Text h3> {firstName} {sureName} </Text>
                 </Spacer>
                 <Spacer>
-                    <Text h3> {customer.email}</Text>
+                    <Text h3> {email}</Text>
                 </Spacer>
                 <Spacer>
-                    <Text h3> {customer.age}</Text>
+                    <Text h3> {age}</Text>
                 </Spacer>
             </View>
             <View style={styles.btnView}>
