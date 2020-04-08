@@ -1,12 +1,12 @@
 import CreateDataContext from './createDataContext';
 import { AsyncStorage } from 'react-native';
+import axios from 'axios';
 
 
 
 const customerReducer = (state, action) => {
     switch (action.type) {
         case 'set_customer': {
-            console.log(state)
             return {
                 customerId: action.payload.customerId,
                 firstName: action.payload.firstName,
@@ -20,7 +20,6 @@ const customerReducer = (state, action) => {
             }
         }
         case 'change_img':
-            console.log(action.payload)
             return { ...state, img: action.payload }
         default:
             return state
@@ -38,6 +37,7 @@ const getCustomer = dispatch => async () => {
     })
         .then(res => res.json())
         .then((result) => {
+            console.log(result)
             dispatch({
                 type: 'set_customer',
                 payload: {
@@ -57,11 +57,51 @@ const getCustomer = dispatch => async () => {
             });
 };
 
-const changeImg = dispatch => (img) => {
-    //להעלות אותה לשרת
-    console.log('context', img)
-    dispatch({ type: 'change_img', payload: img })
+const changeImg = dispatch => (result) => {
+    const data = new FormData();
+    data.append("userImage", result);
+    console.log(data)
+    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/uploadimage`, {
+        method: 'POST',
+        contentType: false,
+        processData: false,
+        mode: 'no-cors',
+        body: data
+    }).then(function (data) {
+        saveToDb(imageUrl);
+        console.log(data);
+    }).catch((error) => {
+        console.log(error);
+    });
+    dispatch({ type: 'change_img', payload: result.uri })
 }
+
+const saveToDb = async (imageUrl) =>{
+    const token = await AsyncStorage.getItem('token')
+
+    const options = {
+        method: "POST",
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': `${token}`
+        }),
+        body: imageUrl
+    }
+
+    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/image`, options)
+        .then(res => {
+            console.log('res=', res);
+        })
+        .then(
+            () => {
+                console.log('success');
+            },
+            (error) => {
+                console.log("err post=", error);
+            });
+}
+
+
 
 export const { Provider, Context } = CreateDataContext(
     customerReducer,

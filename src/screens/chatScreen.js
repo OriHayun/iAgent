@@ -7,21 +7,19 @@ import Message from '../components/Message';
 
 class chatScreen extends React.Component {
 
-
-
     constructor(props) {
         super(props)
 
         this.state = {
             messages: [],
             //לקחת את היוזר שנמצא באפליקציה ולהחליף במקום 1
-            userId: 1,
-            ref: firebase.database().ref('/chat')
+            userId: 5,
+            ref: firebase.database().ref(`/chat/1`)
         }
     }
 
     componentDidMount() {
-        firebase.database().ref('/chat').on('child_added', (snapshot) => {
+        firebase.database().ref('/chat/1').on('child_added', (snapshot) => {
             this.setState({
                 messages: [snapshot.val(), ...this.state.messages]
             })
@@ -29,7 +27,7 @@ class chatScreen extends React.Component {
     }
 
     onSend(message) {
-        firebase.database().ref('/chat').push().set({
+        firebase.database().ref('/chat/1').push().set({
             //צריך פה להשתמש במזהה של היוזר שלנו כדי שנידע באיזה צד לשים את ההודעה
             userId: 1,
             message: message

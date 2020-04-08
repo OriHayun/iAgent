@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Button, Text, Input } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation'
 import Spacer from '../components/spacer';
 import { Context as AuthContext } from '../context/AuthContext';
@@ -19,12 +19,12 @@ const accountScreen = ({ navigation }) => {
         email,
         img }, changeImg } = useContext(CustomerContext);
 
-
-    var today = new Date();
-    arrBirthdate = birthdate.split('-')
-    var YOB = arrBirthdate[2];
-    age = today.getFullYear() - YOB
-
+    if (birthdate) {
+        var today = new Date();
+        arrBirthdate = birthdate.split('-')
+        var YOB = arrBirthdate[2];
+        age = today.getFullYear() - YOB
+    }
 
     useEffect(() => {
         getPermissionAsync();
@@ -42,13 +42,12 @@ const accountScreen = ({ navigation }) => {
     _pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
+            allowsEditing: false,
             aspect: [4, 3],
             quality: 1
         });
         if (!result.cancelled) {
-            console.log('accountScreen 51' , result.uri)
-            changeImg(result.uri)
+            changeImg(result)
         }
     };
 
