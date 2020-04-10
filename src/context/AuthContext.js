@@ -54,7 +54,6 @@ const signup = dispatch => async (email, password) => {
 
 
 const signin = dispatch => async (email, password) => {
-    console.log('signin')
     try {
         const response = await trackerApi.post('/signin', { email, password })
         insertTokenToDB(email, response.data.token);
@@ -76,9 +75,6 @@ const signout = dispatch => async () => {
 const insertTokenToDB = (email, token) => {
 
     const data = { email, token }
-
-    console.log(data)
-
     const options = {
         method: "POST",
         headers: new Headers({
@@ -88,12 +84,9 @@ const insertTokenToDB = (email, token) => {
     }
 
     fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/Auth`, options)
-        .then(res => {
-            console.log('res=', res);
-        })
         .then(
             () => {
-                console.log('success');
+                console.log('post authToken success');
             },
             (error) => {
                 console.log("err post=", error);

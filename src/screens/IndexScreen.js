@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, Button, FlatList, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Text } from 'react-native-elements';
+import Logo from '../components/Logo';
 import { SafeAreaView } from 'react-navigation';
 import LocalHighlight from '../components/LocalHighlight';
 import * as Location from 'expo-location';
@@ -25,7 +26,7 @@ const indexScreen = () => {
 
         let loc = await Location.getCurrentPositionAsync({});
         setLocation(loc);
-        fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
+        //fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
     };
 
     fingLocalHighlights = (latitude, longitude) => {
@@ -68,7 +69,7 @@ const indexScreen = () => {
                         );
                     }}
                 />
-                : null
+                : <ActivityIndicator size='large' style={styles.spiner} />
             }
             {errorMessage ? <Text>{errorMessage}</Text> : null}
         </SafeAreaView>
@@ -77,7 +78,10 @@ const indexScreen = () => {
 
 indexScreen.navigationOptions = ({ navigation }) => {
     return {
-        title: 'I Agent',
+        headerTitle: (
+            <Logo logo={styles.logo} />
+        ),
+        // title: <Logo />,
         headerTitleAlign: 'center',
         headerLeft:
             <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
@@ -87,9 +91,18 @@ indexScreen.navigationOptions = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    spiner: {
+        flex: 1,
+        justifyContent: 'center'
+    },
     notification: {
         fontSize: 30,
         marginLeft: 10
+    },
+    logo: {
+        height: 80,
+        width: 140,
+        resizeMode: 'contain'
     }
 })
 

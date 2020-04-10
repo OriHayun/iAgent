@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions, TextInput, TouchableOpacity } from 'react-native';
+import { View, Dimensions, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
 import Spacer from './spacer';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import Logo from '../components/Logo';
 
 
 const authForm = ({ headerText, buttonTitle, errorMessage, onSubmit }) => {
@@ -13,9 +14,8 @@ const authForm = ({ headerText, buttonTitle, errorMessage, onSubmit }) => {
 
     return (
         <>
-            <Spacer>
-                <Text h2 style={styles.header}>{headerText}</Text>
-            </Spacer>
+            <Text h2 style={styles.header}>{headerText}</Text>
+            <Logo logo={styles.logo} />
             <View>
                 <Feather name='user' color='rgba(255,255,255,0.7)' style={styles.inputIcon} />
                 <TextInput
@@ -58,10 +58,11 @@ const authForm = ({ headerText, buttonTitle, errorMessage, onSubmit }) => {
     );
 };
 
+
 const styles = StyleSheet.create({
     header: {
         color: 'rgba(255,255,255,0.7)',
-        marginBottom: 40
+        alignSelf: 'center'
     },
     errorMessage: {
         fontSize: 16,
@@ -97,6 +98,11 @@ const styles = StyleSheet.create({
         color: 'rgba(255,255,255,0.7)',
         fontSize: 16,
         textAlign: 'center'
+    },
+    logo: {
+        height: 140,
+        width: 200,
+        resizeMode: 'contain'
     }
 })
 

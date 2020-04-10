@@ -7,7 +7,6 @@ const ChatInput = (props) => {
 
   const handlePress = () => {
     const messageArr = message.split('')
-    console.log(messageArr)
     if (message === ' ' || message === '') {
       return;
     }

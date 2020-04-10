@@ -42,7 +42,7 @@ const accountScreen = ({ navigation }) => {
     _pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: false,
+            allowsEditing: true,
             aspect: [4, 3],
             quality: 1
         });
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'rgba(200,200,200,0.7)'
+        backgroundColor: 'rgba(100,145,177,0.7)'
     },
     header: {
         alignSelf: 'center',

@@ -37,7 +37,6 @@ const getCustomer = dispatch => async () => {
     })
         .then(res => res.json())
         .then((result) => {
-            console.log(result)
             dispatch({
                 type: 'set_customer',
                 payload: {
@@ -60,7 +59,6 @@ const getCustomer = dispatch => async () => {
 const changeImg = dispatch => (result) => {
     const data = new FormData();
     data.append("userImage", result);
-    console.log(data)
     fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/uploadimage`, {
         method: 'POST',
         contentType: false,
@@ -69,37 +67,36 @@ const changeImg = dispatch => (result) => {
         body: data
     }).then(function (data) {
         saveToDb(imageUrl);
-        console.log(data);
     }).catch((error) => {
         console.log(error);
     });
     dispatch({ type: 'change_img', payload: result.uri })
 }
 
-const saveToDb = async (imageUrl) =>{
-    const token = await AsyncStorage.getItem('token')
+// const saveToDb = async (imageUrl) =>{
+//     const token = await AsyncStorage.getItem('token')
 
-    const options = {
-        method: "POST",
-        headers: new Headers({
-            'Content-type': 'application/json; charset=UTF-8',
-            'Authorization': `${token}`
-        }),
-        body: imageUrl
-    }
+//     const options = {
+//         method: "POST",
+//         headers: new Headers({
+//             'Content-type': 'application/json; charset=UTF-8',
+//             'Authorization': `${token}`
+//         }),
+//         body: imageUrl
+//     }
 
-    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/image`, options)
-        .then(res => {
-            console.log('res=', res);
-        })
-        .then(
-            () => {
-                console.log('success');
-            },
-            (error) => {
-                console.log("err post=", error);
-            });
-}
+//     fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/image`, options)
+//         .then(res => {
+//             console.log('res=', res);
+//         })
+//         .then(
+//             () => {
+//                 console.log('success');
+//             },
+//             (error) => {
+//                 console.log("err post=", error);
+//             });
+// }
 
 
 
