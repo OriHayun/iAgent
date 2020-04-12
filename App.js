@@ -3,7 +3,8 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import AccountScreen from './src/screens/AccountScreen';
-import tripsScreen from './src/screens/tripsScreen';
+import TripsScreen from './src/screens/tripsScreen';
+import TripScreen from './src/screens/tripScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import IndexScreen from './src/screens/IndexScreen';
@@ -15,7 +16,7 @@ import { Provider as CustomerProvider } from './src/context/CustomerContext';
 import { Provider as TripsProvider } from './src/context/TripsContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/resolveAuthScreen';
-import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome, Entypo } from '@expo/vector-icons'
 import firebaseConfig from './src/api/firebase';
 import firebase from 'firebase';
 
@@ -26,7 +27,6 @@ const MainFlow = createStackNavigator({
   Notification: NotificationScreen,
   Details: LocalHighlightDetailsScreen
 })
-
 MainFlow.navigationOptions = () => {
   return {
     title: 'ראשי',
@@ -39,6 +39,24 @@ MainFlow.navigationOptions = () => {
   }
 }
 
+const tripsFlow = createStackNavigator({
+  trips: TripsScreen,
+  trip: TripScreen,
+
+
+})
+tripsFlow.navigationOptions = () => {
+  return {
+    title: 'טיולים',
+    tabBarOptions: {
+      tabStyle: { backgroundColor: '#a3a375' },
+      labelStyle: { fontSize: 16 }
+    },
+    tabBarIcon: <Entypo size={20} name='suitcase' />
+  };
+}
+
+
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
   loginFlow: createStackNavigator({
@@ -47,10 +65,9 @@ const switchNavigator = createSwitchNavigator({
   }),
   mainFlow: createBottomTabNavigator({
     MainFlow,
-    trips: tripsScreen,
+    tripsFlow,
     Chat: ChatScreen,
     Account: AccountScreen
-
   })
 });
 

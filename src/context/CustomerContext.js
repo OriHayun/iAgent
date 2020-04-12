@@ -1,5 +1,5 @@
 import CreateDataContext from './createDataContext';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Image } from 'react-native';
 import axios from 'axios';
 
 
@@ -56,47 +56,58 @@ const getCustomer = dispatch => async () => {
             });
 };
 
-const changeImg = dispatch => (result) => {
+const createFormData = (photo) => {
+    const name = photo.uri.split('ImagePicker/');
     const data = new FormData();
-    data.append("userImage", result);
-    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/uploadimage`, {
-        method: 'POST',
-        contentType: false,
-        processData: false,
-        mode: 'no-cors',
-        body: data
-    }).then(function (data) {
-        saveToDb(imageUrl);
-    }).catch((error) => {
-        console.log(error);
+    data.append("userPhoto", {
+        name: name[1],
+        type: photo.type + '/jpg',
+        uri: Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
     });
+
+    return data;
+};
+
+
+const changeImg = dispatch => async (result) => {
     dispatch({ type: 'change_img', payload: result.uri })
+
+    const data = createFormData(result)
+
+    fetch("http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/image/uploadimage", {
+        method: "POST",
+        body: data
+    })
+        .then(response => response.json())
+        .then(response => {
+            saveToDb(response);
+        })
+        .catch(error => {
+            console.log("upload error", error);
+            alert("Upload failed!");
+        });
 }
 
-// const saveToDb = async (imageUrl) =>{
-//     const token = await AsyncStorage.getItem('token')
+const saveToDb = async (imageUrl) => {
+    const token = await AsyncStorage.getItem('token')
+    const options = {
+        method: "POST",
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': `${token}`
+        }),
+        body: JSON.stringify(imageUrl[0])
+    }
 
-//     const options = {
-//         method: "POST",
-//         headers: new Headers({
-//             'Content-type': 'application/json; charset=UTF-8',
-//             'Authorization': `${token}`
-//         }),
-//         body: imageUrl
-//     }
-
-//     fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/image`, options)
-//         .then(res => {
-//             console.log('res=', res);
-//         })
-//         .then(
-//             () => {
-//                 console.log('success');
-//             },
-//             (error) => {
-//                 console.log("err post=", error);
-//             });
-// }
+    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/image`, options)
+        .then(
+            () => {
+                console.log('success');
+            },
+            (error) => {
+                console.log("err post=", error);
+            });
+}
 
 
 

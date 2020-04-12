@@ -16,7 +16,7 @@ const getCustomerTrips = dispatch => (id) => {
             dispatch({ type: 'set_trips', payload: { trips: result } })
         },
             (error) => {
-                console.log('err ', error);
+                console.log('err 1 ', error);
             });
 }
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { StyleSheet, ActivityIndicator, FlatList, View } from 'react-native';
 import { Text } from 'react-native-elements'
-import { Entypo } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-navigation'
 import { Context as CustomerContext } from '../context/CustomerContext';
 import { Context as TripsContext } from '../context/TripsContext';
@@ -27,7 +26,6 @@ const tripsScreen = () => {
                         data={arrTrips[0].trips}
                         keyExtractor={trip => trip.Id.toString()}
                         renderItem={({ item }) => {
-                            console.log('item = ', item)
                             return (
                                 <TripTicket
                                     trip={item}
@@ -42,17 +40,11 @@ const tripsScreen = () => {
     );
 }
 
-
 tripsScreen.navigationOptions = () => {
     return {
-        title: 'טיולים',
-        tabBarOptions: {
-            tabStyle: { backgroundColor: '#a3a375' },
-            labelStyle: { fontSize: 16 }
-        },
-        tabBarIcon: <Entypo size={20} name='suitcase' />
-    };
-};
+        headerShown: false
+    }
+}
 
 const styles = StyleSheet.create({
     container: {

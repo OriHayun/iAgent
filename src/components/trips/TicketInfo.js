@@ -20,23 +20,17 @@ const ticketInfo = ({ _destination, _depart, _return }) => {
         });
     };
 
-    bringTwoLetterCuntryCode = async (destination) => {
-        const codeResponse = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/flag/city/${destination}`)
-        setFlagUri(`https://www.countryflags.io/${codeResponse.data}/shiny/64.png`)
-        console.log(flagUri)
-
-    }
-
     useEffect(() => {
-        bringTwoLetterCuntryCode(_destination);
-    })
-
-
+        (async function TwoLetterCuntryCode() {
+            const codeResponse = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/flag/city/${_destination}`)
+            setFlagUri(`https://www.countryflags.io/${codeResponse.data}/shiny/64.png`)
+        })();
+    }, [])
 
     return (
         <View style={styles.info}>
             <Spacer>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', marginLeft: -15 }}>
                     {flagUri != '' ?
                         <Image source={{ uri: flagUri }} style={styles.flag} />
                         : null

@@ -1,66 +1,65 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { FlatList, View, Platform, KeyboardAvoidingView, SafeAreaView, StyleSheet } from 'react-native';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
 import ChatInput from '../components/ChatInput';
 import Message from '../components/Message';
+import { Context as CustomerContext } from '../context/CustomerContext';
 
-class chatScreen extends React.Component {
+const chatScreen = () => {
 
-    constructor(props) {
-        super(props)
+    const { state: { customerId } } = useContext(CustomerContext);
+    const [messages, setMessages] = useState([])
+    console.log(messages.length, messages)
 
-        this.state = {
-            messages: [],
-            //לקחת את היוזר שנמצא באפליקציה ולהחליף במקום 1
-            userId: 5,
-            ref: firebase.database().ref(`/chat/1`)
-        }
-    }
+    useEffect(() => {
+        firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
+            setMessages([snapshot.val()])
+        })
+    }, [])
 
-    componentDidMount() {
-        firebase.database().ref('/chat/1').on('child_added', (snapshot) => {
-            this.setState({
-                messages: [snapshot.val(), ...this.state.messages]
-            })
+    listener = () => {
+        firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
+            setMessages([...messages, snapshot.val()])
         })
     }
 
-    onSend(message) {
-        firebase.database().ref('/chat/1').push().set({
+    onSend = (message) => {
+        firebase.database().ref(`/chat/${customerId}`).push().set({
             //צריך פה להשתמש במזהה של היוזר שלנו כדי שנידע באיזה צד לשים את ההודעה
-            userId: 1,
-            message: message
+            userId: customerId,
+            message: message,
+            id: messages.length
         })
+        listener()
     }
 
-    render() {
-        return (
-            <KeyboardAvoidingView
-                behavior={Platform.Os == "ios" ? "padding" : "height"}
-                style={{ flex: 1 }}
-            >
-                <SafeAreaView>
-                    <View style={styles.messagesContainer}>
-                        <FlatList
-                            inverted
-                            data={this.state.messages}
-                            keyExtractor={(item) => item.id}
-                            renderItem={({ item }) => {
-                                return (
-                                    <Message side={item.userId !== this.state.userId ? 'left' : 'right'} message={item.message} />
-                                )
-                            }}
-                        />
-                    </View>
+    return (
+        <KeyboardAvoidingView
+            behavior={Platform.Os == "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <SafeAreaView>
+                <View style={styles.messagesContainer}>
+                    <FlatList
+                        inverted
+                        data={messages}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => {
+                            console.log(item)
+                            return (
+                                <Message side={item.userId !== customerId ? 'left' : 'right'} message={item.message} />
+                            )
+                        }}
+                    />
+                </View>
 
-                    <View style={styles.inputContainer}>
-                        <ChatInput sendMsg={this.onSend} />
-                    </View>
-                </SafeAreaView>
-            </KeyboardAvoidingView>
-        );
-    }
+                <View style={styles.inputContainer}>
+                    <ChatInput sendMsg={onSend} />
+                </View>
+            </SafeAreaView>
+        </KeyboardAvoidingView>
+    );
 }
 
 

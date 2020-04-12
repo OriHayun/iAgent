@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation'
 import Spacer from '../components/spacer';
@@ -41,7 +41,7 @@ const accountScreen = ({ navigation }) => {
 
     _pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1
@@ -52,35 +52,40 @@ const accountScreen = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
-            <Text h2 style={styles.header} >אזור אישי</Text>
-            {img ?
-                <Image source={{ uri: img }} style={styles.image} />
-                : <Image source={require('../../assets/defaultImage.png')} style={styles.image} />
-            }
-            <View style={styles.detailsView}>
-                <Spacer>
-                    <Text h3> {firstName} {sureName} </Text>
-                </Spacer>
-                <Spacer>
-                    <Text h3> {email}</Text>
-                </Spacer>
-                <Spacer>
-                    <Text h3> {age}</Text>
-                </Spacer>
-            </View>
-            <View style={styles.btnView}>
-                <Button
-                    title="התנתק"
-                    onPress={signout}
-                />
-                <Button
-                    title="בחר תמונה"
-                    onPress={this._pickImage}
-                />
-            </View>
+        <>
+            {firstName != '' ?
+                <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
+                    <Text h2 style={styles.header} >אזור אישי</Text>
+                    {img ?
+                        <Image source={{ uri: img }} style={styles.image} />
+                        : <Image source={require('../../assets/defaultImage.png')} style={styles.image} />
+                    }
+                    <View style={styles.detailsView}>
+                        <Spacer>
+                            <Text h3> {firstName} {sureName} </Text>
+                        </Spacer>
+                        <Spacer>
+                            <Text h3> {email}</Text>
+                        </Spacer>
+                        <Spacer>
+                            <Text h3> {age}</Text>
+                        </Spacer>
+                    </View>
+                    <View style={styles.btnView}>
+                        <Button
+                            title="התנתק"
+                            onPress={signout}
+                        />
+                        <Button
+                            title="בחר תמונה"
+                            onPress={this._pickImage}
+                        />
+                    </View>
 
-        </SafeAreaView>
+                </SafeAreaView>
+                : <ActivityIndicator size='large' style={styles.spiner} />
+            }
+        </>
     );
 }
 
@@ -122,6 +127,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         marginTop: 25
+    },
+    spiner: {
+        flex: 1,
+        justifyContent: 'center'
     }
 })
 

@@ -30,7 +30,6 @@ const tryLocalSignin = dispatch => async () => {
     } else {
         navigate('Signup', '');
     }
-
 }
 
 const clearErrorMessage = dispatch => () => {
