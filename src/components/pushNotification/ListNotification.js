@@ -6,8 +6,7 @@ import NotificationModal from './notifigationModal';
 const listNotification = ({ notification }) => {
     const [mailBox, setMailBox] = useState('ios-mail')
     const [showMosal, setShowModal] = useState(false);
-    console.log(notification)
-    console.log(notification)
+
     changeMailIcon = () => {
         setMailBox('ios-mail-open')
     }
@@ -24,19 +23,18 @@ const listNotification = ({ notification }) => {
     return (
         <>
             <TouchableOpacity onPress={() => {
-                changeMailIcon();
                 _showModal();
             }}>
                 <View style={styles.row}>
                     <Ionicons name={mailBox} style={styles.mailBox} />
-                    <Text style={styles.title}>{notification.data.subject}</Text>
+                    <Text style={styles.title}>{notification.subject}</Text>
                 </View>
             </TouchableOpacity>
             <NotificationModal
                 visible={showMosal}
                 closeModal={_showModal}
                 padPath={notification.padPath}
-                message={notification.data.message}
+                message={notification.message}
             />
         </>
     );

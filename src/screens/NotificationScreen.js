@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, StyleSheet, FlatList, Vibration } from 'react-native';
+import { View, StyleSheet, FlatList, Vibration, ActivityIndicator } from 'react-native';
 import { Text } from 'react-native-elements'
 import { Notifications } from 'expo';
 import registerForPushNotificationsAsync from '../components/pushNotification/getPermissions';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as NotificationContext } from '../context/NotificationContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
 import ListNotification from '../components/pushNotification/ListNotification';
 import Spacer from '../components/spacer';
 
@@ -12,8 +13,9 @@ import Spacer from '../components/spacer';
 const notificationScreen = () => {
 
     const { state: { token } } = useContext(AuthContext);
-    const [arrNotification, setArrNotification] = useState([]);
-    // const { state: { notifications }, getLastNotification } = useContext(NotificationContext);
+    // const [arrNotification, setArrNotification] = useState([]);
+    const { state: { customerId } } = useContext(CustomerContext);
+    const { state: { notifications }, getNotificationsFromDb } = useContext(NotificationContext);
 
 
     useEffect(() => {
@@ -40,6 +42,10 @@ const notificationScreen = () => {
     //     console.log(arrNotification)
     // }, [arrNotification])
 
+    useEffect(() => {
+        getNotificationsFromDb(customerId);
+    }, [])
+
     handleNotification = notification => {
         Vibration.vibrate();
         //לוודא ששולחים לי בהתראה את המזהה של הבקשה
@@ -49,9 +55,9 @@ const notificationScreen = () => {
 
     return (
         <View style={styles.container}>
-            {arrNotification.length > 0 ?
+            {notifications.length > 0 ?
                 <FlatList
-                    data={arrNotification}
+                    data={notifications}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => {
                         return (
@@ -62,7 +68,11 @@ const notificationScreen = () => {
                         );
                     }}
                 />
-                : <View style={styles.noNotification}><Text h3>לא נמצאו התראות</Text></View>
+                :
+                <View style={styles.noNotification}>
+                    <ActivityIndicator size='large' />
+                    <Text h3>לא נמצאו התראות</Text>
+                </View>
             }
         </View>
     );

@@ -43,7 +43,6 @@ const indexScreen = () => {
     useEffect(() => {
         getLocationAsync();
         getCustomer();
-        //getNotificationsFromDb();
     }, [])
 
     return (

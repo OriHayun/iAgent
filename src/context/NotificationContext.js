@@ -2,37 +2,47 @@ import CreateDataContext from './createDataContext';
 import axios from 'axios';
 
 const notificationReducer = (state, action) => {
+    console.log(action.payload)
     switch (action.type) {
         case 'add_notification':
-            return [...notifications, action.payload]
+            return { ...state, notifications: [...state.notifications, action.payload] }
         default:
             return state;
     }
 }
 
-const insertNotification = (notification) => {
-    let subject = 'בקשה מספר ' + notification.requestId;
+const buildtNotification = (notification) => {
+
+    let subject = 'בקשה מספר ' + notification.RequestId;
     let message = '';
-    let pdfPath = notification.pdfPath;
-    switch (notification.status_) {
-        case 'new':
+    let pdfPath = notification.PdfPath;
+    switch (notification.Status) {
+        case 'new': {
             message = 'הבקשה התקבלה, אך עדיין לא טופלה';
-        case 'in process':
+            return { subject, message, pdfPath }
+        }
+        case 'in process': {
             message = 'הבקשה התקבלה והיא בטיפול';
-        case 'success':
+            return { subject, message, pdfPath }
+        }
+        case 'success': {
             message = 'הבקשה הסתיימה בהצלחה תהנו :)';
-        case 'failure':
+            return { subject, message, pdfPath }
+        }
+        default: {
             message = 'הבקשה הסתיימה ולא ניתן להשלימה';
+            return { subject, message, pdfPath }
+        }
     }
-    dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
 }
 
 
-const getNotificationsFromDb = dispatch => async (tripId) => {
-    const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/${tripId}`);
-    console.log(response.data);
+const getNotificationsFromDb = dispatch => async (customerId) => {
+    const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/${customerId}`);
+
     response.data.map(notification => {
-        insertNotification(notification)
+        const { subject, message, pdfPath } = buildtNotification(notification)
+        dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
     })
 }
 
@@ -68,6 +78,6 @@ const getLastNotification = dispatch => async (requestId) => {
 
 export const { Provider, Context } = CreateDataContext(
     notificationReducer,
-    { getNotificationsFromDb, pushNotificationToDb , getLastNotification },
+    { getNotificationsFromDb, pushNotificationToDb, getLastNotification },
     { notifications: [] }
 );
