@@ -9,10 +9,10 @@ export default async function registerForPushNotificationsAsync() {
         return;
     }
 
-    let token = await Notifications.getExpoPushTokenAsync();
-    console.log(token);
+    let pnToken = await Notifications.getExpoPushTokenAsync();
+    console.log(pnToken);
+
     return (
-        // POST the token to your backend server from where you can retrieve it to send push notifications.
-        token
+        pnToken
     );
 }

@@ -43,6 +43,7 @@ const indexScreen = () => {
     useEffect(() => {
         getLocationAsync();
         getCustomer();
+        //getNotificationsFromDb();
     }, [])
 
     return (
@@ -81,7 +82,6 @@ indexScreen.navigationOptions = ({ navigation }) => {
         headerTitle: (
             <Logo logo={styles.logo} />
         ),
-        // title: <Logo />,
         headerTitleAlign: 'center',
         headerLeft:
             <TouchableOpacity onPress={() => navigation.navigate('Notification')}>

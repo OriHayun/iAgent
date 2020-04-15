@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
-import Logo from '../../assets/iAgentLogo.png';
+import { Image } from 'react-native';
 
 const logo = ({logo}) => {
     return (

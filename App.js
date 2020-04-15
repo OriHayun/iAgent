@@ -14,6 +14,7 @@ import ChatScreen from './src/screens/chatScreen'
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as CustomerProvider } from './src/context/CustomerContext';
 import { Provider as TripsProvider } from './src/context/TripsContext';
+import { Provider as NotificationProvider } from './src/context/NotificationContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/resolveAuthScreen';
 import { FontAwesome, Entypo } from '@expo/vector-icons'
@@ -30,10 +31,11 @@ const MainFlow = createStackNavigator({
 MainFlow.navigationOptions = () => {
   return {
     title: 'ראשי',
-    activeColor: '#222222',
     tabBarOptions: {
-      tabStyle: { backgroundColor: '#b8b894' },
+      tabStyle: { backgroundColor: '#ffe0b3' },
       labelStyle: { fontSize: 16 },
+      activeTintColor: 'blue',
+      inactiveTintColor: 'gray',
     },
     tabBarIcon: <FontAwesome name='home' size={20} />
   }
@@ -76,14 +78,16 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <TripsProvider>
-      <CustomerProvider>
-        <AuthProvider>
-          <App
-            ref={(navigator) => setNavigator(navigator)}
-          />
-        </AuthProvider>
-      </CustomerProvider>
-    </TripsProvider>
+    <NotificationProvider>
+      <TripsProvider>
+        <CustomerProvider>
+          <AuthProvider>
+            <App
+              ref={(navigator) => setNavigator(navigator)}
+            />
+          </AuthProvider>
+        </CustomerProvider>
+      </TripsProvider>
+    </NotificationProvider>
   );
 }

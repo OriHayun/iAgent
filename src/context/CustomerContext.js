@@ -1,6 +1,5 @@
 import CreateDataContext from './createDataContext';
-import { AsyncStorage, Image } from 'react-native';
-import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 
 
 
