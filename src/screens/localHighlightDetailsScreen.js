@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import DirectionsModal from '../components/DirectionsModal';
 import DirTypeIcon from '../components/DirTypeIcon';
+import OrderModal from '../components/orderModal';
+import { Context as TripContext } from '../context/TripsContext';
 
 const localHighlightDetails = ({ navigation }) => {
     const item = navigation.getParam('item')
+    const { state: { arrTrips } } = useContext(TripContext);
     const LHL = {
         name: item.name,
         images: item.images.map(img => img.sizes.original.url),
@@ -17,14 +19,27 @@ const localHighlightDetails = ({ navigation }) => {
     }
 
     const [dirType, setDirType] = useState('');
-    const [showModal, setShowModal] = useState(false);
+    const [showDirModal, setShowDirModal] = useState(false);
+    const [showOrderModal, setShowOrderModal] = useState(false);
 
-    _showModal = (dirType) => {
-        setDirType(dirType);
-        setShowModal(true);
+    toggleDirModal = (dirType) => {
+        if (showDirModal == true) {
+            setShowDirModal(false)
+
+        }
+        else {
+            setDirType(dirType);
+            setShowDirModal(true);
+        }
     }
-    _closeShowModal = () => {
-        setShowModal(false)
+
+    toggleOrderModal = () => {
+        if (showOrderModal == true) {
+            setShowOrderModal(false)
+        }
+        else {
+            setShowOrderModal(true)
+        }
     }
 
     return (
@@ -42,21 +57,33 @@ const localHighlightDetails = ({ navigation }) => {
                 }}
             />
             <DirectionsModal
-                visible={showModal}
+                visible={showDirModal}
                 dirType={dirType}
                 LHL={LHL}
-                closeModal={_closeShowModal}
+                closeModal={toggleDirModal}
+            />
+            <OrderModal
+                visible={showOrderModal}
+                closeModal={toggleOrderModal}
+                tripId={arrTrips[0].trips[0].Id}
+                attractionId={item.id}
+                minDate={arrTrips[0].trips[0]._Depart}
+                maxDate={arrTrips[0].trips[0]._Return}
             />
             <Text h5 style={{ alignSelf: 'center', fontSize: 16 }}>דרכי הגעה</Text>
             <View style={styles.directions}>
-                {LHL.bus.length > 0 ? <DirTypeIcon iconName='bus-double-decker' dirInfoModal={() => _showModal('bus')} /> : null}
-                {LHL.subway.length > 0 ? <DirTypeIcon iconName='subway' dirInfoModal={() => _showModal('subway')} /> : null}
-                {LHL.train.length > 0 ? <DirTypeIcon iconName='train-variant' dirInfoModal={() => _showModal('train')} /> : null}
+                {LHL.bus.length > 0 ? <DirTypeIcon iconName='bus-double-decker' dirInfoModal={() => toggleDirModal('bus')} /> : null}
+                {LHL.subway.length > 0 ? <DirTypeIcon iconName='subway' dirInfoModal={() => toggleDirModal('subway')} /> : null}
+                {LHL.train.length > 0 ? <DirTypeIcon iconName='train-variant' dirInfoModal={() => toggleDirModal('train')} /> : null}
             </View>
             {LHL.price.length > 0 ?
                 <>
                     <Text>Price : {LHL.price[0].value}</Text>
-                    <TouchableOpacity style={{ alignItems: 'center' }}><View style={styles.orderBtn}><Text h4>הזמן</Text></View></TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ alignItems: 'center' }}
+                        onPress={toggleOrderModal}
+                    >
+                        <View style={styles.orderBtn}><Text h4>הזמן</Text></View></TouchableOpacity>
                 </>
                 : null
             }

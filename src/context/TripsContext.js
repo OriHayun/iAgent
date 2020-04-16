@@ -10,15 +10,16 @@ const tripsReducer = (state, action) => {
 };
 
 const getCustomerTrips = dispatch => (id) => {
-    fetch(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/trip/${id}`)
-        .then(res => res.json())
-        .then((result) => {
-            console.log(result[0].Id)
-            dispatch({ type: 'set_trips', payload: { trips: result } })
-        },
-            (error) => {
-                console.log('err 1 ', error);
-            });
+    if (id) {
+        fetch(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/trip/${id}`)
+            .then(res => res.json())
+            .then((result) => {
+                dispatch({ type: 'set_trips', payload: { trips: result } })
+            },
+                (error) => {
+                    console.log('err 1 ', error);
+                });
+    }
 }
 
 export const { Provider, Context } = CreateDataContext(

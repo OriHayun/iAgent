@@ -10,13 +10,15 @@ import { key } from '../api/triposo';
 import { accountId } from '../api/triposo';
 import { Ionicons } from '@expo/vector-icons'
 import { Context as customerContext } from '../context/CustomerContext';
+import { Context as TripContext } from '../context/TripsContext';
 
 const indexScreen = () => {
 
     const [location, setLocation] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [localHighlights, setLocalHighlights] = useState([]);
-    const { getCustomer } = useContext(customerContext)
+    const { state: { customerId }, getCustomer } = useContext(customerContext)
+    const { getCustomerTrips } = useContext(TripContext);
 
     getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -26,7 +28,7 @@ const indexScreen = () => {
 
         let loc = await Location.getCurrentPositionAsync({});
         setLocation(loc);
-        //fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
+        fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
     };
 
     fingLocalHighlights = (latitude, longitude) => {
@@ -44,6 +46,10 @@ const indexScreen = () => {
         getLocationAsync();
         getCustomer();
     }, [])
+
+    useEffect(() => {
+        getCustomerTrips(customerId)
+    }, [customerId])
 
     return (
         <SafeAreaView forceInset={{ top: 'always' }}>

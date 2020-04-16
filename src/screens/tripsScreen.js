@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, ActivityIndicator, FlatList, View } from 'react-native';
 import { Text } from 'react-native-elements'
 import { SafeAreaView } from 'react-navigation'
-import { Context as CustomerContext } from '../context/CustomerContext';
 import { Context as TripsContext } from '../context/TripsContext';
 import TripTicket from '../components/trips/TripTicket';
 
@@ -10,12 +9,7 @@ import TripTicket from '../components/trips/TripTicket';
 
 
 const tripsScreen = () => {
-    const { state: { customerId } } = useContext(CustomerContext);
-    const { state: { arrTrips }, getCustomerTrips } = useContext(TripsContext);
-
-    useEffect(() => {
-        getCustomerTrips(customerId)
-    }, [])
+    const { state: { arrTrips } } = useContext(TripsContext);
 
     return (
         <View style={styles.container}>

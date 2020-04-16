@@ -53,15 +53,16 @@ const pushNotificationToDb = dispatch => async (
     numOfTickets
 ) => {
     const notification = { tripId, attractionId, requestedDate, numOfTickets }
-    const response = await axios.post('http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/insertNewNotification',
-        JSON.stringify(notification));
-    console.log(response.data)
-    if (response.data) {
-        let subject = 'נשלחה בקשה חדשה'
-        let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
-        let pdfPath = '';
-        dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
-    }
+    console.log(notification)
+    // const response = await axios.post('http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/insertNewNotification',
+    //     JSON.stringify(notification));
+    // console.log(response.data)
+    // if (response.data == 1) {
+    //     let subject = 'נשלחה בקשה חדשה'
+    //     let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
+    //     let pdfPath = '';
+    //     dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+    // }
 }
 
 const getLastNotification = dispatch => async (requestId) => {
