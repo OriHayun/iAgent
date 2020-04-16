@@ -38,12 +38,15 @@ const buildtNotification = (notification) => {
 
 
 const getNotificationsFromDb = dispatch => async (customerId) => {
-    const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/${customerId}`);
+    console.log(customerId)
+    if (customerId) {
+        const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/${customerId}`);
 
-    response.data.map(notification => {
-        const { subject, message, pdfPath } = buildtNotification(notification)
-        dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
-    })
+        response.data.map(notification => {
+            const { subject, message, pdfPath } = buildtNotification(notification)
+            dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+        })
+    }
 }
 
 const pushNotificationToDb = dispatch => async (

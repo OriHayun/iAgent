@@ -11,14 +11,18 @@ import { accountId } from '../api/triposo';
 import { Ionicons } from '@expo/vector-icons'
 import { Context as customerContext } from '../context/CustomerContext';
 import { Context as TripContext } from '../context/TripsContext';
+import { Context as NotificationContext } from '../context/NotificationContext';
 
 const indexScreen = () => {
+    const { state: { customerId }, getCustomer } = useContext(customerContext)
+    const { getCustomerTrips } = useContext(TripContext);
+    const { getNotificationsFromDb } = useContext(NotificationContext);
+
 
     const [location, setLocation] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [localHighlights, setLocalHighlights] = useState([]);
-    const { state: { customerId }, getCustomer } = useContext(customerContext)
-    const { getCustomerTrips } = useContext(TripContext);
+
 
     getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -49,6 +53,7 @@ const indexScreen = () => {
 
     useEffect(() => {
         getCustomerTrips(customerId)
+        getNotificationsFromDb(customerId)
     }, [customerId])
 
     return (
