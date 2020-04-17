@@ -22,7 +22,7 @@ const ticketInfo = ({ _destination, _depart, _return }) => {
 
     useEffect(() => {
         (async function TwoLetterCuntryCode() {
-            const codeResponse = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/flag/city/${_destination}`)
+            const codeResponse = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/flag/city/${_destination}`)
             setFlagUri(`https://www.countryflags.io/${codeResponse.data}/shiny/64.png`)
         })();
     }, [])

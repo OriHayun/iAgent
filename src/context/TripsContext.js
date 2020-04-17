@@ -11,7 +11,7 @@ const tripsReducer = (state, action) => {
 
 const getCustomerTrips = dispatch => (id) => {
     if (id) {
-        fetch(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/trip/${id}`)
+        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/customertrips/${id}`)
             .then(res => res.json())
             .then((result) => {
                 dispatch({ type: 'set_trips', payload: { trips: result } })

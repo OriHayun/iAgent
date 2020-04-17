@@ -28,7 +28,7 @@ const customerReducer = (state, action) => {
 const getCustomer = dispatch => async () => {
     const token = await AsyncStorage.getItem('token')
 
-    fetch('http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/Auth', {
+    fetch('http://proj.ruppin.ac.il/igroup4/prod/api/Auth', {
         method: "GET",
         headers: new Headers({
             'Authorization': `${token}`
@@ -46,7 +46,7 @@ const getCustomer = dispatch => async () => {
                     email: result.Email,
                     img: result.Img,
                     pnToken: result.PnToken,
-                    agentId: result.AgentId
+                    agentId: result.AgentID
                 }
             })
         },
@@ -73,7 +73,7 @@ const changeImg = dispatch => async (result) => {
 
     const data = createFormData(result)
 
-    fetch("http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/image/uploadimage", {
+    fetch("http://proj.ruppin.ac.il/igroup4/prod/api/image/uploadimage", {
         method: "POST",
         body: data
     })
@@ -98,7 +98,7 @@ const saveToDb = async (imageUrl) => {
         body: JSON.stringify(imageUrl[0])
     }
 
-    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/image`, options)
+    fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/image`, options)
         .then(
             () => {
                 console.log('success');

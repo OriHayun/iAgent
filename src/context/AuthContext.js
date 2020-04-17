@@ -82,7 +82,7 @@ const insertTokenToDB = (email, token) => {
         body: JSON.stringify(data)
     }
 
-    fetch(`http://proj.ruppin.ac.il/igroup4/Mobile/servertest/api/Auth`, options)
+    fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Auth`, options)
         .then(
             () => {
                 console.log('post authToken success');

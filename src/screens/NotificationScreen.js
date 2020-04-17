@@ -18,7 +18,7 @@ const notificationScreen = () => {
     useEffect(() => {
         (async function bringPnToken() {
             const pnToken = await registerForPushNotificationsAsync();
-            fetch('http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/pntoken/' + pnToken, {
+            fetch('http://proj.ruppin.ac.il/igroup4/prod/api/notification/pntoken/' + pnToken, {
                 method: "POST",
                 headers: new Headers({
                     'Authorization': `${token}`

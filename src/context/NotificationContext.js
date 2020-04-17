@@ -40,7 +40,7 @@ const buildtNotification = (notification) => {
 const getNotificationsFromDb = dispatch => async (customerId) => {
     console.log(customerId)
     if (customerId) {
-        const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/${customerId}`);
+        const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/notification/${customerId}`);
 
         response.data.map(notification => {
             const { subject, message, pdfPath } = buildtNotification(notification)
@@ -57,28 +57,24 @@ const pushNotificationToDb = dispatch => async (
 ) => {
     const notification = { tripId, attractionId, requestedDate, numOfTickets }
     console.log(notification)
-    // const response = await axios.post('http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/insertNewNotification',
-    //     JSON.stringify(notification));
-    // console.log(response.data)
-    // if (response.data == 1) {
-    //     let subject = 'נשלחה בקשה חדשה'
-    //     let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
-    //     let pdfPath = '';
-    //     dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
-    // }
+    const response = await axios.post('http://proj.ruppin.ac.il/igroup4/prod/api/notification/insertNewNotification',
+        JSON.stringify(notification));
+    console.log(response.data)
+    if (response.data == 1) {
+        let subject = 'נשלחה בקשה חדשה'
+        let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
+        let pdfPath = '';
+        dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+    }
 }
 
 const getLastNotification = dispatch => async (requestId) => {
-    const response = axios.get('http://proj.ruppin.ac.il/igroup4/mobile/servertest/api/notification/specificNotification/' + requestId)
+    const response = axios.get('http://proj.ruppin.ac.il/igroup4/prod/api/notification/specificNotification/' + requestId)
     let subject = 'בקשה מספר ' + requestId;
     let message = response.data.message;
     let pdfPath = response.data.pdfPath;
     dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
 }
-
-
-
-
 
 export const { Provider, Context } = CreateDataContext(
     notificationReducer,
