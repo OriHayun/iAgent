@@ -2,19 +2,23 @@ import React, { useContext, useState } from 'react'
 import { View, StyleSheet, Text, Modal, TouchableOpacity, TextInput, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Context as NotificationContext } from '../context/NotificationContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
+
 import DatePicker from 'react-native-datepicker'
 import NumericInput from 'react-native-numeric-input'
 
 
-const orderModal = ({ visible, closeModal, tripId, attractionId, minDate, maxDate }) => {
+const orderModal = ({ visible, closeModal, tripId, attractionId, attractionName, minDate, maxDate }) => {
 
     const { pushNotificationToDb } = useContext(NotificationContext);
-    const [numOfTickets, setNumOfTickets] = useState(0);
+    const { state: { customerId } } = useContext(CustomerContext)
+    const [numOfTickets, setNumOfTickets] = useState(1);
     const [requestedDate, setRequestedDate] = useState(new Date());
 
     const makeReservation = () => {
-        console.log('make Reservation')
-        pushNotificationToDb(tripId, attractionId, requestedDate, numOfTickets);
+        let d = new Date(requestedDate);
+        let dateString = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+        pushNotificationToDb(tripId, attractionId, dateString, numOfTickets, customerId, attractionName);
     }
 
     return (
@@ -25,7 +29,7 @@ const orderModal = ({ visible, closeModal, tripId, attractionId, minDate, maxDat
                     <View style={{ alignItems: 'center' }}>
                         <NumericInput
                             rounded
-                            minValue={0}
+                            minValue={numOfTickets}
                             value={numOfTickets}
                             onChange={value => setNumOfTickets(value)}
                             rightButtonBackgroundColor='#5cd65c'
@@ -34,12 +38,12 @@ const orderModal = ({ visible, closeModal, tripId, attractionId, minDate, maxDat
                     </View>
                     <DatePicker
                         style={{ width: 200, marginVertical: 15 }}
-                        date={requestedDate}
+                        date={new Date()}
                         mode="date"
                         placeholder="בחר תאריך רצוי"
                         format="DD-MM-YYYY"
-                        minDate={minDate}
-                        maxDate={maxDate}
+                        // minDate={minDate}
+                        // maxDate={maxDate}
                         confirmBtnText="אישור"
                         cancelBtnText="ביטול"
                         customStyles={{

@@ -10,7 +10,6 @@ const chatScreen = () => {
 
     const { state: { customerId } } = useContext(CustomerContext);
     const [messages, setMessages] = useState([])
-    console.log(messages.length, messages)
 
     useEffect(() => {
         firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
@@ -46,7 +45,6 @@ const chatScreen = () => {
                         data={messages}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
-                            console.log(item)
                             return (
                                 <Message side={item.userId !== customerId ? 'left' : 'right'} message={item.message} />
                             )

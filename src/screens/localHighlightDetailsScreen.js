@@ -17,7 +17,6 @@ const localHighlightDetails = ({ navigation }) => {
         train: item.properties.filter(dir => dir.key === 'train'),
         price: item.properties.filter(item => item.key === 'price')
     }
-
     const [dirType, setDirType] = useState('');
     const [showDirModal, setShowDirModal] = useState(false);
     const [showOrderModal, setShowOrderModal] = useState(false);
@@ -65,10 +64,11 @@ const localHighlightDetails = ({ navigation }) => {
             <OrderModal
                 visible={showOrderModal}
                 closeModal={toggleOrderModal}
-                tripId={arrTrips[0].trips[0].Id}
+                tripId={arrTrips[0].trips[0].TripID}
                 attractionId={item.id}
-                minDate={arrTrips[0].trips[0]._Depart}
-                maxDate={arrTrips[0].trips[0]._Return}
+                attractionName={item.name}
+                minDate={arrTrips[0].trips[0].DepartDate}
+                maxDate={arrTrips[0].trips[0].ReturnDate}
             />
             <Text h5 style={{ alignSelf: 'center', fontSize: 16 }}>דרכי הגעה</Text>
             <View style={styles.directions}>

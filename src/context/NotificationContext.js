@@ -2,7 +2,6 @@ import CreateDataContext from './createDataContext';
 import axios from 'axios';
 
 const notificationReducer = (state, action) => {
-    console.log(action.payload)
     switch (action.type) {
         case 'add_notification':
             return { ...state, notifications: [...state.notifications, action.payload] }
@@ -11,61 +10,90 @@ const notificationReducer = (state, action) => {
     }
 }
 
+const convertDateFormat = (orderDate) => {
+    //recived format = 'DD/MM/YYYY'
+    let orderDateArr = orderDate.split('/');
+    let newOrderDate = `${orderDateArr[2]}-${orderDateArr[1]}-${orderDateArr[0]}`
+    return newOrderDate;
+}
+
 const buildtNotification = (notification) => {
 
-    let subject = 'בקשה מספר ' + notification.RequestId;
+    let subject = 'בקשה מספר ' + notification.Id;
     let message = '';
-    let pdfPath = notification.PdfPath;
+    let pdfPath = notification.PdfFile;
+    let tripId = notification.TripID;
+    let attractionName = notification.AttractionName;
+    let orderDate = convertDateFormat(notification.Order_date);
     switch (notification.Status) {
         case 'new': {
             message = 'הבקשה התקבלה, אך עדיין לא טופלה';
-            return { subject, message, pdfPath }
+            return { subject, message, pdfPath, tripId, attractionName, orderDate }
         }
         case 'in process': {
             message = 'הבקשה התקבלה והיא בטיפול';
-            return { subject, message, pdfPath }
+            return { subject, message, pdfPath, tripId, attractionName, orderDate }
         }
         case 'success': {
             message = 'הבקשה הסתיימה בהצלחה תהנו :)';
-            return { subject, message, pdfPath }
+            return { subject, message, pdfPath, tripId, attractionName, orderDate }
         }
         default: {
             message = 'הבקשה הסתיימה ולא ניתן להשלימה';
-            return { subject, message, pdfPath }
+            return { subject, message, pdfPath, tripId, attractionName, orderDate }
         }
     }
 }
 
-
 const getNotificationsFromDb = dispatch => async (customerId) => {
-    console.log(customerId)
     if (customerId) {
         const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/notification/${customerId}`);
-
         response.data.map(notification => {
-            const { subject, message, pdfPath } = buildtNotification(notification)
-            dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+            const { subject, message, pdfPath, tripId, attractionName, orderDate } = buildtNotification(notification)
+            dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })
         })
     }
 }
 
 const pushNotificationToDb = dispatch => async (
-    tripId,
-    attractionId,
-    requestedDate,
-    numOfTickets
+    TripID,
+    AttractionID,
+    Order_date,
+    NumTickets,
+    customerId,
+    AttractionName
 ) => {
-    const notification = { tripId, attractionId, requestedDate, numOfTickets }
-    console.log(notification)
-    const response = await axios.post('http://proj.ruppin.ac.il/igroup4/prod/api/notification/insertNewNotification',
-        JSON.stringify(notification));
-    console.log(response.data)
-    if (response.data == 1) {
-        let subject = 'נשלחה בקשה חדשה'
-        let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
-        let pdfPath = '';
-        dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+
+    const url = `http://proj.ruppin.ac.il/igroup4/prod/api/notification/insertNewNotification/${customerId}`;
+    const notification = { AttractionID, AttractionName, NumTickets, Order_date, TripID }
+
+
+    const options = {
+        method: "POST",
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8'
+        }),
+        body: JSON.stringify(notification)
     }
+
+    fetch(url, options)
+        .then(response => response.json())
+        .then(response => {
+            if (response == 1) {
+                let subject = 'נשלחה בקשה חדשה'
+                let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
+                let pdfPath = '';
+                dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+            }
+        })
+        .catch(error => {
+            console.log("upload error", error);
+            alert("Upload failed!");
+        });
+
+    // const response = await axios.post(url, data);
+    // console.log(response.data);
+    
 }
 
 const getLastNotification = dispatch => async (requestId) => {

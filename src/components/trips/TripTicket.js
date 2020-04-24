@@ -13,12 +13,12 @@ const tripTicket = ({ trip }) => {
                 <View style={styles.ticket}>
 
                     <TicketImage
-                        _destination={trip._Destination}
+                        _destination={trip.Destination}
                     />
                     <TicketInfo
-                        _destination={trip._Destination}
-                        _depart={trip._Depart}
-                        _return={trip._Return}
+                        _destination={trip.Destination}
+                        _depart={trip.DepartDate}
+                        _return={trip.ReturnDate}
                     />
 
                 </View>

@@ -10,7 +10,6 @@ import TripTicket from '../components/trips/TripTicket';
 
 const tripsScreen = () => {
     const { state: { arrTrips } } = useContext(TripsContext);
-
     return (
         <View style={styles.container}>
             <SafeAreaView forceInset={{ top: 'always' }}>
@@ -18,7 +17,7 @@ const tripsScreen = () => {
                 {arrTrips.length > 0 ?
                     <FlatList
                         data={arrTrips[0].trips}
-                        keyExtractor={trip => trip.Id.toString()}
+                        keyExtractor={trip => trip.TripID.toString()}
                         renderItem={({ item }) => {
                             return (
                                 <TripTicket

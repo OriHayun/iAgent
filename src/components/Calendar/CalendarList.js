@@ -10,7 +10,6 @@ export default class CalendarsList extends Component {
     }
 
     render() {
-        const min = this.state.today;
         return (
             <CalendarList
                 current={this.props.current}

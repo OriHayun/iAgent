@@ -12,7 +12,7 @@ import Spacer from '../components/spacer';
 const notificationScreen = () => {
 
     const { state: { token } } = useContext(AuthContext);
-    const { state: { notifications } } = useContext(NotificationContext);
+    const { state: { notifications } , getLastNotification } = useContext(NotificationContext);
 
 
     useEffect(() => {
@@ -35,13 +35,12 @@ const notificationScreen = () => {
         notificationSubscription = Notifications.addListener(handleNotification);
     }, [])
 
-   
-
     handleNotification = notification => {
         Vibration.vibrate();
+        console.log(notification.data.RequestId)
         //לוודא ששולחים לי בהתראה את המזהה של הבקשה
-        // getLastNotification(notification.requestId)
-        setArrNotification(prevArrNotification => ([notification, ...prevArrNotification]))
+        getLastNotification(notification.data.RequestId)
+        // setArrNotification(prevArrNotification => ([notification, ...prevArrNotification]))
     };
 
     return (
