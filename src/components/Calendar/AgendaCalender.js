@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Context as NotificationContext } from '../../context/NotificationContext';
-
+import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
 
     const [items, setItems] = useState({});
@@ -10,25 +10,42 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
 
     useEffect(() => {
         const itemsArr = notifications.filter(not => not.tripId === tripId)
+        let obj = {};
         itemsArr.forEach(itemArr => {
-            let obj = `${itemArr.orderDate}` + ":" + [{ name: `${itemArr.attractionName}` }];
-            setItems(obj);
+            // console.log('itemArr= ', itemArr)
+            if (!obj[itemArr.orderDate]) {
+                obj[itemArr.orderDate] = []
+                obj[itemArr.orderDate].push({ name: itemArr.attractionName, pdfFile: itemArr.pdfPath });
+                setItems({ ...items, obj });
+            }
+            else {
+                obj[itemArr.orderDate].push({ name: itemArr.attractionName, pdfFile: itemArr.pdfPath, height: 65 });
+                setItems({ ...items, obj });
+            }
         })
     }, [notifications])
 
-    useEffect(() => {
-        console.log(items)
-    }, [items])
-
     renderItem = (item) => {
         return (
-            <TouchableOpacity
-                // testID={testIDs.agenda.ITEM}
-                style={[styles.item, { height: item.height }]}
-                onPress={() => Alert.alert(item.name)}
-            >
-                <Text>{item.name}</Text>
-            </TouchableOpacity>
+            <>
+                {item.pdfFile ?
+                    <TouchableOpacity
+                        // testID={testIDs.agenda.ITEM}
+                        style={[styles.completeItme, { height: item.height }]}
+                        onPress={() => Alert.alert(item.name)}
+                    >
+                        <Text>{item.name} <AntDesign name='check' /> </Text>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                        // testID={testIDs.agenda.ITEM}
+                        style={[styles.notCompleteItme, { height: item.height }]}
+                        onPress={() => Alert.alert(item.name)}
+                    >
+                        <Text>{item.name} <SimpleLineIcons name='question' /></Text>
+                    </TouchableOpacity>
+                }
+            </>
         );
     }
 
@@ -65,7 +82,7 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
             //     '2020-05-29': [{ name: 'item 2 - any js object', height: 80 }],
             //     '2020-05-31': [{ name: 'item 3 - any js object' }, { name: 'any js object' }]
             // }}
-            items={{ items }}
+            items={items.obj}
             // Callback that gets called when items for a certain month should be loaded (month became visible)
             // loadItemsForMonth={(month) => { console.log(month) }}
             // Callback that fires when the calendar is opened or closed
@@ -122,13 +139,21 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
 }
 
 const styles = StyleSheet.create({
-    item: {
+    completeItme: {
+        backgroundColor: '#5cd65c',
+        flex: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginRight: 10,
+        marginTop: 10
+    },
+    notCompleteItme: {
         backgroundColor: 'grey',
         flex: 1,
         borderRadius: 5,
         padding: 10,
         marginRight: 10,
-        marginTop: 17
+        marginTop: 10
     },
     emptyDate: {
         height: 15,

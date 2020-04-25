@@ -1,5 +1,7 @@
 import CreateDataContext from './createDataContext';
 import axios from 'axios';
+import { navigate } from '../navigationRef';
+import Swal from 'sweetalert2';
 
 const notificationReducer = (state, action) => {
     switch (action.type) {
@@ -66,8 +68,6 @@ const pushNotificationToDb = dispatch => async (
 
     const url = `http://proj.ruppin.ac.il/igroup4/prod/api/notification/insertNewNotification/${customerId}`;
     const notification = { AttractionID, AttractionName, NumTickets, Order_date, TripID }
-
-
     const options = {
         method: "POST",
         headers: new Headers({
@@ -83,17 +83,13 @@ const pushNotificationToDb = dispatch => async (
                 let subject = 'נשלחה בקשה חדשה'
                 let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
                 let pdfPath = '';
-                dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+                dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, TripID, AttractionID, Order_date } })
             }
         })
         .catch(error => {
-            console.log("upload error", error);
-            alert("Upload failed!");
+            console.log("send request failed = ", error);
+            alert("הייתה בעיה בשליחת ההתראה נסה שנית");
         });
-
-    // const response = await axios.post(url, data);
-    // console.log(response.data);
-    
 }
 
 const getLastNotification = dispatch => async (requestId) => {

@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Modal, TouchableOpacity, TextInput, Button } fr
 import { Ionicons } from '@expo/vector-icons';
 import { Context as NotificationContext } from '../context/NotificationContext';
 import { Context as CustomerContext } from '../context/CustomerContext';
-
+import { navigate } from '../navigationRef';
 import DatePicker from 'react-native-datepicker'
 import NumericInput from 'react-native-numeric-input'
 
@@ -14,8 +14,10 @@ const orderModal = ({ visible, closeModal, tripId, attractionId, attractionName,
     const { state: { customerId } } = useContext(CustomerContext)
     const [numOfTickets, setNumOfTickets] = useState(1);
     const [requestedDate, setRequestedDate] = useState(new Date());
+    const [orderBtnClick, setOrderBtnClick] = useState(false);
 
     const makeReservation = () => {
+        setOrderBtnClick(true);
         let d = new Date(requestedDate);
         let dateString = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
         pushNotificationToDb(tripId, attractionId, dateString, numOfTickets, customerId, attractionName);
@@ -60,10 +62,22 @@ const orderModal = ({ visible, closeModal, tripId, attractionId, attractionName,
                         }}
                         onDateChange={(date) => setRequestedDate(date)}
                     />
-                    <Button
-                        title='בצע הזמנה'
-                        onPress={makeReservation}
-                    />
+                    {orderBtnClick == false ?
+                        <Button
+                            title='בצע הזמנה'
+                            onPress={makeReservation}
+                        />
+                        :
+                        <>
+                            <Text style={{ alignSelf: 'center', fontSize: 16 }}>הזמנתך נקלטה בהצלחה</Text>
+                            <Button
+                                title='חזור לדף הראשי'
+                                color='green'
+                                onPress={() => { navigate('Index', '') }}
+                            />
+                        </>
+
+                    }
                     <TouchableOpacity style={styles.arrowBack} onPress={closeModal}>
                         <Ionicons name='ios-arrow-back' size={35} />
                     </TouchableOpacity>

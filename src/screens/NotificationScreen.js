@@ -12,9 +12,9 @@ import Spacer from '../components/spacer';
 const notificationScreen = () => {
 
     const { state: { token } } = useContext(AuthContext);
-    const { state: { notifications } , getLastNotification } = useContext(NotificationContext);
+    const { state: { notifications }, getLastNotification } = useContext(NotificationContext);
 
-
+    console.log(notifications)
     useEffect(() => {
         (async function bringPnToken() {
             const pnToken = await registerForPushNotificationsAsync();
