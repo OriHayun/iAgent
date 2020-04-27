@@ -64,14 +64,14 @@ chatScreen.navigationOptions = () => {
     return {
         title: "צ'ט",
         tabBarOptions: {
-            tabStyle: { backgroundColor: '#266dd1' },
-            labelStyle: { fontSize: 16 },
-            activeTintColor: 'white',
+            tabStyle: { backgroundColor: '#dddce1' },
+            labelStyle: { fontSize: 12 },
+            activeTintColor: 'black',
             inactiveTintColor: 'gray',
         },
 
         tabBarIcon: ({ focused }) => {
-            return <AntDesign size={focused ? 25 : 18} name='wechat' />;
+            return <AntDesign size={focused ? 25 : 18} name='wechat' color={focused ? "black" : "grey"} />;
         }
 
         // tabBarIcon: <AntDesign size={25} name='wechat' />

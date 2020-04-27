@@ -94,13 +94,13 @@ accountScreen.navigationOptions = () => {
     return {
         title: 'אזור אישי',
         tabBarOptions: {
-            tabStyle: { backgroundColor: '#266dd1' },
-            labelStyle: { fontSize: 16 },
-            activeTintColor: 'white',
+            tabStyle: { backgroundColor: '#dddce1' },
+            labelStyle: { fontSize: 12 },
+            activeTintColor: 'black',
             inactiveTintColor: 'gray',
         },
         tabBarIcon: ({ focused }) => {
-            return <FontAwesome size={focused ? 25 : 18} name='user' />;
+            return <FontAwesome size={focused ? 25 : 18} name='user' color={focused ? "black" : "grey"} />;
         }
     };
 };

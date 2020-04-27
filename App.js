@@ -32,14 +32,14 @@ MainFlow.navigationOptions = () => {
   return {
     title: 'ראשי',
     tabBarOptions: {
-      tabStyle: { backgroundColor: '#266dd1' },
-      labelStyle: { fontSize: 16 },
-      activeTintColor: 'white',
-      inactiveTintColor: 'gray',
+      tabStyle: { backgroundColor: '#dddce1' },
+      labelStyle: { fontSize: 12 },
+      activeTintColor: 'black',
+      inactiveTintColor: 'grey',
     },
 
     tabBarIcon: ({ focused }) => {
-      return <FontAwesome size={focused ? 25 : 18} name='home' />;
+      return <FontAwesome size={focused ? 30 : 18} name='home' color={focused ? "black" : "grey"} />;
     }
 
     // tabBarIcon: <FontAwesome name='home' size={25} />
@@ -56,13 +56,13 @@ tripsFlow.navigationOptions = () => {
   return {
     title: 'טיולים',
     tabBarOptions: {
-      tabStyle: { backgroundColor: '#266dd1' },
-      labelStyle: { fontSize: 16 },
-      activeTintColor: 'white',
+      tabStyle: { backgroundColor: '#dddce1' },
+      labelStyle: { fontSize: 12 },
+      activeTintColor: 'black',
       inactiveTintColor: 'gray',
     },
     tabBarIcon: ({ focused }) => {
-      return <Entypo size={focused ? 25 : 18} name='suitcase' />;
+      return <Entypo size={focused ? 25 : 18} name='suitcase' color={focused ? "black" : "grey"} />;
     },
 
 

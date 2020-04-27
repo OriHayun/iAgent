@@ -59,7 +59,7 @@ const indexScreen = () => {
     return (
         <SafeAreaView forceInset={{ top: 'always' }}>
             {location ?
-                <Text h2 style={{ alignSelf: 'center' }}>חם באזורך</Text>
+                <Text h2 style={{ alignSelf: 'center',color:'rgba(0,0,0,0.8)' }}>חם באזורך</Text>
                 : null
             }
             {localHighlights.length ?
@@ -92,6 +92,9 @@ indexScreen.navigationOptions = ({ navigation }) => {
         headerTitle: (
             <Logo logo={styles.logo} />
         ),
+        headerStyle: {
+            backgroundColor: '#dddce1'
+        },
         headerTitleAlign: 'center',
         headerLeft:
             <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
     logo: {
         height: 80,
         width: 140,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     }
 })
 
