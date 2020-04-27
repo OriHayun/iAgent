@@ -13,7 +13,7 @@ const chatScreen = () => {
 
     useEffect(() => {
         firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
-            setMessages([snapshot.val()])
+            setMessages(prevMessages => [snapshot.val(), ...prevMessages])
         })
     }, [])
 
@@ -60,15 +60,21 @@ const chatScreen = () => {
     );
 }
 
-
 chatScreen.navigationOptions = () => {
     return {
         title: "צ'ט",
         tabBarOptions: {
-            tabStyle: { backgroundColor: '#7a7a52' },
-            labelStyle: { fontSize: 16 }
+            tabStyle: { backgroundColor: '#266dd1' },
+            labelStyle: { fontSize: 16 },
+            activeTintColor: 'white',
+            inactiveTintColor: 'gray',
         },
-        tabBarIcon: <AntDesign size={20} name='wechat' />
+
+        tabBarIcon: ({ focused }) => {
+            return <AntDesign size={focused ? 25 : 18} name='wechat' />;
+        }
+
+        // tabBarIcon: <AntDesign size={25} name='wechat' />
     };
 };
 
@@ -88,6 +94,5 @@ const styles = StyleSheet.create({
         borderTopColor: 'grey'
     }
 })
-
 
 export default chatScreen;

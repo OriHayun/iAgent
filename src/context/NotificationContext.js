@@ -93,11 +93,12 @@ const pushNotificationToDb = dispatch => async (
 }
 
 const getLastNotification = dispatch => async (requestId) => {
-    const response = axios.get('http://proj.ruppin.ac.il/igroup4/prod/api/notification/specificNotification/' + requestId)
-    let subject = 'בקשה מספר ' + requestId;
-    let message = response.data.message;
-    let pdfPath = response.data.pdfPath;
-    dispatch({ type: 'add_notification', payload: { subject, message, pdfPath } })
+    const response = await axios.get('http://proj.ruppin.ac.il/igroup4/prod/api/notification/specificNotification/' + requestId)
+    const notification = response.data;
+
+    const { subject, message, pdfPath, tripId, attractionName, orderDate } = buildtNotification(notification)
+    console.log(subject, message, pdfPath, tripId, attractionName, orderDate)
+    dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })
 }
 
 export const { Provider, Context } = CreateDataContext(

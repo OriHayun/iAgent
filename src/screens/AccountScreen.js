@@ -22,7 +22,7 @@ const accountScreen = ({ navigation }) => {
     if (birthdate) {
         var today = new Date();
         arrBirthdate = birthdate.split('-')
-        var YOB = arrBirthdate[2];
+        var YOB = arrBirthdate[0];
         age = today.getFullYear() - YOB
     }
 
@@ -90,13 +90,18 @@ const accountScreen = ({ navigation }) => {
 }
 
 accountScreen.navigationOptions = () => {
+
     return {
         title: 'אזור אישי',
         tabBarOptions: {
-            tabStyle: { backgroundColor: '#6b6b47' },
-            labelStyle: { fontSize: 16 }
+            tabStyle: { backgroundColor: '#266dd1' },
+            labelStyle: { fontSize: 16 },
+            activeTintColor: 'white',
+            inactiveTintColor: 'gray',
         },
-        tabBarIcon: <FontAwesome size={20} name='user' />
+        tabBarIcon: ({ focused }) => {
+            return <FontAwesome size={focused ? 25 : 18} name='user' />;
+        }
     };
 };
 

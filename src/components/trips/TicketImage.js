@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
 import { key } from '../../api/unsplash';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ const ticketImage = ({ _destination }) => {
     }, [])
 
     return (
-        <>
+        <View style={styles.container}>
             {imageUri !== '' ?
                 <Image source={{ uri: imageUri }} style={styles.image} />
                 :
@@ -23,18 +23,20 @@ const ticketImage = ({ _destination }) => {
                     style={styles.image}
                 />
             }
-        </>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+    },
     image: {
         flex: 0.8,
         borderRadius: 2,
         alignSelf: 'center',
         height: 130,
         width: 120,
-        justifyContent: 'center'
     }
 })
 

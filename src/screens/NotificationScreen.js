@@ -14,7 +14,6 @@ const notificationScreen = () => {
     const { state: { token } } = useContext(AuthContext);
     const { state: { notifications }, getLastNotification } = useContext(NotificationContext);
 
-    console.log(notifications)
     useEffect(() => {
         (async function bringPnToken() {
             const pnToken = await registerForPushNotificationsAsync();
@@ -37,10 +36,7 @@ const notificationScreen = () => {
 
     handleNotification = notification => {
         Vibration.vibrate();
-        console.log(notification.data.RequestId)
-        //לוודא ששולחים לי בהתראה את המזהה של הבקשה
         getLastNotification(notification.data.RequestId)
-        // setArrNotification(prevArrNotification => ([notification, ...prevArrNotification]))
     };
 
     return (

@@ -5,11 +5,10 @@ import { SafeAreaView } from 'react-navigation'
 import { Context as TripsContext } from '../context/TripsContext';
 import TripTicket from '../components/trips/TripTicket';
 
-
-
-
 const tripsScreen = () => {
+    
     const { state: { arrTrips } } = useContext(TripsContext);
+    
     return (
         <View style={styles.container}>
             <SafeAreaView forceInset={{ top: 'always' }}>
