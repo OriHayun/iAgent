@@ -1,5 +1,5 @@
 import CreateDataContext from './createDataContext';
-import trackerApi from '../api/tracker';
+import AuthApi from '../api/Auth';
 import { AsyncStorage } from 'react-native';
 import { navigate } from '../navigationRef';
 
@@ -41,7 +41,7 @@ const clearErrorMessage = dispatch => () => {
 const signup = dispatch => async (email, password) => {
     //make api request to sign up with that email & password
     try {
-        const response = await trackerApi.post('/signup', { email, password });
+        const response = await AuthApi.post('/signup', { email, password });
         insertTokenToDB(email, response.data.token);
         await AsyncStorage.setItem('token', response.data.token)
         dispatch({ type: 'signin', payload: response.data.token })
@@ -54,7 +54,7 @@ const signup = dispatch => async (email, password) => {
 
 const signin = dispatch => async (email, password) => {
     try {
-        const response = await trackerApi.post('/signin', { email, password })
+        const response = await AuthApi.post('/signin', { email, password })
         insertTokenToDB(email, response.data.token);
         await AsyncStorage.setItem('token', response.data.token)
         dispatch({ type: 'signin', payload: response.data.token })
