@@ -1,8 +1,6 @@
 import CreateDataContext from './createDataContext';
 import { AsyncStorage } from 'react-native';
 
-
-
 const customerReducer = (state, action) => {
     switch (action.type) {
         case 'set_customer': {
@@ -67,7 +65,6 @@ const createFormData = (photo) => {
     return data;
 };
 
-
 const changeImg = dispatch => async (result) => {
     dispatch({ type: 'change_img', payload: result.uri })
 
@@ -107,8 +104,6 @@ const saveToDb = async (imageUrl) => {
                 console.log("err post=", error);
             });
 }
-
-
 
 export const { Provider, Context } = CreateDataContext(
     customerReducer,

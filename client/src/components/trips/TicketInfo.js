@@ -8,7 +8,6 @@ import axios from 'axios';
 
 const ticketInfo = ({ _destination, _depart, _return }) => {
     const [flagUri, setFlagUri] = useState('');
-
     handleClick = () => {
         const wikipediaUrl = `https://en.wikipedia.org/wiki/${_destination}`
         Linking.canOpenURL(wikipediaUrl).then(supported => {

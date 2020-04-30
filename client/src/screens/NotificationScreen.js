@@ -8,7 +8,6 @@ import { Context as NotificationContext } from '../context/NotificationContext';
 import ListNotification from '../components/pushNotification/ListNotification';
 import Spacer from '../components/spacer';
 
-
 const notificationScreen = () => {
 
     const { state: { token } } = useContext(AuthContext);

@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import AccountScreen from './src/screens/AccountScreen';
 import TripsScreen from './src/screens/tripsScreen';
 import TripScreen from './src/screens/tripScreen';
+import TripProfileScreen from './src/screens/TripProfileScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import IndexScreen from './src/screens/IndexScreen';
@@ -41,17 +42,15 @@ MainFlow.navigationOptions = () => {
     tabBarIcon: ({ focused }) => {
       return <FontAwesome size={focused ? 30 : 18} name='home' color={focused ? "black" : "grey"} />;
     }
-
-    // tabBarIcon: <FontAwesome name='home' size={25} />
   }
 }
 
 const tripsFlow = createStackNavigator({
   trips: TripsScreen,
   trip: TripScreen,
-
-
+  tripProfile: TripProfileScreen
 })
+
 tripsFlow.navigationOptions = () => {
   return {
     title: 'טיולים',
@@ -63,10 +62,7 @@ tripsFlow.navigationOptions = () => {
     },
     tabBarIcon: ({ focused }) => {
       return <Entypo size={focused ? 25 : 18} name='suitcase' color={focused ? "black" : "grey"} />;
-    },
-
-
-    // tabBarIcon: <Entypo size={25} name='suitcase' />
+    }
   };
 }
 
@@ -84,7 +80,6 @@ const switchNavigator = createSwitchNavigator({
     Account: AccountScreen
   })
 });
-
 
 const App = createAppContainer(switchNavigator);
 

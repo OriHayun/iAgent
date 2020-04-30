@@ -6,9 +6,9 @@ import { Context as TripsContext } from '../context/TripsContext';
 import TripTicket from '../components/trips/TripTicket';
 
 const tripsScreen = () => {
-    
+
     const { state: { arrTrips } } = useContext(TripsContext);
-    
+
     return (
         <View style={styles.container}>
             <SafeAreaView forceInset={{ top: 'always' }}>
@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-around',
-        backgroundColor: 'rgba(100,145,177,0.7)'
+        backgroundColor: '#595959'
     },
     header: {
         textAlign: 'center',
-        marginVertical: 10
+        marginVertical: 10,
+        color: 'rgba(0,0,0,0.8)'
     }
 })
 

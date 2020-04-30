@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, Modal, TouchableOpacity, Linking, Text } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-const notificationModal = ({ visible, closeModal, padPath , message }) => {
+const notificationModal = ({ visible, closeModal, padPath, message }) => {
 
     showPdfFile = () => {
         Linking.canOpenURL(padPath).then(supported => {
@@ -13,15 +13,17 @@ const notificationModal = ({ visible, closeModal, padPath , message }) => {
             }
         });
     }
-
     return (
         <Modal transparent={true} visible={visible}>
             <View style={styles.noneFocusView}>
                 <View style={styles.focusView}>
-                    <Text>{message}</Text>
-                    <TouchableOpacity >
-                        <AntDesign name='pdffile1' size={35} />
-                    </TouchableOpacity>
+                    <Text style={{ marginTop: 40, fontSize: 18 }}>{message}</Text>
+                    {padPath ?
+                        <TouchableOpacity onPress={showPdfFile} >
+                            <AntDesign name='pdffile1' size={35} />
+                        </TouchableOpacity>
+                        : null
+                    }
                     <TouchableOpacity style={styles.arrowBack} onPress={closeModal}>
                         <Ionicons name='ios-arrow-back' size={35} />
                     </TouchableOpacity>
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         height: 300,
         width: 300,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     arrowBack: {
         position: 'absolute',

@@ -9,6 +9,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions';
+import { AntDesign, Entypo } from '@expo/vector-icons'
 
 const accountScreen = ({ navigation }) => {
     const { signout } = useContext(AuthContext);
@@ -73,12 +74,30 @@ const accountScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.btnView}>
                         <Button
-                            title="התנתק"
+                            title=" התנתק"
                             onPress={signout}
+                            icon={
+                                <AntDesign
+                                    style={{ marginTop: 4 }}
+                                    name="logout"
+                                    color="black"
+                                />
+                            }
+                            buttonStyle={{ backgroundColor: '#d9d9d9' }}
+                            titleStyle={{ color: 'black' }}
                         />
                         <Button
-                            title="בחר תמונה"
+                            title=" בחר תמונה"
                             onPress={this._pickImage}
+                            icon={
+                                <Entypo
+                                    style={{ marginTop: 4 }}
+                                    name="image"
+                                    color="black"
+                                />
+                            }
+                            buttonStyle={{ backgroundColor: '#d9d9d9' }}
+                            titleStyle={{ color: 'black' }}
                         />
                     </View>
 
@@ -109,7 +128,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'rgba(100,145,177,0.7)'
+        backgroundColor: '#595959'
     },
     header: {
         alignSelf: 'center',

@@ -1,7 +1,5 @@
 import CreateDataContext from './createDataContext';
 import axios from 'axios';
-import { navigate } from '../navigationRef';
-import Swal from 'sweetalert2';
 
 const notificationReducer = (state, action) => {
     switch (action.type) {
@@ -27,6 +25,7 @@ const buildtNotification = (notification) => {
     let tripId = notification.TripID;
     let attractionName = notification.AttractionName;
     let orderDate = convertDateFormat(notification.Order_date);
+    
     switch (notification.Status) {
         case 'new': {
             message = 'הבקשה התקבלה, אך עדיין לא טופלה';
@@ -97,7 +96,6 @@ const getLastNotification = dispatch => async (requestId) => {
     const notification = response.data;
 
     const { subject, message, pdfPath, tripId, attractionName, orderDate } = buildtNotification(notification)
-    console.log(subject, message, pdfPath, tripId, attractionName, orderDate)
     dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })
 }
 

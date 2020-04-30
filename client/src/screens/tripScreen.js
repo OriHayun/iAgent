@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView, Text, Image } from 'react-native';
+import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import AgendaCalender from '../components/Calendar/AgendaCalender';
 import CalendarList from '../components/Calendar/CalendarList';
+import { AntDesign } from '@expo/vector-icons'
 import moment from 'moment';
 
 
@@ -49,9 +50,15 @@ const tripScreen = ({ navigation }) => {
 tripScreen.navigationOptions = ({ navigation }) => {
     let trip = navigation.getParam('trip')
     return {
-        title: trip._Destination,
+        title: trip.Destination,
         headerTitleAlign: 'center',
-
+        headerRight: () => {
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate('tripProfile', { tripId: trip.TripID })}>
+                    <AntDesign name="profile" style={styles.tripProfileIcon} />
+                </TouchableOpacity>
+            )
+        }
     }
 }
 
@@ -59,7 +66,11 @@ const styles = StyleSheet.create({
     image: {
         height: 100,
         width: 100
-    }
+    },
+    tripProfileIcon: {
+        fontSize: 30,
+        marginRight: 10
+    },
 })
 
 export default tripScreen;

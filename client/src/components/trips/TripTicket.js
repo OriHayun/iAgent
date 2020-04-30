@@ -5,11 +5,11 @@ import TicketInfo from './TicketInfo';
 import TicketImage from './TicketImage';
 import { navigate } from '../../navigationRef';
 
-
 const tripTicket = ({ trip }) => {
+
     return (
         <Spacer>
-            <TouchableOpacity onPress={() => navigate('trip', {trip})} >
+            <TouchableOpacity onPress={() => navigate('trip', { trip })} >
                 <View style={styles.ticket}>
 
                     <TicketImage
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'grey',
         alignSelf: 'center',
-        backgroundColor: '#cce6ff'
+        backgroundColor: '#d9d9d9'
     }
 })
 

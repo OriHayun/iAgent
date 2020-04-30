@@ -21,22 +21,24 @@ const listNotification = ({ notification }) => {
     }
 
     return (
-        <>
+        <View>
             <TouchableOpacity onPress={() => {
                 _showModal();
+                // changeMailIcon()
             }}>
                 <View style={styles.row}>
+                    <Text style={styles.title}>{notification.attractionName}</Text>
                     <Ionicons name={mailBox} style={styles.mailBox} />
-                    <Text style={styles.title}>{notification.subject}</Text>
                 </View>
+                <NotificationModal
+                    visible={showMosal}
+                    closeModal={_showModal}
+                    padPath={notification.padPath}
+                    message={notification.message}
+                />
             </TouchableOpacity>
-            <NotificationModal
-                visible={showMosal}
-                closeModal={_showModal}
-                padPath={notification.padPath}
-                message={notification.message}
-            />
-        </>
+
+        </View>
     );
 };
 
