@@ -5,12 +5,13 @@ import TicketInfo from './TicketInfo';
 import TicketImage from './TicketImage';
 import { navigate } from '../../navigationRef';
 
-const tripTicket = ({ trip }) => {
+const tripTicket = ({ trip, style }) => {
+
 
     return (
         <Spacer>
             <TouchableOpacity onPress={() => navigate('trip', { trip })} >
-                <View style={styles.ticket}>
+                <View style={style ? style : styles.ticket}>
 
                     <TicketImage
                         _destination={trip.Destination}

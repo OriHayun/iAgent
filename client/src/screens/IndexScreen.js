@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions } from 'react-native';
 import { Text } from 'react-native-elements';
 import Logo from '../components/Logo';
 import { SafeAreaView } from 'react-navigation';
@@ -16,6 +16,7 @@ import TripTicket from '../components/trips/TripTicket';
 import Timer from '../components/timer';
 
 const indexScreen = () => {
+
     const { state: { customerId }, getCustomer } = useContext(customerContext)
     const { state: { arrTrips }, getCustomerTrips } = useContext(TripContext);
     const { state: { notifications }, getNotificationsFromDb } = useContext(NotificationContext);
@@ -66,7 +67,7 @@ const indexScreen = () => {
     }, [arrTrips])
 
     return (
-        <>
+        <View style={styles.container}>
             {arrTrips.length > 0 ?
                 <SafeAreaView forceInset={{ top: 'always' }}>
                     {new Date() > closeTripDepartDate && new Date() < closeTripReturnDate ?
@@ -99,8 +100,10 @@ const indexScreen = () => {
                         </>
                         :
                         <>
+                            <Text h2 style={styles.nextTripHeader}>הטיולים שלי</Text>
                             <TripTicket
                                 trip={arrTrips[0].trips[0]}
+                                style={styles.indexTicket}
                             />
                             <Timer
                                 departDate={new Date(arrTrips[0].trips[0].DepartDate)}
@@ -110,14 +113,15 @@ const indexScreen = () => {
                 </SafeAreaView>
                 : <Text style={{ flex: 1, alignSelf: 'center', justifyContent: 'center' }}>אין טיולים באופק</Text>
             }
-        </>
+        </View>
     );
 }
 
-indexScreen.navigationOptions = ({ navigation }) => {
+
+indexScreen.navigationOptions = () => {
     return {
         headerTitle: () => {
-            (
+            return (
                 <Logo logo={styles.logo} />
             )
         },
@@ -126,14 +130,23 @@ indexScreen.navigationOptions = ({ navigation }) => {
         },
         headerTitleAlign: 'center',
         headerLeft: () => {
-            <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-                <Ionicons name="md-notifications" style={styles.notification} />
-            </TouchableOpacity>
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
+                    <>{
+                        <Ionicons name="md-notifications" style={styles.notification} />
+                    }
+                    </>
+                </TouchableOpacity>
+            )
         }
     };
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#595959',
+    },
     spiner: {
         flex: 1,
         justifyContent: 'center'
@@ -151,6 +164,22 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: 10,
         color: 'rgba(0,0,0,0.8)'
+    },
+    nextTripHeader: {
+        textAlign: 'center',
+        marginVertical: 10,
+        color: 'rgba(0,0,0,0.8)'
+    },
+    indexTicket: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        height: 150,
+        width: Dimensions.get('window').width - 45,
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: 'grey',
+        alignSelf: 'center',
+        backgroundColor: '#d9d9d9',
     }
 })
 
