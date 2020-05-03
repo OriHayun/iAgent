@@ -1,18 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Context as NotificationContext } from '../../context/NotificationContext';
 import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
+
+
 const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
 
     const [items, setItems] = useState({});
-    const { state: { notifications } } = useContext(NotificationContext)
+    const { state: { notifications } } = useContext(NotificationContext);
 
     useEffect(() => {
         const itemsArr = notifications.filter(not => not.tripId === tripId)
         let obj = {};
         itemsArr.forEach(itemArr => {
-            // console.log('itemArr= ', itemArr)
             if (!obj[itemArr.orderDate]) {
                 obj[itemArr.orderDate] = []
                 obj[itemArr.orderDate].push({ name: itemArr.attractionName, pdfFile: itemArr.pdfPath });
@@ -25,24 +26,37 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
         })
     }, [notifications])
 
+    showTickets = (url) => {
+        Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url);
+            } else {
+                console.log("Don't know how to open URI: " + url);
+            }
+        });
+    };
+
     renderItem = (item) => {
+
+        console.log(item)
         return (
             <>
                 {item.pdfFile ?
                     <TouchableOpacity
-                        // testID={testIDs.agenda.ITEM}
                         style={[styles.completeItme, { height: item.height }]}
-                        onPress={() => Alert.alert(item.name)}
+                        onPress={() => showTickets(item.pdfFile)}
                     >
-                        <Text>{item.name} <AntDesign name='check' /> </Text>
+                        <Text>{item.name}</Text>
+                        <Text>אושר  <AntDesign name='check' /></Text>
+                        <Text style={{ fontSize: 10 }}>לחץ לצפייה הכרטיסים</Text>
                     </TouchableOpacity>
                     :
                     <TouchableOpacity
                         // testID={testIDs.agenda.ITEM}
                         style={[styles.notCompleteItme, { height: item.height }]}
-                        onPress={() => Alert.alert(item.name)}
                     >
-                        <Text>{item.name} <SimpleLineIcons name='question' /></Text>
+                        <Text>{item.name}</Text>
+                        <Text>ממתין לאישור  <SimpleLineIcons name='question' /></Text>
                     </TouchableOpacity>
                 }
             </>
@@ -135,7 +149,7 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
 
 const styles = StyleSheet.create({
     completeItme: {
-        backgroundColor: '#5cd65c',
+        backgroundColor: '#8cd98c',
         flex: 1,
         borderRadius: 5,
         padding: 10,
@@ -143,7 +157,7 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     notCompleteItme: {
-        backgroundColor: 'grey',
+        backgroundColor: '#cccccc',
         flex: 1,
         borderRadius: 5,
         padding: 10,

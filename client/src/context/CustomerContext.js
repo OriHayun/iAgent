@@ -25,7 +25,6 @@ const customerReducer = (state, action) => {
 
 const getCustomer = dispatch => async () => {
     const token = await AsyncStorage.getItem('token')
-
     fetch('http://proj.ruppin.ac.il/igroup4/prod/api/Auth', {
         method: "GET",
         headers: new Headers({

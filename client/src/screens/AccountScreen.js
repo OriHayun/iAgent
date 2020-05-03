@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#595959'
+        backgroundColor: '#f2f2f2'
     },
     header: {
         alignSelf: 'center',
@@ -138,6 +138,8 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         borderRadius: 100,
+        borderWidth:0.2,
+        borderColor:'black',
         alignSelf: 'center'
     },
     detailsView: {

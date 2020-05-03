@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         height: 150,
-        width: Dimensions.get('window').width - 45,
+        width: Dimensions.get('window').width-30,
         borderRadius: 15,
         borderWidth: 2,
         borderColor: 'grey',
         alignSelf: 'center',
-        backgroundColor: '#d9d9d9'
+        backgroundColor: '#e6e6e6'
     }
 })
 

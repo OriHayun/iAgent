@@ -35,7 +35,7 @@ const indexScreen = () => {
 
         let loc = await Location.getCurrentPositionAsync({});
         setLocation(loc);
-        //fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
+        fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
     };
 
     fingLocalHighlights = (latitude, longitude) => {
@@ -118,7 +118,7 @@ const indexScreen = () => {
 }
 
 
-indexScreen.navigationOptions = () => {
+indexScreen.navigationOptions = ({ navigation }) => {
     return {
         headerTitle: () => {
             return (
@@ -145,7 +145,7 @@ indexScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#595959',
+        // backgroundColor: '#595959',
     },
     spiner: {
         flex: 1,
@@ -174,12 +174,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         height: 150,
-        width: Dimensions.get('window').width - 45,
+        width: Dimensions.get('window').width - 30,
         borderRadius: 15,
         borderWidth: 2,
         borderColor: 'grey',
         alignSelf: 'center',
-        backgroundColor: '#d9d9d9',
+        backgroundColor: '#e6e6e6'
     }
 })
 

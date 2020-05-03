@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-around',
-        backgroundColor: '#595959'
+        backgroundColor: '#f2f2f2'
     },
     header: {
         textAlign: 'center',
