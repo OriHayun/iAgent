@@ -1,24 +1,25 @@
 import React, { useState } from 'react'
 import { View, TextInput, Button, StyleSheet } from 'react-native'
-
-const ChatInput = (props) => {
+import { Ionicons } from '@expo/vector-icons'
+const ChatInput = ({ sendMsg }) => {
 
   const [message, setMessage] = useState('')
 
   const handlePress = () => {
-    const messageArr = message.split('')
     if (message === ' ' || message === '') {
       return;
     }
-    props.sendMsg(message)
+    sendMsg(message)
     setMessage('');
   }
 
   return (
     <View style={styles.container}>
+      <Ionicons name='ios-close' size={25} />
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
+          multiline={true}
           value={message}
           onChangeText={setMessage}
           placeholder="כתוב הודעה" />
@@ -36,10 +37,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   inputContainer: {
-    width: '70%'
+    width: '70%',
   },
   input: {
-    height: 40,
+    height: 60,
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 3,

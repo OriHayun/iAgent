@@ -5,6 +5,20 @@ const notificationReducer = (state, action) => {
     switch (action.type) {
         case 'add_notification':
             return { ...state, notifications: [...state.notifications, action.payload] }
+        case 'update_notification':
+            {
+                let arr = []
+                let exsistNotifications = { ...state }
+                arr.push(action.payload);
+                exsistNotifications.notifications.forEach(not => {
+                    if (not.attractionName !== action.payload.attractionName) {
+                        console.log(not.attractionName, action.payload.attractionName)
+                        arr.push(not);
+                    }
+                })
+                console.log(arr.length)
+                return { ...state, notifications: arr }
+            }
         default:
             return state;
     }
@@ -25,7 +39,7 @@ const buildtNotification = (notification) => {
     let tripId = notification.TripID;
     let attractionName = notification.AttractionName;
     let orderDate = convertDateFormat(notification.Order_date);
-    
+
     switch (notification.Status) {
         case 'new': {
             message = 'הבקשה התקבלה, אך עדיין לא טופלה';
@@ -45,6 +59,18 @@ const buildtNotification = (notification) => {
         }
     }
 }
+
+// const updateNotificationArr = (updatedNotification) => {
+//     let arr = []
+//     arr.push(updatedNotification);
+//     notifications.forEach(not => {
+//         if (not.AttractionName != updatedNotification.AttractionName) {
+//             arr.push(not);
+//         }
+//     })
+//     console.log(arr);
+//     //return arr;
+// }
 
 const getNotificationsFromDb = dispatch => async (customerId) => {
     if (customerId) {
@@ -94,10 +120,12 @@ const pushNotificationToDb = dispatch => async (
 const getLastNotification = dispatch => async (requestId) => {
     const response = await axios.get('http://proj.ruppin.ac.il/igroup4/prod/api/notification/specificNotification/' + requestId)
     const notification = response.data;
-
+    // const updateArray = updateNotificationArr(notification)
     const { subject, message, pdfPath, tripId, attractionName, orderDate } = buildtNotification(notification)
-    dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })
+    dispatch({ type: 'update_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })
 }
+
+
 
 export const { Provider, Context } = CreateDataContext(
     notificationReducer,

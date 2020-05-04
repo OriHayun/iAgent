@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     indexTicket: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        height: 150,
+        height: 160,
         width: Dimensions.get('window').width - 30,
         borderRadius: 15,
         borderWidth: 2,

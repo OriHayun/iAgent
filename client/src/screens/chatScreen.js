@@ -6,10 +6,11 @@ import ChatInput from '../components/ChatInput';
 import Message from '../components/Message';
 import { Context as CustomerContext } from '../context/CustomerContext';
 
-const chatScreen = () => {
+const chatScreen = ({ navigation }) => {
 
     const { state: { customerId } } = useContext(CustomerContext);
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([]);
+    const askForTicket = navigation.getParam('askForTicket');
 
     useEffect(() => {
         firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
@@ -53,7 +54,10 @@ const chatScreen = () => {
                 </View>
 
                 <View style={styles.inputContainer}>
-                    <ChatInput sendMsg={onSend} />
+                    {askForTicket ?
+                        <ChatInput askForTicket={askForTicket} sendMsg={onSend} />
+                        : <ChatInput sendMsg={onSend} />
+                    }
                 </View>
             </SafeAreaView>
         </KeyboardAvoidingView>

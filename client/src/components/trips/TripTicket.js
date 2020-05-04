@@ -20,6 +20,7 @@ const tripTicket = ({ trip, style }) => {
                         _destination={trip.Destination}
                         _depart={trip.DepartDate}
                         _return={trip.ReturnDate}
+                        _Pdf_Flightticket={trip.Pdf_Flightticket}
                     />
 
                 </View>
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        height: 150,
+        height: 160,
         width: Dimensions.get('window').width-30,
         borderRadius: 15,
         borderWidth: 2,

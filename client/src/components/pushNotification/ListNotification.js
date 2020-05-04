@@ -30,13 +30,13 @@ const listNotification = ({ notification }) => {
                     <Text style={styles.title}>{notification.attractionName}</Text>
                     <Ionicons name={mailBox} style={styles.mailBox} />
                 </View>
-                <NotificationModal
-                    visible={showMosal}
-                    closeModal={_showModal}
-                    padPath={notification.padPath}
-                    message={notification.message}
-                />
             </TouchableOpacity>
+            <NotificationModal
+                visible={showMosal}
+                closeModal={_showModal}
+                padPath={notification.padPath}
+                message={notification.message}
+            />
 
         </View>
     );

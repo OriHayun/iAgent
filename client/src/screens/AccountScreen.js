@@ -12,6 +12,7 @@ import * as Permissions from 'expo-permissions';
 import { AntDesign, Entypo } from '@expo/vector-icons'
 
 const accountScreen = ({ navigation }) => {
+    console.log(navigation)
     const { signout } = useContext(AuthContext);
     const { state: {
         firstName,
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         borderRadius: 100,
-        borderWidth:0.2,
-        borderColor:'black',
+        borderWidth: 0.2,
+        borderColor: 'black',
         alignSelf: 'center'
     },
     detailsView: {
