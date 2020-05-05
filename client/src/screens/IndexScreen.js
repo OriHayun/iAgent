@@ -70,7 +70,7 @@ const indexScreen = () => {
         <View style={styles.container}>
             {arrTrips.length > 0 ?
                 <SafeAreaView forceInset={{ top: 'always' }}>
-                    {new Date('2020-08-05') > closeTripDepartDate && new Date('2020-08-05') < closeTripReturnDate ?
+                    {new Date() > closeTripDepartDate && new Date() < closeTripReturnDate ?
                         <>
                             {location ?
                                 <Text h2 style={{ alignSelf: 'center', color: 'rgba(0,0,0,0.8)' }}>חם באזורך</Text>

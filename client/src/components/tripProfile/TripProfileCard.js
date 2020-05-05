@@ -5,7 +5,6 @@ import ProfileComboBox from './ProfileComboBox';
 import axios from 'axios';
 
 const tripProfileCard = ({ trip }) => {
-    console.log(trip)
     const [flagUri, setFlagUri] = useState('');
 
 
@@ -18,18 +17,22 @@ const tripProfileCard = ({ trip }) => {
 
     return (
         <View style={styles.container}>
-            <Text h4>{trip.Destination} </Text>
-            <View style={{ marginLeft: -15 }}>
+            <View style={{ flex: 0.5 }}>
                 {flagUri != '' ?
-                    <Image source={{ uri: flagUri }} style={styles.flag} />
-                    : null
+                    <Text h4 style={{ marginTop: 30 }}>
+                        {trip.Destination}
+                        <Text> </Text>
+                        <Image source={{ uri: flagUri }} style={styles.flag} />
+                    </Text>
+                    : <Text h4>{trip.Destination}</Text>
                 }
-                <Text h4>{trip.destination} </Text>
             </View>
-            {/* <ProfileComboBox
-                profileName={trip.profileName}
-                tripId={trip.id}
-            /> */}
+            <View style={{ flex: 0.5 }}>
+                <ProfileComboBox
+                    tripProfileId={trip.TripProfileID}
+                    tripId={trip.TripID}
+                />
+            </View>
         </View>
     );
 };
@@ -40,12 +43,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        width: Math.round(Dimensions.get('window').width) - 55
+        width: Math.round(Dimensions.get('window').width) - 55,
+        alignSelf: 'center',
+        justifyContent: 'space-around',
+        paddingBottom: 20
     },
     flag: {
         height: 16,
         width: 20,
-        marginTop: 8
+        marginTop: 8,
+        marginLeft: -15
     }
 });
 

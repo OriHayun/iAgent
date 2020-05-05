@@ -18,6 +18,7 @@ const accountScreen = () => {
     const { state: { arrTrips } } = useContext(TripsContext);
     const { state: { img }, changeImg } = useContext(CustomerContext);
 
+
     useEffect(() => {
         getPermissionAsync();
     }, [])
@@ -45,12 +46,13 @@ const accountScreen = () => {
 
     return (
         <>
-            {arrTrips[0].trips.length > 0 ?
+            {arrTrips.length > 0 ?
                 <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
                     <Text h2 style={styles.header} >אזור אישי</Text>
                     {img ?
                         <Image source={{ uri: img }} style={styles.image} />
-                        : <Image source={require('../../assets/defaultImage.png')} style={styles.image} />
+                        :
+                        <Image source={require('../../assets/defaultImage.png')} style={styles.image} />
                     }
                     <FlatList
                         data={arrTrips[0].trips}
@@ -61,17 +63,6 @@ const accountScreen = () => {
                             );
                         }}
                     />
-                    {/* <View style={styles.detailsView}>
-                        <Spacer>
-                            <Text h3> {firstName} {sureName} </Text>
-                        </Spacer>
-                        <Spacer>
-                            <Text h3> {email}</Text>
-                        </Spacer>
-                        <Spacer>
-                            <Text h3> {age}</Text>
-                        </Spacer>
-                    </View> */}
                     <View style={styles.btnView}>
                         <Button
                             title=" התנתק"
@@ -142,17 +133,11 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         alignSelf: 'center'
     },
-    detailsView: {
-        alignItems: 'center',
-        marginTop: 25,
-        justifyContent: 'space-around',
-
-    },
     btnView: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginTop: 25
+        marginBottom: 30
     },
     spiner: {
         flex: 1,
