@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FlatList, View, Platform, KeyboardAvoidingView, SafeAreaView, StyleSheet } from 'react-native';
+import { FlatList, View, Platform, KeyboardAvoidingView, SafeAreaView, StyleSheet, Image } from 'react-native';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
 import ChatInput from '../components/ChatInput';
@@ -10,7 +10,6 @@ const chatScreen = ({ navigation }) => {
 
     const { state: { customerId } } = useContext(CustomerContext);
     const [messages, setMessages] = useState([]);
-    const askForTicket = navigation.getParam('askForTicket');
 
     useEffect(() => {
         firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
@@ -20,7 +19,7 @@ const chatScreen = ({ navigation }) => {
 
     listener = () => {
         firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
-            setMessages([...messages, snapshot.val()])
+            setMessages([snapshot.val(), ...messages])
         })
     }
 
@@ -54,10 +53,7 @@ const chatScreen = ({ navigation }) => {
                 </View>
 
                 <View style={styles.inputContainer}>
-                    {askForTicket ?
-                        <ChatInput askForTicket={askForTicket} sendMsg={onSend} />
-                        : <ChatInput sendMsg={onSend} />
-                    }
+                    <ChatInput sendMsg={onSend} />
                 </View>
             </SafeAreaView>
         </KeyboardAvoidingView>
