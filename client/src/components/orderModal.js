@@ -18,8 +18,8 @@ const orderModal = ({ visible, closeModal, tripId, attractionId, attractionName,
 
     const makeReservation = () => {
         setOrderBtnClick(true);
-        let d = new Date(requestedDate);
-        let dateString = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+        const splitdateArray = requestedDate.split('-')
+        let dateString = `${splitdateArray[0]}/${splitdateArray[1]}/${splitdateArray[2]}`;
         pushNotificationToDb(tripId, attractionId, dateString, numOfTickets, customerId, attractionName);
     }
 
@@ -40,12 +40,10 @@ const orderModal = ({ visible, closeModal, tripId, attractionId, attractionName,
                     </View>
                     <DatePicker
                         style={{ width: 200, marginVertical: 15 }}
-                        date={new Date()}
+                        date={requestedDate}
                         mode="date"
                         placeholder="בחר תאריך רצוי"
                         format="DD-MM-YYYY"
-                        // minDate={minDate}
-                        // maxDate={maxDate}
                         confirmBtnText="אישור"
                         cancelBtnText="ביטול"
                         customStyles={{
@@ -76,7 +74,6 @@ const orderModal = ({ visible, closeModal, tripId, attractionId, attractionName,
                                 onPress={() => { navigate('Index', '') }}
                             />
                         </>
-
                     }
                     <TouchableOpacity style={styles.arrowBack} onPress={closeModal}>
                         <Ionicons name='ios-arrow-back' size={35} />
