@@ -5,8 +5,6 @@ const tripsReducer = (state, action) => {
     switch (action.type) {
         case 'set_trips':
             return { ...state, arrTrips: [...state.arrTrips, action.payload] }
-        // case 'set_trips_profile':
-        //     return { ...state }
         default:
             return state;
     };
@@ -25,24 +23,6 @@ const getCustomerTrips = dispatch => (id) => {
                 });
     }
 }
-
-// const getTripsProfile = dispatch => (customerId) => {
-//     if (id) {
-//         fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/customertripsprofile/${customerId}`)
-//             .then(res => res.json())
-//             .then((result) => {
-//                 console.log(result);
-//             },
-//                 (error) => {
-//                     console.log('err: ', error);
-//                 });
-//     }
-// }
-
-// const createTripProfile = dispatch => (customerId, tripProfile) => {
-//     // post to the server
-//     // dispatch to tripsProfile
-// }
 
 
 const sortTripsByDepartDate = (trips) => {
@@ -72,6 +52,6 @@ const sortTripsByDepartDate = (trips) => {
 
 export const { Provider, Context } = CreateDataContext(
     tripsReducer,
-    { getCustomerTrips, /*getTripsProfile , createTripProfile*/ },
-    { arrTrips: [], tripsProfile: [] }
+    { getCustomerTrips },
+    { arrTrips: [] }
 );

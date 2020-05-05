@@ -3,6 +3,8 @@ import { View, StyleSheet, Modal, TouchableOpacity, Linking, Text } from 'react-
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const notificationModal = ({ visible, closeModal, padPath, message }) => {
+
+    
     showPdfFile = () => {
         Linking.canOpenURL(padPath).then(supported => {
             if (supported) {

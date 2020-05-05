@@ -7,11 +7,13 @@ import { Context as AuthContext } from '../context/AuthContext';
 import { Context as NotificationContext } from '../context/NotificationContext';
 import ListNotification from '../components/pushNotification/ListNotification';
 import Spacer from '../components/spacer';
-
+import NotificationModal from '../components/pushNotification/notifigationModal';
 const notificationScreen = () => {
 
     const { state: { token } } = useContext(AuthContext);
     const { state: { notifications }, getLastNotification } = useContext(NotificationContext);
+    const [not, setNot] = useState(notifications[0]);
+    const [showMosal, setShowModal] = useState(false);
 
     useEffect(() => {
         (async function bringPnToken() {
@@ -38,17 +40,35 @@ const notificationScreen = () => {
         getLastNotification(notification.data.RequestId)
     };
 
+    changeNot = (key) => {
+        setNot(notifications[key])
+        _showModal();
+    }
+
+    _showModal = () => {
+        if (showMosal == true) {
+            setShowModal(false)
+        }
+        else {
+            setShowModal(true);
+        }
+    }
+
     return (
         <View style={styles.container}>
             {notifications.length > 0 ?
                 <FlatList
                     data={notifications}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => {
+                    renderItem={({ item, index }) => {
                         return (
                             <>
                                 <Spacer />
-                                <ListNotification notification={item} />
+                                <ListNotification
+                                    notification={item}
+                                    notKey={index}
+                                    changeNot={changeNot}
+                                />
                             </>
                         );
                     }}
@@ -59,6 +79,12 @@ const notificationScreen = () => {
                     <Text h3>לא נמצאו התראות</Text>
                 </View>
             }
+            <NotificationModal
+                visible={showMosal}
+                closeModal={_showModal}
+                padPath={not.padPath}
+                message={not.message}
+            />
         </View>
     );
 

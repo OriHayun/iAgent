@@ -3,27 +3,18 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-nati
 import { Ionicons } from '@expo/vector-icons'
 import NotificationModal from './notifigationModal';
 
-const listNotification = ({ notification }) => {
+const listNotification = ({ notification, changeNot, notKey }) => {
     const [mailBox, setMailBox] = useState('ios-mail')
-    const [showMosal, setShowModal] = useState(false);
+    // const [showMosal, setShowModal] = useState(false);
 
     changeMailIcon = () => {
         setMailBox('ios-mail-open')
     }
 
-    _showModal = () => {
-        if (showMosal == true) {
-            setShowModal(false)
-        }
-        else {
-            setShowModal(true);
-        }
-    }
-
     return (
         <View>
             <TouchableOpacity onPress={() => {
-                _showModal();
+                changeNot(notKey)
                 // changeMailIcon()
             }}>
                 <View style={styles.row}>
@@ -31,13 +22,6 @@ const listNotification = ({ notification }) => {
                     <Ionicons name={mailBox} style={styles.mailBox} />
                 </View>
             </TouchableOpacity>
-            <NotificationModal
-                visible={showMosal}
-                closeModal={_showModal}
-                padPath={notification.padPath}
-                message={notification.message}
-            />
-
         </View>
     );
 };

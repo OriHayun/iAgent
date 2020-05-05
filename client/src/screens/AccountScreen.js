@@ -1,32 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Image, ActivityIndicator, FlatList } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation'
 import Spacer from '../components/spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as CustomerContext } from '../context/CustomerContext';
+import { Context as TripsContext } from '../context/TripsContext';
 import { FontAwesome } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions';
 import { AntDesign, Entypo } from '@expo/vector-icons'
+import TripProfileCard from '../components/tripProfile/TripProfileCard';
+const accountScreen = () => {
 
-const accountScreen = ({ navigation }) => {
-    console.log(navigation)
     const { signout } = useContext(AuthContext);
-    const { state: {
-        firstName,
-        sureName,
-        birthdate,
-        email,
-        img }, changeImg } = useContext(CustomerContext);
-
-    if (birthdate) {
-        var today = new Date();
-        arrBirthdate = birthdate.split('-')
-        var YOB = arrBirthdate[0];
-        age = today.getFullYear() - YOB
-    }
+    const { state: { arrTrips } } = useContext(TripsContext);
+    const { state: { img }, changeImg } = useContext(CustomerContext);
 
     useEffect(() => {
         getPermissionAsync();
@@ -55,14 +45,23 @@ const accountScreen = ({ navigation }) => {
 
     return (
         <>
-            {firstName != '' ?
+            {arrTrips[0].trips.length > 0 ?
                 <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
                     <Text h2 style={styles.header} >אזור אישי</Text>
                     {img ?
                         <Image source={{ uri: img }} style={styles.image} />
                         : <Image source={require('../../assets/defaultImage.png')} style={styles.image} />
                     }
-                    <View style={styles.detailsView}>
+                    <FlatList
+                        data={arrTrips[0].trips}
+                        keyExtractor={trip => trip.TripID.toString()}
+                        renderItem={({ item }) => {
+                            return (
+                                <TripProfileCard trip={item} />
+                            );
+                        }}
+                    />
+                    {/* <View style={styles.detailsView}>
                         <Spacer>
                             <Text h3> {firstName} {sureName} </Text>
                         </Spacer>
@@ -72,7 +71,7 @@ const accountScreen = ({ navigation }) => {
                         <Spacer>
                             <Text h3> {age}</Text>
                         </Spacer>
-                    </View>
+                    </View> */}
                     <View style={styles.btnView}>
                         <Button
                             title=" התנתק"

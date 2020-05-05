@@ -51,14 +51,7 @@ tripScreen.navigationOptions = ({ navigation }) => {
     let trip = navigation.getParam('trip')
     return {
         title: trip.Destination,
-        headerTitleAlign: 'center',
-        headerRight: () => {
-            return (
-                <TouchableOpacity onPress={() => navigation.navigate('tripProfile', { tripId: trip.TripID })}>
-                    <AntDesign name="profile" style={styles.tripProfileIcon} />
-                </TouchableOpacity>
-            )
-        }
+        headerTitleAlign: 'center'
     }
 }
 

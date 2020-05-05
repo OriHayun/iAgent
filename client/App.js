@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import AccountScreen from './src/screens/AccountScreen';
 import TripsScreen from './src/screens/tripsScreen';
 import TripScreen from './src/screens/tripScreen';
-import TripProfileScreen from './src/screens/TripProfileScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import IndexScreen from './src/screens/IndexScreen';
@@ -47,8 +46,7 @@ MainFlow.navigationOptions = () => {
 
 const tripsFlow = createStackNavigator({
   trips: TripsScreen,
-  trip: TripScreen,
-  tripProfile: TripProfileScreen
+  trip: TripScreen
 })
 
 tripsFlow.navigationOptions = () => {
