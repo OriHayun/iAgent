@@ -57,34 +57,36 @@ const notificationScreen = () => {
     return (
         <View style={styles.container}>
             {notifications.length > 0 ?
-                <FlatList
-                    data={notifications}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <>
-                                <Spacer />
-                                <ListNotification
-                                    notification={item}
-                                    notKey={index}
-                                    changeNot={changeNot}
-                                />
-                            </>
-                        );
-                    }}
-                />
+                <>
+                    <FlatList
+                        data={notifications}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <>
+                                    <Spacer />
+                                    <ListNotification
+                                        notification={item}
+                                        notKey={index}
+                                        changeNot={changeNot}
+                                    />
+                                </>
+                            );
+                        }}
+                    />
+                    <NotificationModal
+                        visible={showMosal}
+                        closeModal={_showModal}
+                        pdfPath={not.pdfPath}
+                        message={not.message}
+                    />
+                </>
                 :
                 <View style={styles.noNotification}>
                     <ActivityIndicator size='large' />
                     <Text h3>לא נמצאו התראות</Text>
                 </View>
             }
-            <NotificationModal
-                visible={showMosal}
-                closeModal={_showModal}
-                padPath={not.padPath}
-                message={not.message}
-            />
         </View>
     );
 

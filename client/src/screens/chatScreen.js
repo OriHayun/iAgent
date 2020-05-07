@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons'
 import ChatInput from '../components/ChatInput';
 import Message from '../components/Message';
 import { Context as CustomerContext } from '../context/CustomerContext';
+import moment from 'moment';
 
 const chatScreen = ({ navigation }) => {
 
@@ -26,6 +27,7 @@ const chatScreen = ({ navigation }) => {
     onSend = (message) => {
         firebase.database().ref(`/chat/${customerId}`).push().set({
             //צריך פה להשתמש במזהה של היוזר שלנו כדי שנידע באיזה צד לשים את ההודעה
+            time: moment().format('HH:mm'),
             userId: customerId,
             message: message,
             id: messages.length
@@ -46,7 +48,7 @@ const chatScreen = ({ navigation }) => {
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
                             return (
-                                <Message side={item.userId !== customerId ? 'left' : 'right'} message={item.message} />
+                                <Message side={item.userId !== customerId ? 'left' : 'right'} message={item.message} time={item.time} />
                             )
                         }}
                     />

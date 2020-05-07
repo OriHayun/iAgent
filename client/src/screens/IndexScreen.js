@@ -17,6 +17,7 @@ import Timer from '../components/timer';
 
 const indexScreen = () => {
 
+
     const { state: { customerId }, getCustomer } = useContext(customerContext)
     const { state: { arrTrips }, getCustomerTrips } = useContext(TripContext);
     const { state: { notifications }, getNotificationsFromDb } = useContext(NotificationContext);

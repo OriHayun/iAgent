@@ -1,14 +1,13 @@
 import React from 'react'
 import { View, StyleSheet, Modal, TouchableOpacity, Linking, Text } from 'react-native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 
-const notificationModal = ({ visible, closeModal, padPath, message }) => {
+const notificationModal = ({ visible, closeModal, pdfPath, message }) => {
 
-    
     showPdfFile = () => {
-        Linking.canOpenURL(padPath).then(supported => {
+        Linking.canOpenURL(pdfPath).then(supported => {
             if (supported) {
-                Linking.openURL(padPath);
+                Linking.openURL(pdfPath);
             } else {
                 console.log("Don't know how to open URI: " + wikipediaUrl);
             }
@@ -18,15 +17,16 @@ const notificationModal = ({ visible, closeModal, padPath, message }) => {
         <Modal transparent={true} visible={visible}>
             <View style={styles.noneFocusView}>
                 <View style={styles.focusView}>
-                    <Text style={{ marginTop: 40, fontSize: 18 }}>{message}</Text>
-                    {padPath ?
-                        <TouchableOpacity onPress={showPdfFile} >
-                            <AntDesign name='pdffile1' size={35} />
+                    <Text style={{ marginTop: 20, marginLeft: 20, fontSize: 18 }}>{message}</Text>
+                    {pdfPath ?
+                        <TouchableOpacity style={{ alignItems: 'center', paddingTop: 20 }} onPress={showPdfFile} >
+                            <Entypo name="ticket" size={30} color="black" />
+                            <Text style={{ fontSize: 12 }}>לצפייה בכרטיסים</Text>
                         </TouchableOpacity>
                         : null
                     }
                     <TouchableOpacity style={styles.arrowBack} onPress={closeModal}>
-                        <Ionicons name='ios-arrow-back' size={35} />
+                        <Ionicons name='ios-arrow-forward' size={35} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -42,18 +42,19 @@ const styles = StyleSheet.create({
     focusView: {
         backgroundColor: "white",
         marginHorizontal: 50,
-        marginVertical: 100,
+        marginVertical: 200,
         padding: 40,
-        borderRadius: 10,
-        height: 300,
-        width: 300,
+        height: 200,
+        width: 250,
         alignSelf: 'center',
+        borderTopRightRadius: 70,
+        borderBottomLeftRadius: 70
     },
     arrowBack: {
         position: 'absolute',
         marginLeft: 20,
         marginTop: 15,
-        padding: 10
+        padding: 3
     }
 })
 

@@ -1,11 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Alert, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
-import { Agenda } from 'react-native-calendars';
+import { StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
+import { Agenda, LocaleConfig } from 'react-native-calendars';
 import { Context as NotificationContext } from '../../context/NotificationContext';
-import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
+import { AntDesign, SimpleLineIcons, Entypo } from '@expo/vector-icons';
 
 
 const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
+
+
+    LocaleConfig.locales['Hebrew'] = {
+        monthNames: ['ינואר', 'פאבואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
+        monthNamesShort: ['ינו.', 'פאב.', 'מרץ', 'אפר', 'מאי', 'יוני', 'יולי.', 'אוג', 'ספט.', 'אוק.', 'נוב.', 'דצמ.'],
+        dayNames: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+        dayNamesShort: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+    };
+    LocaleConfig.defaultLocale = 'Hebrew';
 
     const [items, setItems] = useState({});
     const { state: { notifications } } = useContext(NotificationContext);
@@ -37,8 +46,6 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
     };
 
     renderItem = (item) => {
-
-        console.log(item)
         return (
             <>
                 {item.pdfFile ?
@@ -48,7 +55,7 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
                     >
                         <Text>{item.name}</Text>
                         <Text>אושר  <AntDesign name='check' /></Text>
-                        <Text style={{ fontSize: 10 }}>לחץ לצפייה הכרטיסים</Text>
+                        <Text style={{ fontSize: 10 }}>לחץ לצפייה הכרטיסים <Entypo name="ticket" size={12} color="black" /></Text>
                     </TouchableOpacity>
                     :
                     <TouchableOpacity
@@ -71,6 +78,12 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
 
     renderEmptyDate = () => {
         return (
+            <View />
+        );
+    }
+
+    renderEmptyData = () => {
+        return (
             <View style={styles.emptyDate}>
                 <Text style={{ fontSize: 28, fontWeight: 'bold' }}>אין תוכניות ליום זה</Text>
                 <TouchableOpacity>
@@ -79,17 +92,12 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
             </View>
         );
     }
-
-    rowHasChanged = (r1, r2) => {
-        return r1.name !== r2.name;
-    }
-
     return (
         <Agenda
             // items={{
-            //     '2020-05-28': [{ name: 'item 1 - any js object' }],
-            //     '2020-05-29': [{ name: 'item 2 - any js object', height: 80 }],
-            //     '2020-05-31': [{ name: 'item 3 - any js object' }, { name: 'any js object' }]
+            //     '2020-09-04': [{ name: 'item 1 - any js object' }],
+            //     '2020-09-05': [{ name: 'item 2 - any js object', height: 80 }],
+            //     '2020-09-06': [{ name: 'item 3 - any js object' }, { name: 'any js object' }]
             // }}
             items={items.obj}
             // Callback that gets called when items for a certain month should be loaded (month became visible)
@@ -97,9 +105,9 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
             // Callback that fires when the calendar is opened or closed
             // onCalendarToggled={(calendarOpened) => { console.log(calendarOpened) }}
             // Callback that gets called on day press
-            onDayPress={(day) => { console.log(day) }}
+            // onDayPress={(day) => { console.log(day) }}
             // Callback that gets called when day changes while scrolling agenda list
-            onDayChange={(day) => { console.log('day changed') }}
+            // onDayChange={(day) => { console.log('day changed') }}
             // Initially selected day
             selected={current}
             // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
@@ -115,11 +123,11 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
             // Specify how each date should be rendered. day can be undefined if the item is not first in that day.
             // renderDay={(day, item) => { return (<View />); }}
             // Specify how empty date content with no items should be rendered
-            // renderEmptyDate={() => { return (<View />); }}
+            renderEmptyDate={() => { return renderEmptyDate(); }}
             // Specify how agenda knob should look like
             // renderKnob={() => { return (<View />); }}
             // Specify what should be rendered instead of ActivityIndicator
-            renderEmptyData={() => { return (renderEmptyDate()); }} // במידה ואין כלום בתוכנית מה להציג
+            renderEmptyData={() => { return (renderEmptyData()) }} // במידה ואין כלום בתוכנית מה להציג
             // Specify your item comparison function for increased performance
             // rowHasChanged={(r1, r2) => { console.log('asas') }}
             // Hide knob button. Default = false
