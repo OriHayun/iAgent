@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, Text } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import AgendaCalender from '../components/Calendar/AgendaCalender';
-import CalendarList from '../components/Calendar/CalendarList';
-import { AntDesign } from '@expo/vector-icons'
 import moment from 'moment';
-
+import { key } from '../api/unsplash';
+import axios from 'axios';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const tripScreen = ({ navigation }) => {
     const trip = navigation.getParam('trip')
     const [rangeOfDates, setRangeOfDates] = useState([]);
     const StartDateArr = trip.DepartDate.split('-');
     const current = `${StartDateArr[0]}-${StartDateArr[1]}-${StartDateArr[2]}`
+    const [imageUri, setImageUri] = useState('');
+
+    useEffect(() => {
+        (async function image() {
+            const response = await axios.get(`https://api.unsplash.com/search/photos?query=${trip.Destination}&orientation=landscape&client_id=${key}`)
+            setImageUri(response.data.results[1].urls.full)
+        })();
+    }, [])
 
     useEffect(() => {
         const arr = getDates(trip.DepartDate, trip.ReturnDate)
         setRangeOfDates(arr);
     }, [])
+
 
     function getDates(startDate, stopDate) {
         var dateArray = [];
@@ -31,12 +41,22 @@ const tripScreen = ({ navigation }) => {
 
     return (
         <>
-            <View style={{ flex: 0.3, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                <Image style={styles.image} source={{ uri: 'https://previews.123rf.com/images/noravector/noravector1709/noravector170900217/86271996-super-agent-comic-book-style-word-on-abstract-background-.jpg' }} />
-                <Image style={styles.image} source={{ uri: 'https://previews.123rf.com/images/noravector/noravector1709/noravector170900217/86271996-super-agent-comic-book-style-word-on-abstract-background-.jpg' }} />
+            <View style={{ flex: 0.4 }}>
+                <TouchableOpacity
+                    style={styles.findAttractionContainer}
+                    onPress={() => navigation.navigate('search', { trip })}
+                >
+                    {imageUri != '' ?
+                        < Image style={styles.image} source={{ uri: imageUri }} />
+                        : null
+                    }
+                    <Text style={styles.searchAttractionText}>
+                        חפש אטרקציה
+                        <MaterialIcons name="touch-app" size={18} color="blue" />
+                    </Text>
+                </TouchableOpacity>
             </View>
-            <View style={{ flex: 0.7 }}>
-                {/* <CalendarList current={current} /> */}
+            <View style={{ flex: 0.6 }}>
                 <AgendaCalender
                     current={current}
                     rangeOfDates={rangeOfDates}
@@ -57,13 +77,22 @@ tripScreen.navigationOptions = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     image: {
-        height: 100,
-        width: 100
+        width: undefined,
+        height: undefined,
+        aspectRatio: 1.65,
     },
     tripProfileIcon: {
         fontSize: 30,
         marginRight: 10
     },
+    findAttractionContainer: {
+        flex: 1,
+    },
+    searchAttractionText: {
+        alignSelf: 'center',
+        fontSize: 18,
+        color: 'blue'
+    }
 })
 
 export default tripScreen;

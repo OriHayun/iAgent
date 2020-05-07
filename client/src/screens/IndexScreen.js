@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions, Button } from 'react-native';
 import { Text } from 'react-native-elements';
 import Logo from '../components/Logo';
 import { SafeAreaView } from 'react-navigation';
@@ -15,12 +15,11 @@ import { Context as NotificationContext } from '../context/NotificationContext';
 import TripTicket from '../components/trips/TripTicket';
 import Timer from '../components/timer';
 
-const indexScreen = () => {
-
+const indexScreen = ({ navigation }) => {
 
     const { state: { customerId }, getCustomer } = useContext(customerContext)
     const { state: { arrTrips }, getCustomerTrips } = useContext(TripContext);
-    const { state: { notifications }, getNotificationsFromDb } = useContext(NotificationContext);
+    const { getNotificationsFromDb } = useContext(NotificationContext);
 
     const [location, setLocation] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -109,6 +108,12 @@ const indexScreen = () => {
                             <Timer
                                 departDate={new Date(arrTrips[0].trips[0].DepartDate)}
                             />
+                            <View style={styles.searchAtractionBtn}>
+                                <Button
+                                    title='הוסף אטרקציה'
+                                    onPress={() => navigation.navigate('search', { trip: arrTrips[0].trips[0] })}
+                                />
+                            </View>
                         </>
                     }
                 </SafeAreaView>
@@ -181,6 +186,11 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         alignSelf: 'center',
         backgroundColor: '#e6e6e6'
+    },
+    searchAtractionBtn: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 30
     }
 })
 

@@ -11,6 +11,7 @@ import IndexScreen from './src/screens/IndexScreen';
 import NotificationScreen from './src/screens/NotificationScreen'
 import LocalHighlightDetailsScreen from './src/screens/localHighlightDetailsScreen';
 import ChatScreen from './src/screens/chatScreen'
+import SearchAttractionScreen from './src/screens/SearchAttractionScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as CustomerProvider } from './src/context/CustomerContext';
 import { Provider as TripsProvider } from './src/context/TripsContext';
@@ -46,7 +47,8 @@ MainFlow.navigationOptions = () => {
 
 const tripsFlow = createStackNavigator({
   trips: TripsScreen,
-  trip: TripScreen
+  trip: TripScreen,
+  search: SearchAttractionScreen
 })
 
 tripsFlow.navigationOptions = () => {
