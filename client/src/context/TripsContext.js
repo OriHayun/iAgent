@@ -5,6 +5,14 @@ const tripsReducer = (state, action) => {
     switch (action.type) {
         case 'set_trips':
             return { ...state, arrTrips: [...state.arrTrips, action.payload] }
+        case 'update_trip_profile': {
+            state.arrTrips[0].trips.forEach(trip => {
+                if (trip.TripID == action.payload.TripID) {
+                    trip.TripProfileID = action.payload.TripProfileID
+                }
+            })
+            return state;
+        }
         default:
             return state;
     };
@@ -24,6 +32,10 @@ const getCustomerTrips = dispatch => (id) => {
     }
 }
 
+const updateTripProfile = dispatch => (TripID, TripProfileID) => {
+    console.log(TripID, TripProfileID)
+    dispatch({ type: 'update_trip_profile', payload: { TripID, TripProfileID } });
+}
 
 const sortTripsByDepartDate = (trips) => {
     let array = [];
@@ -52,6 +64,6 @@ const sortTripsByDepartDate = (trips) => {
 
 export const { Provider, Context } = CreateDataContext(
     tripsReducer,
-    { getCustomerTrips },
+    { getCustomerTrips, updateTripProfile },
     { arrTrips: [] }
 );

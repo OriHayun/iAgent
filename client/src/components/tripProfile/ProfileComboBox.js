@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown'
 import axios from 'axios';
+import { Context as tripsContext } from '../../context/TripsContext';
+
 
 
 
@@ -9,6 +11,7 @@ const profileComboBox = ({ tripProfileId, tripId }) => {
 
     const [listOfProfileName, setListOfProfileName] = useState([]);
     const [currentProfileName, setCurrentProfileName] = useState('בחר פרופיל טיול');
+    const { updateTripProfile } = useContext(tripsContext)
 
     useEffect(() => {
         // ולהביא את רשימת פרופילי הטיול מהדאטה בייס ולאחסן אותם במערך בסטייט 
@@ -25,7 +28,6 @@ const profileComboBox = ({ tripProfileId, tripId }) => {
 
     useEffect(() => {
         if (listOfProfileName.length > 0) {
-            console.log(listOfProfileName);
             setCurrentProfileName(listOfProfileName[tripProfileId - 1].value)
         }
     }, [listOfProfileName])
@@ -38,6 +40,7 @@ const profileComboBox = ({ tripProfileId, tripId }) => {
             }
         }
         const response = await axios.put(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/updatetripprofile/${tripId}/${profileId}`)
+        updateTripProfile(tripId, profileId);
     }
     return (
         <>

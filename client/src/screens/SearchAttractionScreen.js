@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import axios from 'axios';
+import { Context as customerContext } from '../context/CustomerContext';
 
 const searchAttractionScreen = ({ navigation }) => {
-    const trip = navigation.getParam('trip')
-    const [attraction, setAttraction] = useState([]);
-    console.log(trip)
 
-    // const sortPromotionByRate = (data) => {
-    //     let arr = [];
-    //     אם המערך ריק לחזור
-    //     אחרת לרוץ על הרשימה ולמיין לפי דירוג
-    //     return data;
-    // }
+    const { state: { agentId } } = useContext(customerContext)
+    const trip = navigation.getParam('trip')
+    const [promoted, setPromoted] = useState([]);
+    const [attraction, setAttraction] = useState([]);
 
     // const sortCategoryByTripProfile = (data) => {
     //     let arr = [];
@@ -19,12 +16,17 @@ const searchAttractionScreen = ({ navigation }) => {
     //     setAttraction(...attraction, arr)
     // }
 
-    // useEffect(() => {
-    //     לגשת תחילה לדאטה בייס להביא את כל המומלצים לפי פרופיל טיול
-    //     אחרי זה למיין אותם לפי הדירוג
-    //     אחרי זה להביא את האטרקציות מה טריפוסו ולהכניס למערך הקיים אחרי הקידומים
-    //     setAttraction()
-    // },[])
+    useEffect(() => {
+        //      לגשת תחילה לדאטה בייס להביא את כל המומלצים לפי סוכן עיר ופרופיל טיול
+        (async function () {
+            console.log(agentId, trip.Destination, trip.TripProfileID)
+            const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/Promotion/getpromotionbycity/${agentId}/${trip.Destination}/${trip.TripProfileID}`)
+            console.log('promoted= ',response.data);
+            //setPromoted(response.data);
+        })();
+        //     אחרי זה להביא את האטרקציות מה טריפוסו ולהכניס למערך הקיים אחרי הקידומים
+        //     setAttraction()
+    }, [])
 
     return (
 
