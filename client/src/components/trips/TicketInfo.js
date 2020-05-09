@@ -8,7 +8,7 @@ import { navigate } from '../../navigationRef';
 
 
 const ticketInfo = ({ _destination, _depart, _return, _Pdf_Flightticket }) => {
-    
+
     const [flagUri, setFlagUri] = useState('');
     wikiHandleClick = () => {
         const wikipediaUrl = `https://en.wikipedia.org/wiki/${_destination}`
@@ -74,6 +74,7 @@ const ticketInfo = ({ _destination, _depart, _return, _Pdf_Flightticket }) => {
 
 const styles = StyleSheet.create({
     info: {
+        flex: 0.7,
         alignItems: 'flex-end'
     },
     wikipedia: {

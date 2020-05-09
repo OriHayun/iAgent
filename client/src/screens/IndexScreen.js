@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions, Button } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Text } from 'react-native-elements';
 import Logo from '../components/Logo';
 import { SafeAreaView } from 'react-navigation';
@@ -8,7 +9,7 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { key } from '../api/triposo';
 import { accountId } from '../api/triposo';
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import { Context as customerContext } from '../context/CustomerContext';
 import { Context as TripContext } from '../context/TripsContext';
 import { Context as NotificationContext } from '../context/NotificationContext';
@@ -35,7 +36,7 @@ const indexScreen = ({ navigation }) => {
 
         let loc = await Location.getCurrentPositionAsync({});
         setLocation(loc);
-        fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
+        //fingLocalHighlights(loc.coords.latitude, loc.coords.longitude)
     };
 
     fingLocalHighlights = (latitude, longitude) => {
@@ -110,8 +111,18 @@ const indexScreen = ({ navigation }) => {
                             />
                             <View style={styles.searchAtractionBtn}>
                                 <Button
-                                    title='הוסף אטרקציה'
+                                    title=' הוסף אטרקציה'
                                     onPress={() => navigation.navigate('search', { trip: arrTrips[0].trips[0] })}
+                                    icon={
+                                        <MaterialIcons
+                                            size={20}
+                                            style={{ marginTop: 4 }}
+                                            name="search"
+                                            color="white"
+                                        />
+                                    }
+                                // buttonStyle={{ backgroundColor: '#d9d9d9' }}
+                                // titleStyle={{ color: 'black' }}
                                 />
                             </View>
                         </>

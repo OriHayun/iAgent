@@ -41,6 +41,7 @@ const profileComboBox = ({ tripProfileId, tripId }) => {
         }
         const response = await axios.put(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/updatetripprofile/${tripId}/${profileId}`)
         updateTripProfile(tripId, profileId);
+        setCurrentProfileName(listOfProfileName[profileId - 1].value);
     }
     return (
         <>
