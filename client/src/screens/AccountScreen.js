@@ -12,6 +12,7 @@ import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions';
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import TripProfileCard from '../components/tripProfile/TripProfileCard';
+
 const accountScreen = () => {
 
     const { signout } = useContext(AuthContext);
