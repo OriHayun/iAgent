@@ -12,11 +12,9 @@ const notificationReducer = (state, action) => {
                 arr.push(action.payload);
                 exsistNotifications.notifications.forEach(not => {
                     if (not.attractionName !== action.payload.attractionName) {
-                        console.log(not.attractionName, action.payload.attractionName)
                         arr.push(not);
                     }
                 })
-                console.log(arr.length)
                 return { ...state, notifications: arr }
             }
         default:
@@ -60,17 +58,6 @@ const buildtNotification = (notification) => {
     }
 }
 
-// const updateNotificationArr = (updatedNotification) => {
-//     let arr = []
-//     arr.push(updatedNotification);
-//     notifications.forEach(not => {
-//         if (not.AttractionName != updatedNotification.AttractionName) {
-//             arr.push(not);
-//         }
-//     })
-//     console.log(arr);
-//     //return arr;
-// }
 
 const getNotificationsFromDb = dispatch => async (customerId) => {
     if (customerId) {
@@ -120,7 +107,6 @@ const pushNotificationToDb = dispatch => async (
 const getLastNotification = dispatch => async (requestId) => {
     const response = await axios.get('http://proj.ruppin.ac.il/igroup4/prod/api/notification/specificNotification/' + requestId)
     const notification = response.data;
-    // const updateArray = updateNotificationArr(notification)
     const { subject, message, pdfPath, tripId, attractionName, orderDate } = buildtNotification(notification)
     dispatch({ type: 'update_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })
 }

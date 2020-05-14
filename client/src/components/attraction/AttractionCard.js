@@ -21,7 +21,7 @@ const attractionCard = ({ attractionId, location }) => {
         <>
             {attraction ?
                 <View style={styles.trueContainer}>
-                    <Image style={styles.image} source={{ uri: attraction.imageUri }} />
+                    <Image style={styles.image} source={attraction.imageUri ? { uri: attraction.imageUri } : require('../../../assets/defaultImage.png')} />
                     <Text style={styles.name}>{attraction.name}</Text>
                 </View>
                 :

@@ -5,7 +5,7 @@ import AgendaCalender from '../components/Calendar/AgendaCalender';
 import moment from 'moment';
 import { key } from '../api/unsplash';
 import axios from 'axios';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Entypo } from '@expo/vector-icons';
 
 const tripScreen = ({ navigation }) => {
     const trip = navigation.getParam('trip')
@@ -71,7 +71,17 @@ tripScreen.navigationOptions = ({ navigation }) => {
     let trip = navigation.getParam('trip')
     return {
         title: trip.Destination,
-        headerTitleAlign: 'center'
+        headerTitleAlign: 'center',
+        headerRight: () => {
+            return (
+                <TouchableOpacity onPress={() => navigation.navigate('info')}>
+                    <>{
+                        <Entypo name="info" style={styles.info} />
+                    }
+                    </>
+                </TouchableOpacity>
+            )
+        }
     }
 }
 
@@ -92,6 +102,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: 18,
         color: 'blue'
+    },
+    info: {
+        fontSize: 20,
+        marginRight: 10
+
     }
 })
 

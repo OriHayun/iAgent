@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import AttractionCard from './AttractionCard';
 
 const attractionList = ({ title, result, location }) => {
+    
     return (
         <View style={styles.container} >
             <Text style={styles.title}>{title}</Text>
@@ -16,7 +17,8 @@ const attractionList = ({ title, result, location }) => {
                         <TouchableOpacity>
                             <AttractionCard
                                 attractionId={item}
-                                location={location} />
+                                location={location}
+                            />
                         </TouchableOpacity>
                     )
                 }}

@@ -33,7 +33,6 @@ const getCustomerTrips = dispatch => (id) => {
 }
 
 const updateTripProfile = dispatch => (TripID, TripProfileID) => {
-    console.log(TripID, TripProfileID)
     dispatch({ type: 'update_trip_profile', payload: { TripID, TripProfileID } });
 }
 
