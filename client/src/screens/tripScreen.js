@@ -74,7 +74,7 @@ tripScreen.navigationOptions = ({ navigation }) => {
         headerTitleAlign: 'center',
         headerRight: () => {
             return (
-                <TouchableOpacity onPress={() => navigation.navigate('info')}>
+                <TouchableOpacity onPress={() => navigation.navigate('info', { destination: trip.Destination })}>
                     <>{
                         <Entypo name="info" style={styles.info} />
                     }

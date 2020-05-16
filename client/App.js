@@ -6,6 +6,7 @@ import AccountScreen from './src/screens/AccountScreen';
 import TripsScreen from './src/screens/tripsScreen';
 import TripScreen from './src/screens/tripScreen';
 import DestinationInfo from './src/screens/DestinationInfo';
+import InformationResult from './src/screens/InformationResult';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import IndexScreen from './src/screens/IndexScreen';
@@ -50,6 +51,7 @@ const tripsFlow = createStackNavigator({
   trips: TripsScreen,
   trip: TripScreen,
   info: DestinationInfo,
+  infoResult: InformationResult,
   search: SearchAttractionScreen
 })
 

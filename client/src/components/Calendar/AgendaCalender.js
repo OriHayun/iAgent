@@ -4,9 +4,7 @@ import { Agenda, LocaleConfig } from 'react-native-calendars';
 import { Context as NotificationContext } from '../../context/NotificationContext';
 import { AntDesign, SimpleLineIcons, Entypo } from '@expo/vector-icons';
 
-
 const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
-
 
     LocaleConfig.locales['Hebrew'] = {
         monthNames: ['ינואר', 'פאבואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],

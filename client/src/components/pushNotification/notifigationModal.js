@@ -3,7 +3,7 @@ import { View, StyleSheet, Modal, TouchableOpacity, Linking, Text } from 'react-
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
 const notificationModal = ({ visible, closeModal, pdfPath, message }) => {
-
+    console.log(message, pdfPath)
     showPdfFile = () => {
         Linking.canOpenURL(pdfPath).then(supported => {
             if (supported) {
@@ -18,7 +18,7 @@ const notificationModal = ({ visible, closeModal, pdfPath, message }) => {
             <View style={styles.noneFocusView}>
                 <View style={styles.focusView}>
                     <Text style={{ marginTop: 20, marginLeft: 20, fontSize: 18 }}>{message}</Text>
-                    {pdfPath ?
+                    {pdfPath && message=='הבקשה הסתיימה בהצלחה תהנו :)' ?
                         <TouchableOpacity style={{ alignItems: 'center', paddingTop: 20 }} onPress={showPdfFile} >
                             <Entypo name="ticket" size={30} color="black" />
                             <Text style={{ fontSize: 12 }}>לצפייה בכרטיסים</Text>
