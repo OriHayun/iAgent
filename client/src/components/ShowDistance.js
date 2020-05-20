@@ -9,7 +9,9 @@ const showDistance = ({ goToLocation, distance, name }) => {
             <TouchableOpacity onPress={goToLocation}>
                 <Text h6 style={{ alignSelf: 'center' }} >{distance}m <Ionicons name='md-navigate' size={16} /></Text>
             </TouchableOpacity>
-            <Text h4 >{name}</Text>
+            <View style={{ width: 200 }}>
+                <Text h4 >{name}</Text>
+            </View>
         </View>
     );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Zocial, MaterialIcons } from '@expo/vector-icons'
+import { Zocial, MaterialCommunityIcons } from '@expo/vector-icons'
 import { navigate } from '../navigationRef';
 
 const cardFooter = ({ arrLength, handleClick, item }) => {
@@ -13,7 +13,7 @@ const cardFooter = ({ arrLength, handleClick, item }) => {
                 : null
             }
             <TouchableOpacity onPress={() => navigate('Details', { item })}>
-                <MaterialIcons name='perm-device-information' size={30} />
+                <MaterialCommunityIcons name="information-variant" size={35} color="black" />
             </TouchableOpacity>
         </View>
     );

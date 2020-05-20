@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, StyleSheet, Modal, TouchableOpacity, Linking, Text } from 'react-native';
-import { Entypo, Ionicons } from '@expo/vector-icons';
-
+import { Entypo, Ionicons, AntDesign } from '@expo/vector-icons';
+import { navigate } from '../../navigationRef'
 const notificationModal = ({ visible, closeModal, pdfPath, message }) => {
-    console.log(message, pdfPath)
+
     showPdfFile = () => {
         Linking.canOpenURL(pdfPath).then(supported => {
             if (supported) {
@@ -18,10 +18,20 @@ const notificationModal = ({ visible, closeModal, pdfPath, message }) => {
             <View style={styles.noneFocusView}>
                 <View style={styles.focusView}>
                     <Text style={{ marginTop: 20, marginLeft: 20, fontSize: 18 }}>{message}</Text>
-                    {pdfPath && message=='הבקשה הסתיימה בהצלחה תהנו :)' ?
+                    {pdfPath && message == 'הכרטיסים נרכשו עבורך, תהנו!' ?
                         <TouchableOpacity style={{ alignItems: 'center', paddingTop: 20 }} onPress={showPdfFile} >
-                            <Entypo name="ticket" size={30} color="black" />
-                            <Text style={{ fontSize: 12 }}>לצפייה בכרטיסים</Text>
+                            <Entypo name="ticket" size={30} color="blue" />
+                            <Text style={{ fontSize: 12, color: 'blue' }}>לצפייה בכרטיסים</Text>
+                        </TouchableOpacity>
+                        : null
+                    }
+                    {message == 'לצערי, לא ניתן להשלים את הזמנת הכרטיסים' ?
+                        <TouchableOpacity style={{ alignItems: 'center', paddingTop: 20 }} onPress={() => {
+                            navigate('Chat', {})
+                            closeModal()
+                        }} >
+                            <AntDesign name="wechat" size={30} color="black" />
+                            <Text style={{ fontSize: 12, color: 'blue' }}>שאל את הסוכן</Text>
                         </TouchableOpacity>
                         : null
                     }

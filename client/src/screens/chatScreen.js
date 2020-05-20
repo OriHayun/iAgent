@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FlatList, View, Platform, KeyboardAvoidingView, SafeAreaView, StyleSheet, Image } from 'react-native';
+import { FlatList, View, Platform, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
 import ChatInput from '../components/ChatInput';
@@ -40,7 +41,7 @@ const chatScreen = ({ navigation }) => {
             behavior={Platform.Os == "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
         >
-            <SafeAreaView>
+            <SafeAreaView forceInset={{ top: 'always' }}>
                 <View style={styles.messagesContainer}>
                     <FlatList
                         inverted

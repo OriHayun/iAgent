@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import AttractionCard from './AttractionCard';
+import { navigate } from '../../navigationRef';
 
 const attractionList = ({ title, result, location }) => {
     
@@ -14,7 +15,7 @@ const attractionList = ({ title, result, location }) => {
                 keyExtractor={(item) => item}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigate('Details', { item })}>
                             <AttractionCard
                                 attractionId={item}
                                 location={location}

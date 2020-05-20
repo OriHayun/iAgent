@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const timer = ({ departDate }) => { //departDate already Date type
+    const [month, setMonth] = useState(0);
     const [days, setDays] = useState(0);
     const [hours, setHours] = useState(0);
-    const [minuts, setMinuts] = useState(0);
-    const [seconds, setSeconds] = useState(0);
+    // const [minuts, setMinuts] = useState(0);
+    // const [seconds, setSeconds] = useState(0);
     let timer;
 
     useEffect(() => {
@@ -29,6 +30,7 @@ const timer = ({ departDate }) => { //departDate already Date type
             var minutes = Math.floor(seconds / 60);
             var hours = Math.floor(minutes / 60);
             var days = Math.floor(hours / 24);
+            var months = Math.floor(month / 30);
 
             hours %= 24;
             minutes %= 60;
@@ -36,14 +38,14 @@ const timer = ({ departDate }) => { //departDate already Date type
 
             setDays(days);
             setHours(hours);
-            setMinuts(minutes);
-            setSeconds(seconds);
+            // setMinuts(minutes);
+            // setSeconds(seconds);
         }
     }
 
     return (
         <View style={styles.timerContainer}>
-            <Text style={styles.timer}>{days} ימים {hours} שעות {minuts} דקות {seconds} שניות </Text>
+            <Text style={styles.timer}>{days} ימים {hours} שעות </Text>
         </View >
     );
 };
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     timer: {
-        padding:5,
+        padding: 5,
         borderColor: 'black',
         borderWidth: 0.5,
         borderRadius: 5,

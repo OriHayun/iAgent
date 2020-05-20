@@ -6,9 +6,9 @@ import Spacer from '../components/spacer';
 import InformationCategory from '../components/information/InformationCategory';
 
 const destinationInfo = ({ navigation }) => {
+    
     const destination = navigation.getParam('destination')
     const [choice, setChoice] = useState(null);
-
 
     if (choice == null) {
         return (
@@ -38,7 +38,7 @@ const destinationInfo = ({ navigation }) => {
                 <Spacer />
                 <Button
                     buttonStyle={styles.btn}
-                    title='נקה'
+                    title='חזור'
                     onPress={() => setChoice(null)}
                 />
             </View>
@@ -52,7 +52,7 @@ const destinationInfo = ({ navigation }) => {
                 <Spacer />
                 <Button
                     buttonStyle={styles.btn}
-                    title='נקה'
+                    title='חזור'
                     onPress={() => setChoice(null)}
                 />
             </View>
@@ -67,7 +67,7 @@ const destinationInfo = ({ navigation }) => {
                 <Spacer />
                 <Button
                     buttonStyle={styles.btn}
-                    title='נקה'
+                    title='חזור'
                     onPress={() => setChoice(null)}
                 />
             </View>

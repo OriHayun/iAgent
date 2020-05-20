@@ -83,10 +83,10 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
     renderEmptyData = () => {
         return (
             <View style={styles.emptyDate}>
-                <Text style={{ fontSize: 28, fontWeight: 'bold' }}>אין תוכניות ליום זה</Text>
-                <TouchableOpacity>
+                <Text style={styles.text}>אין תוכניות ליום זה</Text>
+                {/* <TouchableOpacity>
                     <Text style={{ color: 'blue', fontSize: 16 }}>מצא מה לעשות</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         );
     }
@@ -175,6 +175,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    text: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: "grey"
     }
 });
 

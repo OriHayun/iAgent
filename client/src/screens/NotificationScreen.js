@@ -64,7 +64,7 @@ const notificationScreen = () => {
                         renderItem={({ item, index }) => {
                             return (
                                 <>
-                                    <Spacer />
+                                    {/* <Spacer /> */}
                                     <ListNotification
                                         notification={item}
                                         notKey={index}

@@ -18,7 +18,9 @@ const listNotification = ({ notification, changeNot, notKey }) => {
                 // changeMailIcon()
             }}>
                 <View style={styles.row}>
-                    <Text style={styles.title}>{notification.attractionName}</Text>
+                    <View style={styles.textView}>
+                        <Text style={styles.title}>{notification.attractionName}</Text>
+                    </View>
                     <Ionicons name={mailBox} style={styles.mailBox} />
                 </View>
             </TouchableOpacity>
@@ -32,9 +34,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: 20,
         paddingHorizontal: 10,
-        borderTopWidth: 1,
+        // borderTopWidth: 1,
         borderBottomWidth: 1,
-        borderColor: 'grey',
+        borderColor: 'rgba(200,200,200,0.7)',
         marginTop: 10,
     },
     title: {
@@ -42,6 +44,9 @@ const styles = StyleSheet.create({
     },
     mailBox: {
         fontSize: 30,
+    },
+    textView: {
+        width: Dimensions.get('screen').width - 40
     }
 })
 

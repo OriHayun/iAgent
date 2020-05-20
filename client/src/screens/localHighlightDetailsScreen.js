@@ -12,7 +12,7 @@ const localHighlightDetails = ({ navigation }) => {
     const LHL = {
         name: item.name,
         images: item.images.map(img => img.sizes.original.url),
-        bus: item.properties.filter(dir => dir.key === 'bus'),
+        bus: item.properties ? item.properties.filter(dir => dir.key === 'bus') : null,
         subway: item.properties.filter(dir => dir.key === 'subway'),
         train: item.properties.filter(dir => dir.key === 'train'),
         price: item.properties.filter(item => item.key === 'price')
@@ -83,7 +83,7 @@ const localHighlightDetails = ({ navigation }) => {
                         style={{ alignItems: 'center' }}
                         onPress={toggleOrderModal}
                     >
-                        <View style={styles.orderBtn}><Text h4>הזמן</Text></View></TouchableOpacity>
+                        <View style={styles.orderBtn}><Text h5 style={{color:"white"}}>הזמן</Text></View></TouchableOpacity>
                 </>
                 : null
             }

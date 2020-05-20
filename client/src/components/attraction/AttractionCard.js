@@ -11,8 +11,10 @@ const attractionCard = ({ attractionId, location }) => {
             const response = await axios.get(`https://www.triposo.com/api/20190906/poi.json?location_id=${location}&id=${attractionId}&fields=all&count=20&account=${accountId}&token=${key}`)
             const obj = {
                 name: response.data.results[0].name,
-                imageUri: response.data.results[0].images[0].sizes.medium.url
+                imageUri: response.data.results[0].images[0].sizes.medium.url,
+                images: response.data.results[0].images,
             }
+            console.log(obj)
             setAttraction(obj);
         })();
     }, [])
