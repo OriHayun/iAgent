@@ -8,10 +8,12 @@ import { Context as TripContext } from '../context/TripsContext';
 
 const localHighlightDetails = ({ navigation }) => {
     const item = navigation.getParam('item')
+    const fromSearchAttraction = navigation.getParam('fromSearchAttraction');
+
     const { state: { arrTrips } } = useContext(TripContext);
     const LHL = {
         name: item.name,
-        images: item.images.map(img => img.sizes.original.url),
+        images: item.images.map(img => img.sizes.medium.url),
         bus: item.properties ? item.properties.filter(dir => dir.key === 'bus') : null,
         subway: item.properties.filter(dir => dir.key === 'subway'),
         train: item.properties.filter(dir => dir.key === 'train'),
@@ -83,7 +85,19 @@ const localHighlightDetails = ({ navigation }) => {
                         style={{ alignItems: 'center' }}
                         onPress={toggleOrderModal}
                     >
-                        <View style={styles.orderBtn}><Text h5 style={{color:"white"}}>הזמן</Text></View></TouchableOpacity>
+                        <View style={styles.orderBtn}><Text h5 style={{ color: "white" }}>הזמן</Text></View>
+                    </TouchableOpacity>
+                </>
+                : null
+            }
+            {LHL.price.length == 0 && fromSearchAttraction ?
+                <>
+                    <TouchableOpacity
+                        style={{ alignItems: 'center' }}
+                        onPress={toggleOrderModal}
+                    >
+                        <View style={styles.orderBtn}><Text h5 style={{ color: "white" }}>הזמן</Text></View>
+                    </TouchableOpacity>
                 </>
                 : null
             }

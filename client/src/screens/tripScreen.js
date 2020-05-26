@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, Text } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 import AgendaCalender from '../components/Calendar/AgendaCalender';
 import moment from 'moment';
 import { key } from '../api/unsplash';
 import axios from 'axios';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
+import { MaterialIcons, Entypo, SimpleLineIcons } from '@expo/vector-icons';
 
 const tripScreen = ({ navigation }) => {
     const trip = navigation.getParam('trip')
@@ -42,6 +41,9 @@ const tripScreen = ({ navigation }) => {
     return (
         <>
             <View style={{ flex: 0.4 }}>
+                <View style={{ zIndex: 10, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
+                    <Entypo name="magnifying-glass" size={24} color='rgba(0,0,0,0.5)' />
+                </View>
                 <TouchableOpacity
                     style={styles.findAttractionContainer}
                     onPress={() => navigation.navigate('search', { trip })}
@@ -74,12 +76,17 @@ tripScreen.navigationOptions = ({ navigation }) => {
         headerTitleAlign: 'center',
         headerRight: () => {
             return (
-                <TouchableOpacity onPress={() => navigation.navigate('info', { destination: trip.Destination })}>
-                    <>{
-                        <Entypo name="info" style={styles.info} />
-                    }
-                    </>
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', marginRight: 5 }}>
+
+                    <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('info', { destination: trip.Destination })}>
+                        <SimpleLineIcons name="picture" size={24} color="black" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('info', { destination: trip.Destination })}>
+                        <Entypo name="info" size={24} style={styles.info} />
+                    </TouchableOpacity>
+
+                </View >
             )
         }
     }

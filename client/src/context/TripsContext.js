@@ -23,7 +23,6 @@ const getCustomerTrips = dispatch => (id) => {
         fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/customertrips/${id}`)
             .then(res => res.json())
             .then((result) => {
-                console.log(result)
                 const sortedTripsArray = sortTripsByDepartDate(result);
                 dispatch({ type: 'set_trips', payload: { trips: sortedTripsArray } })
             },
@@ -38,7 +37,6 @@ const updateTripProfile = dispatch => (TripID, TripProfileID) => {
 }
 
 const sortTripsByDepartDate = (trips) => {
-    console.log(trips)
     let array = [];
     trips.forEach(trip => {
         let obj = { date: trip.DepartDate }

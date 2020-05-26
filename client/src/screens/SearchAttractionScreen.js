@@ -13,6 +13,7 @@ const searchAttractionScreen = ({ navigation }) => {
 
     const { state: { agentId } } = useContext(customerContext)
     const trip = navigation.getParam('trip')
+    const [promotedId, setPromotedId] = useState([]);
     const [promoted, setPromoted] = useState([]);
     const [attraction, setAttraction] = useState([]);
     const [base1, setBase1] = useState('');
@@ -63,9 +64,22 @@ const searchAttractionScreen = ({ navigation }) => {
     useEffect(() => {
         (async function () {
             const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/Promotion/getpromotionbycity/${agentId}/${trip.Destination}/${trip.TripProfileID}`)
-            setPromoted(response.data);
+            setPromotedId(response.data);
         })();
     }, [])
+
+    useEffect(() => {
+        if (promotedId.length > 0) {
+            const attractionArray = [];
+            promotedId.forEach(async id => {
+                let response = await axios.get(`https://www.triposo.com/api/20190906/poi.json?location_id=${trip.Destination}&id=${id}&fields=all&count=20&account=${accountId}&token=${key}`)
+                attractionArray.push(response.data.results[0])
+                if (attractionArray.length == promotedId.length) {
+                    setPromoted(attractionArray);
+                }
+            })
+        }
+    }, [promotedId])
 
     const setBases = async () => {
         let arr1 = [], arr2 = [];

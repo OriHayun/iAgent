@@ -80,7 +80,6 @@ const pushNotificationToDb = dispatch => async (
 
     const url = `http://proj.ruppin.ac.il/igroup4/prod/api/notification/insertNewNotification/${customerId}`;
     const notification = { AttractionID, AttractionName, NumTickets, Order_date, TripID }
-    console.log(notification)
     const options = {
         method: "POST",
         headers: new Headers({

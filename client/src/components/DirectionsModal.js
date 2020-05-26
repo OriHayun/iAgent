@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Modal, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const directionsModal = ({ dirType, visible, LHL, closeModal }) => {
-    console.log(LHL)
+
     let infoLable = 'קווי אוטובוס:'
     let info = LHL.bus.length > 0 ? LHL.bus[0].value : null;
     if (dirType === 'subway') {

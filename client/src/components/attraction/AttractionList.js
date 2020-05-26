@@ -4,7 +4,7 @@ import AttractionCard from './AttractionCard';
 import { navigate } from '../../navigationRef';
 
 const attractionList = ({ title, result, location }) => {
-    
+
     return (
         <View style={styles.container} >
             <Text style={styles.title}>{title}</Text>
@@ -12,12 +12,12 @@ const attractionList = ({ title, result, location }) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 data={result}
-                keyExtractor={(item) => item}
+                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableOpacity onPress={() => navigate('Details', { item })}>
+                        <TouchableOpacity onPress={() => navigate('Details', { item, fromSearchAttraction: true })}>
                             <AttractionCard
-                                attractionId={item}
+                                attractionId={item.id}
                                 location={location}
                             />
                         </TouchableOpacity>

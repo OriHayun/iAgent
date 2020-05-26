@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, TextInput, Button, StyleSheet } from 'react-native'
+import { View, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 const ChatInput = ({ sendMsg }) => {
 
@@ -15,7 +15,9 @@ const ChatInput = ({ sendMsg }) => {
 
   return (
     <View style={styles.container}>
-      <Ionicons name='ios-close' size={25} />
+      <TouchableOpacity style={{ padding: 10 }} onPress={() => setMessage('')}>
+        <Ionicons name='ios-close' size={25} />
+      </TouchableOpacity>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}

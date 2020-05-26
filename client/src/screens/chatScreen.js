@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FlatList, View, Platform, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
+import { Text, FlatList, View, Platform, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
@@ -43,6 +43,10 @@ const chatScreen = ({ navigation }) => {
         >
             <SafeAreaView forceInset={{ top: 'always' }}>
                 <View style={styles.messagesContainer}>
+                    <View style={styles.header}>
+                        <Image style={{ height: 40, width: 40, borderRadius: 40, marginLeft: 18 }} source={require('../../assets/genericAgentFace.jpg')} />
+                        <Text style={{ fontSize: 20, fontWeight: '800', alignSelf: 'center' }}>     היי איך אני יכולה לעזור?</Text>
+                    </View>
                     <FlatList
                         inverted
                         data={messages}
@@ -85,6 +89,20 @@ const styles = StyleSheet.create({
     messagesContainer: {
         height: '100%',
         paddingBottom: 100,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 50,
+        backgroundColor: '#dddce1',
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
+        elevation: 24,
     },
     inputContainer: {
         width: '100%',

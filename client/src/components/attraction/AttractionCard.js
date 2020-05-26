@@ -12,9 +12,7 @@ const attractionCard = ({ attractionId, location }) => {
             const obj = {
                 name: response.data.results[0].name,
                 imageUri: response.data.results[0].images[0].sizes.medium.url,
-                images: response.data.results[0].images,
             }
-            console.log(obj)
             setAttraction(obj);
         })();
     }, [])

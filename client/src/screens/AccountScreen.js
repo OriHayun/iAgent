@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Image, ActivityIndicator, FlatList } from 'react-native';
+import { View, StyleSheet, Image, ActivityIndicator, FlatList, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation'
-import Spacer from '../components/spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as CustomerContext } from '../context/CustomerContext';
 import { Context as TripsContext } from '../context/TripsContext';
@@ -12,6 +11,8 @@ import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions';
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import TripProfileCard from '../components/tripProfile/TripProfileCard';
+import UserImage from '../components/userImage';
+
 
 const accountScreen = () => {
 
@@ -41,9 +42,12 @@ const accountScreen = () => {
             quality: 1
         });
         if (!result.cancelled) {
+            console.log(result)
             changeImg(result)
         }
     };
+
+
 
     return (
         <>
@@ -51,7 +55,7 @@ const accountScreen = () => {
                 <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
                     <Text h2 style={styles.header} >אזור אישי</Text>
                     {img ?
-                        <Image source={{ uri: img }} style={styles.image} />
+                        <UserImage img={img} />
                         :
                         <Image source={require('../../assets/defaultImage.png')} style={styles.image} />
                     }
@@ -80,7 +84,7 @@ const accountScreen = () => {
                         />
                         <Button
                             title=" בחר תמונה"
-                            onPress={this._pickImage}
+                            onPress={_pickImage}
                             icon={
                                 <Entypo
                                     style={{ marginTop: 4 }}
@@ -127,12 +131,12 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
     image: {
-        width: 200,
-        height: 200,
+        // width: 200,
+        // height: 200,
         borderRadius: 100,
         borderWidth: 0.2,
         borderColor: 'black',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     btnView: {
         flexDirection: 'row',
