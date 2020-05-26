@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { Context as CustomerContext } from '../context/CustomerContext';
 
-const Message = ({ message, side, time }) => {
+const Message = ({ message, side, time, agentImage }) => {
     const isLeftSide = side === 'left'
     const { state: { img } } = useContext(CustomerContext)
     //סוכן שמאל
@@ -30,7 +30,7 @@ const Message = ({ message, side, time }) => {
             {isLeftSide ?
                 < Image
                     style={styles.contactImage}
-                    source={require('../../assets/genericAgentFace.jpg')}
+                    source={agentImage}
                 />
                 : null
             }

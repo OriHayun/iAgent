@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Text, FlatList, View, Platform, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
+import { Text, FlatList, View, Platform, KeyboardAvoidingView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
@@ -7,16 +7,42 @@ import ChatInput from '../components/ChatInput';
 import Message from '../components/Message';
 import { Context as CustomerContext } from '../context/CustomerContext';
 import moment from 'moment';
+import axios from 'axios';
+import ChatHedder from '../components/chatHedder';
 
 const chatScreen = ({ navigation }) => {
 
-    const { state: { customerId } } = useContext(CustomerContext);
+    const { state: { customerId, agentId } } = useContext(CustomerContext);
     const [messages, setMessages] = useState([]);
+    const [agentImage, setAgentImage] = useState(null);
+    const [agentPhone, setAgentPhone] = useState('');
+    const [agentMail, setAgentMail] = useState('');
 
     useEffect(() => {
         firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
             setMessages(prevMessages => [snapshot.val(), ...prevMessages])
         })
+    }, [])
+
+    useEffect(() => {
+        (async function () {
+            const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/Agent`)
+            const agents = response.data;
+
+            agents.forEach(agent => {
+                if (agent.AgentID == agentId) {
+                    console.log(agent)
+                    if (agent.Gender == 'ז') {
+                        setAgentImage(require('../../assets/genericAgentFace2.jpg'))
+                    }
+                    else {
+                        setAgentImage(require('../../assets/genericAgentFace.jpg'))
+                    }
+                    setAgentPhone(agent.PhoneNumber)
+                    setAgentMail(agent.Email)
+                }
+            })
+        })()
     }, [])
 
     listener = () => {
@@ -43,17 +69,18 @@ const chatScreen = ({ navigation }) => {
         >
             <SafeAreaView forceInset={{ top: 'always' }}>
                 <View style={styles.messagesContainer}>
-                    <View style={styles.header}>
-                        <Image style={{ height: 40, width: 40, borderRadius: 40, marginLeft: 18 }} source={require('../../assets/genericAgentFace.jpg')} />
-                        <Text style={{ fontSize: 20, fontWeight: '800', alignSelf: 'center' }}>     היי איך אני יכולה לעזור?</Text>
-                    </View>
+                    <ChatHedder
+                        agentImage={agentImage}
+                        agentPhone={agentPhone}
+                        agentMail={agentMail}
+                    />
                     <FlatList
                         inverted
                         data={messages}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
                             return (
-                                <Message side={item.userId !== customerId ? 'left' : 'right'} message={item.message} time={item.time} />
+                                <Message side={item.userId !== customerId ? 'left' : 'right'} message={item.message} time={item.time} agentImage={agentImage} />
                             )
                         }}
                     />
@@ -89,20 +116,6 @@ const styles = StyleSheet.create({
     messagesContainer: {
         height: '100%',
         paddingBottom: 100,
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        height: 50,
-        backgroundColor: '#dddce1',
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 12,
-        },
-        shadowOpacity: 0.58,
-        shadowRadius: 16.00,
-        elevation: 24,
     },
     inputContainer: {
         width: '100%',

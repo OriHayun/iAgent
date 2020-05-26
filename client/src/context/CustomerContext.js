@@ -104,6 +104,8 @@ const saveToDb = async (imageUrl) => {
             });
 }
 
+
+
 export const { Provider, Context } = CreateDataContext(
     customerReducer,
     { getCustomer, changeImg },
