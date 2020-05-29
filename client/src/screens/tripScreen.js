@@ -41,9 +41,9 @@ const tripScreen = ({ navigation }) => {
     return (
         <>
             <View style={{ flex: 0.4 }}>
-                <View style={{ zIndex: 10, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
+                {/* <View style={{ width: 20, zIndex: 10, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center' }}>
                     <Entypo name="magnifying-glass" size={24} color='rgba(0,0,0,0.5)' />
-                </View>
+                </View> */}
                 <TouchableOpacity
                     style={styles.findAttractionContainer}
                     onPress={() => navigation.navigate('search', { trip })}
@@ -78,7 +78,7 @@ tripScreen.navigationOptions = ({ navigation }) => {
             return (
                 <View style={{ flexDirection: 'row', marginRight: 5 }}>
 
-                    <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('info', { destination: trip.Destination })}>
+                    <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('album', { tripId: trip.TripID })}>
                         <SimpleLineIcons name="picture" size={24} color="black" />
                     </TouchableOpacity>
 
