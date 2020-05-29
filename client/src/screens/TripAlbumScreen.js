@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Button, Modal, Image } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Feather } from '@expo/vector-icons';
 
 const tripAlbumScreen = ({ navigation }) => {
+
     const tripId = navigation.getParam('tripId');
     const [images, setImages] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -21,6 +22,19 @@ const tripAlbumScreen = ({ navigation }) => {
             aspect: [4, 3],
             quality: 1
         });
+        if (!result.cancelled) {
+            uploadImageToAlbum(result);
+        }
+    };
+
+    takePicture = async () => {
+        let options = {
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        const result = await ImagePicker.launchCameraAsync(options)
         if (!result.cancelled) {
             uploadImageToAlbum(result);
         }
@@ -124,7 +138,6 @@ const tripAlbumScreen = ({ navigation }) => {
                             arr.push(img);
                         }
                     })
-                    console.log(arr);
                     setSelectedImageDelete('');
                     setImages(arr);
                 },
@@ -188,7 +201,7 @@ tripAlbumScreen.navigationOptions = ({ navigation }) => {
             return (
                 <View style={{ flexDirection: 'row', marginRight: 5 }}>
 
-                    <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('camera', {})}>
+                    <TouchableOpacity style={{ marginRight: 20 }} onPress={takePicture}>
                         <AntDesign name="camera" size={24} color="black" />
                     </TouchableOpacity>
 
