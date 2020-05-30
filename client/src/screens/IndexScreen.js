@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Text } from 'react-native-elements';
 import Logo from '../components/Logo';
@@ -15,12 +15,13 @@ import { Context as TripContext } from '../context/TripsContext';
 import { Context as NotificationContext } from '../context/NotificationContext';
 import TripTicket from '../components/trips/TripTicket';
 import Timer from '../components/timer';
+import axios from 'axios';
 
 const indexScreen = ({ navigation }) => {
 
     const { state: { customerId }, getCustomer } = useContext(customerContext)
     const { state: { arrTrips }, getCustomerTrips } = useContext(TripContext);
-    const { getNotificationsFromDb } = useContext(NotificationContext);
+    const { state: { notifications }, getNotificationsFromDb } = useContext(NotificationContext);
 
     const [location, setLocation] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -49,6 +50,21 @@ const indexScreen = ({ navigation }) => {
                 setLocalHighlights(data.results[0].pois)
             })
     }
+
+    useEffect(() => {
+        if (notifications.length && customerId > 0) {
+            (async function () {
+                const numOfNotification = await AsyncStorage.getItem('numOfNotification')
+                const numOfNotificationBefore = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/${customerId}/notification`)
+                if (numOfNotificationBefore.data != numOfNotification) {
+                    navigation.setParams({ 'notificationsBadge': true });
+                }
+                else {
+                    navigation.setParams({ 'notificationsBadge': false });
+                }
+            })();
+        }
+    }, [notifications])
 
     useEffect(() => {
         getLocationAsync();
@@ -121,8 +137,6 @@ const indexScreen = ({ navigation }) => {
                                             color="white"
                                         />
                                     }
-                                // buttonStyle={{ backgroundColor: '#d9d9d9' }}
-                                // titleStyle={{ color: 'black' }}
                                 />
                             </View>
                         </>
@@ -136,6 +150,9 @@ const indexScreen = ({ navigation }) => {
 
 
 indexScreen.navigationOptions = ({ navigation }) => {
+
+    const notificationsBadge = navigation.getParam('notificationsBadge');
+
     return {
         headerTitle: () => {
             return (
@@ -148,11 +165,13 @@ indexScreen.navigationOptions = ({ navigation }) => {
         headerTitleAlign: 'center',
         headerLeft: () => {
             return (
-                <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-                    <>{
-                        <Ionicons name="md-notifications" style={styles.notification} />
+                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('Notification')}>
+                    {notificationsBadge ?
+                        <View style={styles.badge}></View>
+                        :
+                        null
                     }
-                    </>
+                    <Ionicons name="md-notifications" style={styles.notification} />
                 </TouchableOpacity>
             )
         }
@@ -162,7 +181,6 @@ indexScreen.navigationOptions = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#595959',
     },
     spiner: {
         flex: 1,
@@ -202,6 +220,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 30
+    },
+    badge: {
+        height: 8,
+        width: 8,
+        borderRadius: 8,
+        backgroundColor: 'red',
+        position: 'absolute',
     }
 })
 

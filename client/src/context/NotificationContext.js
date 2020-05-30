@@ -1,10 +1,12 @@
 import CreateDataContext from './createDataContext';
+import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 
 const notificationReducer = (state, action) => {
     switch (action.type) {
-        case 'add_notification':
-            return { ...state, notifications: [...state.notifications, action.payload] }
+        case 'add_notification': {
+            return { ...state, notifications: [action.payload, ...state.notifications] }
+        }
         case 'update_notification':
             {
                 let arr = []
@@ -62,6 +64,7 @@ const buildtNotification = (notification) => {
 const getNotificationsFromDb = dispatch => async (customerId) => {
     if (customerId) {
         const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/notification/${customerId}`);
+        await AsyncStorage.setItem('numOfNotification', response.data.length.toString())
         response.data.map(notification => {
             const { subject, message, pdfPath, tripId, attractionName, orderDate } = buildtNotification(notification)
             dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })
@@ -95,7 +98,12 @@ const pushNotificationToDb = dispatch => async (
                 let subject = 'נשלחה בקשה חדשה'
                 let message = 'הבקשה התקבלה, אך עדיין לא טופלה';
                 let pdfPath = '';
-                dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, TripID, AttractionID, Order_date } })
+                let tripId = TripID;
+                let attractionName = AttractionName;
+                let dateArr = Order_date.split('/')
+                let orderDate = `${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`
+                console.log(subject, message, pdfPath, TripID, AttractionName, orderDate)
+                dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, Order_date } })
             }
         })
         .catch(error => {

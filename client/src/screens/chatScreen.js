@@ -31,7 +31,6 @@ const chatScreen = ({ navigation }) => {
 
             agents.forEach(agent => {
                 if (agent.AgentID == agentId) {
-                    console.log(agent)
                     if (agent.Gender == 'ז') {
                         setAgentImage(require('../../assets/genericAgentFace2.jpg'))
                     }

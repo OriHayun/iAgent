@@ -1,19 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal, Image } from 'react-native'
-import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import axios from 'axios';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Entypo, AntDesign } from '@expo/vector-icons';
+import { Context as NotificationContext } from '../context/NotificationContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
 
 const tripAlbumScreen = ({ navigation }) => {
 
-    const tripId = navigation.getParam('tripId');
+    const { pushNotificationToDb } = useContext(NotificationContext);
+    const { state: { customerId } } = useContext(CustomerContext);
+
+    const trip = navigation.getParam('trip');
     const [images, setImages] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [deleteIcon, setDeleteIcon] = useState(false);
     const [selectedImageDelete, setSelectedImageDelete] = useState('')
     const [selected, setSelected] = useState(false);
+
+    useEffect(() => {
+        navigation.setParams({ 'imagesLength': images.length })
+    }, [images])
 
     pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -60,10 +68,11 @@ const tripAlbumScreen = ({ navigation }) => {
             }),
             body: JSON.stringify(`http://proj.ruppin.ac.il/igroup4/prod/${imageUrl[0]}`)
         }
-        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/addToAlbum/${tripId}`, options)
+        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/addToAlbum/${trip}`, options)
             .then(
                 () => {
-                    let newImage = { url: imageUrl[0] }
+                    let newImage = { url: `http://proj.ruppin.ac.il/igroup4/prod/${imageUrl[0]}` }
+                    console.log(newImage)
                     setImages(prevImages => [newImage, ...prevImages])
                 },
                 (error) => {
@@ -91,7 +100,7 @@ const tripAlbumScreen = ({ navigation }) => {
 
     useEffect(() => {
         (async function () {
-            const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/getTripAlbum//${tripId}`)
+            const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/getTripAlbum//${trip.TripID}`)
             if (response.data.length > 0) {
                 const album = [];
                 response.data.forEach(imageUrl => {
@@ -117,6 +126,7 @@ const tripAlbumScreen = ({ navigation }) => {
 
     showDelteIcon = (image) => {
         setDeleteIcon(true);
+        setSelected(image)
         setSelectedImageDelete(image);
     }
 
@@ -128,7 +138,7 @@ const tripAlbumScreen = ({ navigation }) => {
             }),
             body: JSON.stringify(selectedImageDelete)
         }
-        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/removeImage/${tripId}`, options)
+        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/removeImage/${trip.TripID}`, options)
             .then(
                 () => {
                     console.log('Image deleted');
@@ -147,8 +157,20 @@ const tripAlbumScreen = ({ navigation }) => {
         setDeleteIcon(false);
     }
 
+    cancelDeleteOption = () => {
+        setDeleteIcon(false);
+        setSelectedImageDelete('');
+        setSelected('');
+    }
+
+    askForLupa = () => {
+        let orderDate = trip.ReturnDate.split('-');
+        let convertOrderDate = `${orderDate[2]}/${orderDate[1]}/${orderDate[0]}`
+        pushNotificationToDb(trip.TripID, `lupa-${customerId}-${trip.TripID}`, convertOrderDate, 1, customerId, `lupa-album-${trip.Destination}`)
+    }
+
     return (
-        <View style={{ flex: 0.9, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 0.8 }}>
             {images.length > 0 ?
                 <>
                     <View>
@@ -158,11 +180,10 @@ const tripAlbumScreen = ({ navigation }) => {
                             renderItem={({ item }) => {
                                 return (
                                     <TouchableOpacity
-                                        style={selected ? styles.selected : null}
-                                        onPress={() => imageClick(item.url)}
+                                        onPress={selected == '' ? () => imageClick(item.url) : null}
                                         onLongPress={() => showDelteIcon(item.url)}
                                     >
-                                        <Image style={{ width: 100, height: 100 }} source={{ uri: item.url }} />
+                                        <Image style={selected == item.url ? styles.selected : { width: 130, height: 130 }} source={{ uri: item.url }} />
                                     </TouchableOpacity>
                                 )
                             }}
@@ -175,18 +196,25 @@ const tripAlbumScreen = ({ navigation }) => {
                         <ImageViewer imageUrls={images} />
                     </Modal>
                     {deleteIcon == true &&
-                        <TouchableOpacity style={{ flex: 0.1, padding: 20 }} onPress={removeImage}>
-                            <Feather name="trash-2" size={24} color="black" />
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+                            <TouchableOpacity style={{ alignSelf: 'flex-start', padding: 20 }} onPress={removeImage}>
+                                <Feather name="trash-2" size={35} color="black" />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ alignSelf: 'flex-start', padding: 20 }} onPress={cancelDeleteOption}>
+                                <Entypo name="arrow-with-circle-left" size={35} color="black" />
+                            </TouchableOpacity>
+                        </View>
                     }
                 </>
-                : <Text>האלבום ריק</Text>
+                : null
             }
         </View >
     );
 };
 
 tripAlbumScreen.navigationOptions = ({ navigation }) => {
+    const imagesLength = navigation.getParam('imagesLength')
+
     return {
         headerTitle: () => {
             return (
@@ -211,6 +239,25 @@ tripAlbumScreen.navigationOptions = ({ navigation }) => {
 
                 </View >
             )
+        },
+        headerLeft: () => {
+            return (
+                <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+
+                    <TouchableOpacity style={{ marginRight: 20, marginTop: 5 }} onPress={() => navigation.pop()}>
+                        <Feather name="arrow-right" size={24} color="black" />
+                    </TouchableOpacity>
+                    {imagesLength > 0 ?
+                        <>
+                            <TouchableOpacity onPress={askForLupa}>
+                                <Image style={{ height: 30, width: 30 }} source={require('../../assets/Lupaicon.png')} />
+                            </TouchableOpacity>
+                        </>
+                        : null
+                    }
+
+                </View >
+            )
         }
     }
 }
@@ -223,7 +270,9 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     selected: {
-        borderWidth: 1,
+        height: 130,
+        width: 130,
+        borderWidth: 4,
         borderColor: 'black'
     }
 });

@@ -78,7 +78,7 @@ tripScreen.navigationOptions = ({ navigation }) => {
             return (
                 <View style={{ flexDirection: 'row', marginRight: 5 }}>
 
-                    <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('album', { tripId: trip.TripID })}>
+                    <TouchableOpacity style={{ marginRight: 20 }} onPress={() => navigation.navigate('album', { trip })}>
                         <SimpleLineIcons name="picture" size={24} color="black" />
                     </TouchableOpacity>
 
