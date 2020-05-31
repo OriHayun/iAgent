@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Text, FlatList, View, Platform, KeyboardAvoidingView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { FlatList, View, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
@@ -19,8 +19,17 @@ const chatScreen = ({ navigation }) => {
     const [agentMail, setAgentMail] = useState('');
 
     useEffect(() => {
+        let counter = 0;
         firebase.database().ref(`/chat/${customerId}`).on('child_added', (snapshot) => {
-            setMessages(prevMessages => [snapshot.val(), ...prevMessages])
+            if (snapshot.val().id == -1) {
+                if (counter == 0) {
+                    counter = 1;
+                    setMessages(prevMessages => [snapshot.val(), ...prevMessages])
+                }
+            }
+            else {
+                setMessages(prevMessages => [snapshot.val(), ...prevMessages])
+            }
         })
     }, [])
 

@@ -5,17 +5,31 @@ import { Notifications } from 'expo';
 import registerForPushNotificationsAsync from '../components/pushNotification/getPermissions';
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as NotificationContext } from '../context/NotificationContext';
+import { Context as CustomerContext } from '../context/CustomerContext';
 import ListNotification from '../components/pushNotification/ListNotification';
-import Spacer from '../components/spacer';
 import NotificationModal from '../components/pushNotification/notifigationModal';
-const notificationScreen = () => {
+import axios from 'axios';
+
+
+const notificationScreen = ({ navigation }) => {
 
     const { state: { token } } = useContext(AuthContext);
+    const { state: { customerId } } = useContext(CustomerContext)
     const { state: { notifications }, getLastNotification } = useContext(NotificationContext);
     const [not, setNot] = useState(notifications[0]);
     const [showMosal, setShowModal] = useState(false);
 
     useEffect(() => {
+        const badge = navigation.getParam('badge')
+        if (badge == 1) {
+            (async function () {
+                await axios.put(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/${customerId}`)
+            })()
+        }
+    }, [])
+
+    useEffect(() => {
+        console.log('notification focuse');
         (async function bringPnToken() {
             const pnToken = await registerForPushNotificationsAsync();
             fetch('http://proj.ruppin.ac.il/igroup4/prod/api/notification/pntoken/' + pnToken, {

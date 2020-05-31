@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions, AsyncStorage } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Text } from 'react-native-elements';
 import Logo from '../components/Logo';
@@ -16,13 +16,16 @@ import { Context as NotificationContext } from '../context/NotificationContext';
 import TripTicket from '../components/trips/TripTicket';
 import Timer from '../components/timer';
 import axios from 'axios';
+import moment from 'moment';
+import firebase from 'firebase';
 
 const indexScreen = ({ navigation }) => {
 
-    const { state: { customerId }, getCustomer } = useContext(customerContext)
+    const { state: { customerId, agentId }, getCustomer } = useContext(customerContext)
     const { state: { arrTrips }, getCustomerTrips } = useContext(TripContext);
     const { state: { notifications }, getNotificationsFromDb } = useContext(NotificationContext);
 
+    const [focus, setFocus] = useState(0);
     const [location, setLocation] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [localHighlights, setLocalHighlights] = useState([]);
@@ -52,11 +55,16 @@ const indexScreen = ({ navigation }) => {
     }
 
     useEffect(() => {
+        navigation.addListener('didFocus', () => {
+            setFocus(focus + 1);
+        });
+    })
+
+    useEffect(() => {
         if (notifications.length && customerId > 0) {
             (async function () {
-                const numOfNotification = await AsyncStorage.getItem('numOfNotification')
                 const numOfNotificationBefore = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/${customerId}/notification`)
-                if (numOfNotificationBefore.data != numOfNotification) {
+                if (numOfNotificationBefore.data == 1) {
                     navigation.setParams({ 'notificationsBadge': true });
                 }
                 else {
@@ -64,7 +72,7 @@ const indexScreen = ({ navigation }) => {
                 }
             })();
         }
-    }, [notifications])
+    }, [notifications, focus])
 
     useEffect(() => {
         getLocationAsync();
@@ -80,6 +88,15 @@ const indexScreen = ({ navigation }) => {
         if (arrTrips.length > 0) {
             setCloseTripDepartDate(new Date(arrTrips[0].trips[0].DepartDate));
             setCloseTripReturnDate(new Date(arrTrips[0].trips[0].ReturnDate));
+            if (moment().format('YYYY-MM-DD') == arrTrips[0].trips[0].DepartDate) {
+                firebase.database().ref(`/chat/${customerId}`).push().set({
+                    //צריך פה להשתמש במזהה של היוזר שלנו כדי שנידע באיזה צד לשים את ההודעה
+                    time: moment().format('HH:mm'),
+                    userId: agentId,
+                    message: ' הינה זה הגיע! שתהייה טיסה נעימה, אני כאן לכל דבר :)',
+                    id: - 1
+                })
+            }
         }
     }, [arrTrips])
 
@@ -165,8 +182,8 @@ indexScreen.navigationOptions = ({ navigation }) => {
         headerTitleAlign: 'center',
         headerLeft: () => {
             return (
-                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('Notification')}>
-                    {notificationsBadge ?
+                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('Notification', { badge: notificationsBadge == 1 ? 1 : 0 })}>
+                    {notificationsBadge == 1 ?
                         <View style={styles.badge}></View>
                         :
                         null
@@ -227,6 +244,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: 'red',
         position: 'absolute',
+        marginLeft: 7
     }
 })
 

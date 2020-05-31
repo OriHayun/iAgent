@@ -64,7 +64,6 @@ const buildtNotification = (notification) => {
 const getNotificationsFromDb = dispatch => async (customerId) => {
     if (customerId) {
         const response = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/notification/${customerId}`);
-        await AsyncStorage.setItem('numOfNotification', response.data.length.toString())
         response.data.map(notification => {
             const { subject, message, pdfPath, tripId, attractionName, orderDate } = buildtNotification(notification)
             dispatch({ type: 'add_notification', payload: { subject, message, pdfPath, tripId, attractionName, orderDate } })

@@ -131,8 +131,6 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
     image: {
-        // width: 200,
-        // height: 200,
         borderRadius: 100,
         borderWidth: 0.2,
         borderColor: 'black',
