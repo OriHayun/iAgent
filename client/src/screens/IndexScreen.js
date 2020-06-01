@@ -3,7 +3,7 @@ import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, View, Dimens
 import { Button } from 'react-native-elements';
 import { Text } from 'react-native-elements';
 import Logo from '../components/Logo';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, NavigationActions } from 'react-navigation';
 import LocalHighlight from '../components/LocalHighlight';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -18,6 +18,8 @@ import Timer from '../components/timer';
 import axios from 'axios';
 import moment from 'moment';
 import firebase from 'firebase';
+import { Notifications } from 'expo';
+
 
 const indexScreen = ({ navigation }) => {
 
@@ -55,16 +57,49 @@ const indexScreen = ({ navigation }) => {
     }
 
     useEffect(() => {
-        navigation.addListener('didFocus', () => {
+        notificationSubscription = Notifications.addListener(handleNotification);
+        const focusListener = navigation.addListener('didFocus', () => {
             setFocus(focus + 1);
+            return () => {
+                focusListener.remove();
+            }
         });
     })
 
+    handleNotification = notification => {
+        navigation.dispatch(NavigationActions.setParams({
+            routeName: 'Chat',
+            key: 'Chat',
+            params: { 'chatMessageBadge': 1 },
+        }));
+    };
+
     useEffect(() => {
-        if (notifications.length && customerId > 0) {
+        if (customerId != '')
             (async function () {
-                const numOfNotificationBefore = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/${customerId}/notification`)
-                if (numOfNotificationBefore.data == 1) {
+                const chatMessageBadge = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/${customerId}/chatMessage`)
+                if (chatMessageBadge.data == 1) {
+                    navigation.dispatch(NavigationActions.setParams({
+                        routeName: 'Chat',
+                        key: 'Chat',
+                        params: { 'chatMessageBadge': 1 },
+                    }));
+                }
+                else {
+                    navigation.dispatch(NavigationActions.setParams({
+                        routeName: 'Chat',
+                        key: 'Chat',
+                        params: { 'chatMessageBadge': 0 },
+                    }));
+                }
+            })();
+    }, [focus, customerId])
+
+    useEffect(() => {
+        if (notifications.length > 0 && customerId != '') {
+            (async function () {
+                const notificationsBadge = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/${customerId}/notification`)
+                if (notificationsBadge.data == 1) {
                     navigation.setParams({ 'notificationsBadge': true });
                 }
                 else {

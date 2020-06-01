@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FlatList, View, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { FlatList, View, Platform, KeyboardAvoidingView, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import firebase from 'firebase';
 import { AntDesign } from '@expo/vector-icons'
@@ -70,6 +70,21 @@ const chatScreen = ({ navigation }) => {
         listener()
     }
 
+    useEffect(() => {
+        noNewMessages()
+        const focusListener = navigation.addListener('didFocus', () => {
+            noNewMessages();
+            return () => {
+                focusListener.remove();
+            }
+        });
+    }, [])
+
+    noNewMessages = async () => {
+        await axios.put(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/noNewMessage/${customerId}`)
+        navigation.setParams({ 'chatMessageBadge': 0 });
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.Os == "ios" ? "padding" : "height"}
@@ -102,7 +117,10 @@ const chatScreen = ({ navigation }) => {
     );
 }
 
-chatScreen.navigationOptions = () => {
+chatScreen.navigationOptions = ({ navigation }) => {
+
+    const chatMessageBadge = navigation.getParam('chatMessageBadge');
+
     return {
         title: "צ'ט",
         tabBarOptions: {
@@ -113,10 +131,16 @@ chatScreen.navigationOptions = () => {
         },
 
         tabBarIcon: ({ focused }) => {
-            return <AntDesign size={focused ? 25 : 18} name='wechat' color={focused ? "black" : "grey"} />;
+            return (
+                <View>
+                    {chatMessageBadge == 1 ?
+                        <View style={styles.badge}></View>
+                        : null
+                    }
+                    <AntDesign size={focused ? 25 : 18} name='wechat' color={focused ? "black" : "grey"} />
+                </View>
+            );
         }
-
-        // tabBarIcon: <AntDesign size={25} name='wechat' />
     };
 };
 
@@ -134,6 +158,13 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         borderTopWidth: 1,
         borderTopColor: 'grey'
+    },
+    badge: {
+        height: 5,
+        width: 5,
+        borderRadius: 5,
+        backgroundColor: 'red',
+        position: 'absolute',
     }
 })
 

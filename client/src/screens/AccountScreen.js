@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Image, ActivityIndicator, FlatList, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { Button, Text } from 'react-native-elements';
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView, NavigationActions } from 'react-navigation'
 import { Context as AuthContext } from '../context/AuthContext';
 import { Context as CustomerContext } from '../context/CustomerContext';
 import { Context as TripsContext } from '../context/TripsContext';
@@ -12,9 +12,9 @@ import * as Permissions from 'expo-permissions';
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import TripProfileCard from '../components/tripProfile/TripProfileCard';
 import UserImage from '../components/userImage';
+import { Notifications } from 'expo';
 
-
-const accountScreen = () => {
+const accountScreen = ({ navigation }) => {
 
     const { signout } = useContext(AuthContext);
     const { state: { arrTrips } } = useContext(TripsContext);
@@ -22,6 +22,7 @@ const accountScreen = () => {
 
 
     useEffect(() => {
+        notificationSubscription = Notifications.addListener(handleNotification);
         getPermissionAsync();
     }, [])
 
@@ -45,6 +46,14 @@ const accountScreen = () => {
             console.log(result)
             changeImg(result)
         }
+    };
+
+    handleNotification = notification => {
+        navigation.dispatch(NavigationActions.setParams({
+            routeName: 'Chat',
+            key: 'Chat',
+            params: { 'chatMessageBadge': 1 },
+        }));
     };
 
 

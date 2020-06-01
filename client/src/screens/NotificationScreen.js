@@ -29,7 +29,6 @@ const notificationScreen = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        console.log('notification focuse');
         (async function bringPnToken() {
             const pnToken = await registerForPushNotificationsAsync();
             fetch('http://proj.ruppin.ac.il/igroup4/prod/api/notification/pntoken/' + pnToken, {
@@ -51,7 +50,9 @@ const notificationScreen = ({ navigation }) => {
 
     handleNotification = notification => {
         Vibration.vibrate();
-        getLastNotification(notification.data.RequestId)
+        if (notification.data.RequestId) {
+            getLastNotification(notification.data.RequestId)
+        }
     };
 
     changeNot = (key) => {

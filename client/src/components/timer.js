@@ -5,8 +5,8 @@ const timer = ({ departDate }) => { //departDate already Date type
     const [month, setMonth] = useState(0);
     const [days, setDays] = useState(0);
     const [hours, setHours] = useState(0);
-    // const [minuts, setMinuts] = useState(0);
-    // const [seconds, setSeconds] = useState(0);
+    const [minuts, setMinuts] = useState(0);
+    const [seconds, setSeconds] = useState(0);
     let timer;
 
     useEffect(() => {
@@ -38,28 +38,44 @@ const timer = ({ departDate }) => { //departDate already Date type
 
             setDays(days);
             setHours(hours);
-            // setMinuts(minutes);
-            // setSeconds(seconds);
+            setMinuts(minutes);
+            setSeconds(seconds);
         }
     }
 
     return (
         <View style={styles.timerContainer}>
-            <Text style={styles.timer}>{days} ימים {hours} שעות </Text>
-        </View >
+            <View style={{ paddingHorizontal: 10, alignItems: 'center', flexDirection: 'column' }}>
+                <Text style={styles.timer}>{days}</Text>
+                <Text style={styles.timer}>ימים</Text>
+            </View>
+            <View style={{ paddingHorizontal: 10, alignItems: 'center', flexDirection: 'column' }}>
+                <Text style={styles.timer}>{hours}</Text>
+                <Text style={styles.timer}>שעות</Text>
+            </View>
+            <View style={{ paddingHorizontal: 10, alignItems: 'center', flexDirection: 'column' }}>
+                <Text style={styles.timer}>{minuts}</Text>
+                <Text style={styles.timer}>דקות</Text>
+            </View>
+            <View style={{ paddingHorizontal: 10, alignItems: 'center', flexDirection: 'column' }}>
+                <Text style={styles.timer}>{seconds}</Text>
+                <Text style={styles.timer}>שניות</Text>
+            </View>
+        </View>
     );
 };
 
 
 const styles = StyleSheet.create({
     timerContainer: {
-        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
     },
     timer: {
         padding: 5,
-        borderColor: 'black',
-        borderWidth: 0.5,
-        borderRadius: 5,
+        // borderColor: 'black',
+        // borderWidth: 0.5,
+        // borderRadius: 5,
         fontSize: 20,
         color: '#999',
         letterSpacing: -1
