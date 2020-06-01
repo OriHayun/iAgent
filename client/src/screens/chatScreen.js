@@ -59,6 +59,10 @@ const chatScreen = ({ navigation }) => {
         })
     }
 
+    updateAgentNewMessage = async () => {
+        await axios.put(`http://proj.ruppin.ac.il/igroup4/prod/api/badge/AgentNewMessage/${customerId}`)
+    }
+
     onSend = (message) => {
         firebase.database().ref(`/chat/${customerId}`).push().set({
             //צריך פה להשתמש במזהה של היוזר שלנו כדי שנידע באיזה צד לשים את ההודעה
@@ -67,6 +71,7 @@ const chatScreen = ({ navigation }) => {
             message: message,
             id: messages.length
         })
+        updateAgentNewMessage();
         listener()
     }
 

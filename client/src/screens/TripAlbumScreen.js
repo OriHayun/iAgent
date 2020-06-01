@@ -166,7 +166,7 @@ const tripAlbumScreen = ({ navigation }) => {
     askForLupa = () => {
         let orderDate = trip.ReturnDate.split('-');
         let convertOrderDate = `${orderDate[2]}/${orderDate[1]}/${orderDate[0]}`
-        pushNotificationToDb(trip.TripID, `lupa-${customerId}-${trip.TripID}`, convertOrderDate, 1, customerId, `lupa-album-${trip.Destination}`)
+        pushNotificationToDb(trip.TripID, `lupa`, convertOrderDate, 1, customerId, `lupa-album-${trip.Destination}`)
     }
 
     return (
