@@ -1,6 +1,5 @@
 require('./models/Users');
 
-
 const express = require('express');
 const mongoos = require('mongoose');
 const bodyParser = require('body-parser')
@@ -28,10 +27,12 @@ mongoos.connection.on('error', (err) => {
     console.error('Error conneectio mongo ', err);
 });
 
+const port = process.env.PORT || 8080;
+
 app.get('/', requireAuth, (req, res) => {
     res.send(`Your email: ${req.user.email}`);
 });
 
-app.listen(3000, () => {
-    console.log('Listening to port 3000')
+app.listen(port, () => {
+    console.log('Listening to port'+port)
 });

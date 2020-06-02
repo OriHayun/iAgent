@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL:'http://293b6fed.ngrok.io'
+    baseURL:'https://shrouded-beach-25939.herokuapp.com/'
 })
