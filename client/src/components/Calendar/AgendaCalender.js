@@ -84,9 +84,6 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
         return (
             <View style={styles.emptyDate}>
                 <Text style={styles.text}>אין תוכניות ליום זה</Text>
-                {/* <TouchableOpacity>
-                    <Text style={{ color: 'blue', fontSize: 16 }}>מצא מה לעשות</Text>
-                </TouchableOpacity> */}
             </View>
         );
     }

@@ -19,9 +19,17 @@ const tripAlbumScreen = ({ navigation }) => {
     const [selectedImageDelete, setSelectedImageDelete] = useState('')
     const [selected, setSelected] = useState(false);
 
+
     useEffect(() => {
         navigation.setParams({ 'imagesLength': images.length })
     }, [images])
+
+    useEffect(() => {
+        (async function () {
+            const respons = await axios.get(`http://proj.ruppin.ac.il/igroup4/prod/api/Request/lupaExists/${trip.TripID}`);
+            navigation.setParams({ 'lupaExists': respons.data });
+        })()
+    }, [])
 
     pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -214,7 +222,8 @@ const tripAlbumScreen = ({ navigation }) => {
 
 tripAlbumScreen.navigationOptions = ({ navigation }) => {
     const imagesLength = navigation.getParam('imagesLength')
-
+    const lupaExists = navigation.getParam('lupaExists');
+    console.log(lupaExists)
     return {
         headerTitle: () => {
             return (
@@ -247,7 +256,7 @@ tripAlbumScreen.navigationOptions = ({ navigation }) => {
                     <TouchableOpacity style={{ marginRight: 20, marginTop: 5 }} onPress={() => navigation.pop()}>
                         <Feather name="arrow-right" size={24} color="black" />
                     </TouchableOpacity>
-                    {imagesLength > 0 ?
+                    {imagesLength > 0 && lupaExists == 0 ?
                         <>
                             <TouchableOpacity onPress={askForLupa}>
                                 <Image style={{ height: 30, width: 30 }} source={require('../../assets/Lupaicon.png')} />
