@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Blank Template",
-    "slug": "tracks",
+    "name": "iAgent",
+    "slug": "iAgent",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [

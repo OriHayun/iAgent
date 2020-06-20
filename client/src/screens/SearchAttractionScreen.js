@@ -16,50 +16,43 @@ const searchAttractionScreen = ({ navigation }) => {
     const [promotedId, setPromotedId] = useState([]);
     const [promoted, setPromoted] = useState([]);
     const [attraction, setAttraction] = useState([]);
-    const [base1, setBase1] = useState('');
-    const [base2, setBase2] = useState('');
-    const [base1Attractions, setBase1Attractions] = useState([]);
-    const [base2Attractions, setBase2Attractions] = useState([]);
+    const [base, setBase] = useState('');
+    const [baseAttractions, setBaseAttractions] = useState([]);
 
     useEffect(() => {
         switch (trip.TripProfileID) {
             case 1: {
-                setBase1('do');
-                setBase2('sightseeing');
+                setBase('do');
                 break;
             }
             case 2: {
-                setBase1('character-Kid_friendly');
-                setBase2('daytrips');
+                setBase('character-Kid_friendly');
                 break;
             }
             case 3: {
-                setBase1('dancing');
-                setBase2('gambling');
+                setBase('dancing');
                 break;
             }
             case 4: {
-                setBase1('museums');
-                setBase2('citypass');
+                setBase('museums');
                 break;
             }
             case 5: {
-                setBase1('topattractions');
-                setBase2('character-Popular_with_locals');
+                setBase('topattractions');
                 break;
             }
             default: {
-                setBase1('character-Romantic');
-                setBase2('cruises');
+                setBase('character-Romantic');
             }
         }
     }, [])
 
     useEffect(() => {
-        if (base1 != '' && base2 != '') {
+        if (base != '') {
+            console.log('base=', base)
             setBases();
         }
-    }, [base1, base2])
+    }, [base])
 
     useEffect(() => {
         (async function () {
@@ -82,34 +75,25 @@ const searchAttractionScreen = ({ navigation }) => {
     }, [promotedId])
 
     const setBases = async () => {
-        let arr1 = [], arr2 = [];
-        let endPointBase2 = '';
-        base2 == 'citypass' ? endPointBase2 = 'tour.json' : endPointBase2 = 'poi.json';
-
-        const responseBase1 = await axios.get(`https://www.triposo.com/api/20200405/poi.json?location_id=${trip.Destination}&tag_labels=${base1}&fields=id,name,images&order_by=-score&count=20&account=${accountId}&token=${key}`);
-        responseBase1.data.results.forEach(att => {
+        let arr = []
+        const responseBase = await axios.get(`https://www.triposo.com/api/20200405/poi.json?location_id=${trip.Destination}&tag_labels=${base}&fields=id,name,images,properties&order_by=-score&count=20&account=${accountId}&token=${key}`);
+        responseBase.data.results.forEach(att => {
+            const images = [];
+            if (att.images.length > 0) {
+                att.images.forEach(image => {
+                    images.push(image)
+                })
+            }
             let obj = {
                 id: att.id,
                 name: att.name,
-                image: att.images.length > 0 ? att.images[0].sizes.medium.url : '',
-                score: att.do_score ? att.do_score : 4
+                images: images,
+                properties: att.properties,
             }
-            arr1.push(obj);
+            arr.push(obj);
         })
-        setBase1Attractions(arr1);
-
-        const responseBase2 = await axios.get(`https://www.triposo.com/api/20200405/${endPointBase2}?location_id=${trip.Destination}&tag_labels=${base2}&fields=id,name,images&order_by=-score&count=20&account=${accountId}&token=${key}`);
-        responseBase2.data.results.forEach(att => {
-            let obj = {
-                id: att.id,
-                name: att.name,
-                image: att.images.length > 0 ? att.images[0].sizes.medium.url : '',
-                score: att.do_score ? att.do_score : 4
-            }
-            arr2.push(obj);
-        })
-
-        setBase2Attractions(arr2);
+        console.log('arr=',arr[1])
+        setBaseAttractions(arr);
     }
 
     const setAttractionByCategory = (results) => {
@@ -122,7 +106,7 @@ const searchAttractionScreen = ({ navigation }) => {
                 location={trip.Destination}
                 setAttractionByCategory={setAttractionByCategory}
             />
-            {base1 != '' && base2 != '' ?
+            {base != '' ?
                 <>
                     <ScrollView>
                         {promoted.length > 0 ?
@@ -143,10 +127,8 @@ const searchAttractionScreen = ({ navigation }) => {
                             />
                             :
                             <BaseLists
-                                data1={base1Attractions}
-                                data2={base2Attractions}
-                                title1='במיוחד בשבילך'
-                                title2='מותאם אלייכם'
+                                data={baseAttractions}
+                                title='במיוחד בשבילך'
                             />
                         }
                     </ScrollView>

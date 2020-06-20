@@ -60,26 +60,38 @@ const categoryDropDown = ({ location, setAttractionByCategory }) => {
         const index = secondeCategotyName.map(function (e) { return e.value; }).indexOf(secCategory)
         let arr = [];
         if (firstCategory == 'tours') {
-            let results = await axios.get(`https://www.triposo.com/api/20200405/tour.json?location_ids=${location}&tag_labels=${secondeCategotyValue[index].value}&fields=id,name,images&order_by=-score&count=25&account=${accountId}&token=${key}`);
+            let results = await axios.get(`https://www.triposo.com/api/20200405/tour.json?location_ids=${location}&tag_labels=${secondeCategotyValue[index].value}&fields=id,name,images,properties&order_by=-score&count=25&account=${accountId}&token=${key}`);
             results.data.results.forEach(att => {
+                const images = [];
+                if (att.images.length > 0) {
+                    att.images.forEach(image => {
+                        images.push(image)
+                    })
+                }
                 let obj = {
                     id: att.id,
                     name: att.name,
-                    image: att.images.length > 0 ? att.images[0].sizes.medium.url : '',
-                    score: att.do_score ? att.do_score : 4
+                    image: images,
+                    properties: att.properties,
                 }
                 arr.push(obj);
             })
             setAttractionByCategory(arr)
         }
         else {
-            let results = await axios.get(`https://www.triposo.com/api/20200405/poi.json?location_id=${location}&tag_labels=${secondeCategotyValue[index].value}&fields=id,name,images&order_by=-score&count=25&account=${accountId}&token=${key}`);
+            let results = await axios.get(`https://www.triposo.com/api/20200405/poi.json?location_id=${location}&tag_labels=${secondeCategotyValue[index].value}&fields=id,name,images,properties&order_by=-score&count=25&account=${accountId}&token=${key}`);
             results.data.results.forEach(att => {
+                const images = [];
+                if (att.images.length > 0) {
+                    att.images.forEach(image => {
+                        images.push(image)
+                    })
+                }
                 let obj = {
                     id: att.id,
                     name: att.name,
-                    image: att.images.length > 0 ? att.images[0].sizes.medium.url : '',
-                    score: att.do_score ? att.do_score : 4
+                    image: images,
+                    properties: att.properties,
                 }
                 arr.push(obj);
             })
@@ -90,16 +102,41 @@ const categoryDropDown = ({ location, setAttractionByCategory }) => {
     const bringAllAttraction = async () => {
         let arr = [];
         if (firstCategory == 'tours') {
-            let results = await axios.get(`https://www.triposo.com/api/20200405/tour.json?location_ids=${location}&fields=id,name&order_by=-score&count=25&account=${accountId}&token=${key}`);
+            let results = await axios.get(`https://www.triposo.com/api/20200405/tour.json?location_ids=${location}&fields=id,name,images,properties&order_by=-score&count=25&account=${accountId}&token=${key}`);
             results.data.results.forEach(att => {
-                arr.push(att.id);
+                const images = [];
+                if (att.images.length > 0) {
+                    att.images.forEach(image => {
+                        images.push(image)
+                    })
+                }
+                let obj = {
+                    id: att.id,
+                    name: att.name,
+                    image: images,
+                    properties: att.properties,
+                }
+                arr.push(obj);
             })
-            setAttractionByCategory(results.data.results)
+            setAttractionByCategory(arr)
         }
         else {
-            let results = await axios.get(`https://www.triposo.com/api/20200405/poi.json?location_id=${location}&tag_labels=${firstCategory}&fields=id,name&order_by=-score&count=25&account=${accountId}&token=${key}`);
+            let results = await axios.get(`https://www.triposo.com/api/20200405/poi.json?location_id=${location}&tag_labels=${firstCategory}&fields=id,name,images,properties&order_by=-score&count=25&account=${accountId}&token=${key}`);
             results.data.results.forEach(att => {
-                arr.push(att.id);
+                const images = [];
+                if (att.images.length > 0) {
+                    att.images.forEach(image => {
+                        images.push(image)
+                    })
+                }
+                let obj = {
+                    id: att.id,
+                    name: att.name,
+                    image: images,
+                    properties: att.properties,
+                }
+                arr.push(obj);
+
             })
             setAttractionByCategory(results.data.results)
         }
@@ -129,14 +166,10 @@ const categoryDropDown = ({ location, setAttractionByCategory }) => {
                 }
             </View>
             {secondeCategotyName.length > 0 &&
-                // <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity style={styles.all} onPress={bringAllAttraction}>
                     <Text style={{ color: 'blue' }}>הצג הכל לקטגוריה ראשית</Text>
                 </TouchableOpacity>
-                /* <TouchableOpacity style={styles.all} onPress={setAttractionByCategory([])}>
-                    <Text style={{ color: 'blue' }}>נקה</Text>
-                </TouchableOpacity> */
-                /* </View> */
+                
             }
         </>
     );

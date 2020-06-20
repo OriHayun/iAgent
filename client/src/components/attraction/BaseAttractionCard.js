@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
-const baseAttractionCard = ({ attraction, score }) => {
+const baseAttractionCard = ({ attraction }) => {
     return (
         <View style={styles.container}>
-            <Image style={styles.image} source={attraction.image != '' ? { uri: attraction.image } : require('../../../assets/defaultImage.png')} />
+            <Image style={styles.image} source={attraction.images.length > 0  ? { uri: attraction.images[0].sizes.medium.url } : require('../../../assets/defaultImage.png')} />
         </View>
     );
 };

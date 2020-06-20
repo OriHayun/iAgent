@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import BaseAtractionCard from './BaseAttractionCard';
+import { navigate } from '../../navigationRef';
 
 const selectedAttraction = ({ title, data }) => {
     return (
@@ -13,7 +14,7 @@ const selectedAttraction = ({ title, data }) => {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigate('Details', { item })}>
                             <BaseAtractionCard attraction={item} score={item.score} />
                         </TouchableOpacity>
                     )

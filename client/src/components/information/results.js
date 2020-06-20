@@ -37,13 +37,13 @@ const results = ({ name, coordinates, phone, facebook, destination }) => {
                     <TouchableOpacity onPress={() => Linking.openURL(`tel:${phone}`)}>
                         <AntDesign name="phone" size={24} color="green" />
                     </TouchableOpacity>
-                    : null
+                    : <TouchableOpacity></TouchableOpacity>
                 }
                 {facebook ?
                     <TouchableOpacity onPress={facebookIt}>
                         <AntDesign name="facebook-square" size={24} color="blue" />
                     </TouchableOpacity>
-                    : null
+                    : <TouchableOpacity></TouchableOpacity>
                 }
                 <TouchableOpacity onPress={googleIt}>
                     <AntDesign name="google" size={24} color="#ff0000" />
