@@ -20,10 +20,12 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
     useEffect(() => {
         const itemsArr = notifications.filter(not => not.tripId === tripId)
         let obj = {};
+        console.log('itemsArr=', itemsArr);
+
         itemsArr.forEach(itemArr => {
             if (!obj[itemArr.orderDate]) {
                 obj[itemArr.orderDate] = []
-                obj[itemArr.orderDate].push({ name: itemArr.attractionName, pdfFile: itemArr.pdfPath });
+                obj[itemArr.orderDate].push({ name: itemArr.attractionName, pdfFile: itemArr.pdfPath, status: itemArr.message == 'הכרטיסים נרכשו עבורך, תהנו!' ? true : false });
                 setItems({ ...items, obj });
             }
             else {
@@ -34,6 +36,10 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
     }, [notifications])
 
     showTickets = (url) => {
+        if (url == '') {
+            console.log("Don't know how to open URI: " + url);
+            return;
+        }
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
                 Linking.openURL(url);
@@ -46,14 +52,17 @@ const agendaCalendar = ({ current, rangeOfDates, tripId }) => {
     renderItem = (item) => {
         return (
             <>
-                {item.pdfFile ?
+                {item.pdfFile || item.status == true ?
                     <TouchableOpacity
                         style={[styles.completeItme, { height: item.height }]}
                         onPress={() => showTickets(item.pdfFile)}
                     >
                         <Text>{item.name}</Text>
                         <Text>אושר  <AntDesign name='check' /></Text>
-                        <Text style={{ fontSize: 10 }}>לחץ לצפייה הכרטיסים <Entypo name="ticket" size={12} color="black" /></Text>
+                        {item.pdfFile ?
+                            <Text style={{ fontSize: 10 }}>לחץ לצפייה הכרטיסים <Entypo name="ticket" size={12} color="black" /></Text>
+                            : null
+                        }
                     </TouchableOpacity>
                     :
                     <TouchableOpacity

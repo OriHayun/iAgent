@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Linking, Image } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, View, TouchableOpacity, Linking, Image, Alert } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Zocial, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import Spacer from '../spacer';
 import axios from 'axios';
 import { navigate } from '../../navigationRef';
-
+import firebase from 'firebase';
+import moment from 'moment';
+import { Context as CustomerContext } from '../../context/CustomerContext';
 
 const ticketInfo = ({ _destination, _depart, _return, _Pdf_Flightticket }) => {
 
+    const { state: { customerId, agentId } } = useContext(CustomerContext);
+
     const [flagUri, setFlagUri] = useState('');
+    const [messages, setMessages] = useState([]);
+
     wikiHandleClick = () => {
         const wikipediaUrl = `https://en.wikipedia.org/wiki/${_destination}`
         Linking.canOpenURL(wikipediaUrl).then(supported => {
@@ -39,6 +45,25 @@ const ticketInfo = ({ _destination, _depart, _return, _Pdf_Flightticket }) => {
         })();
     }, [])
 
+    askForTicket = () => {
+        let message = 'היי, אפשר את כרטיס הטיסה שלי ל ' + _destination;
+        firebase.database().ref(`/chat/${customerId}`).push().set({
+            //צריך פה להשתמש במזהה של היוזר שלנו כדי שנידע באיזה צד לשים את ההודעה
+            time: moment().format('HH:mm'),
+            userId: customerId,
+            message: message,
+            id: -10
+        })
+        Alert.alert(
+            "הבקשה נשלחה",
+            "הכרטיס ישלח בהקדם",
+            [
+                { text: "אישור", onPress: () => navigate('Chat', {}) }
+            ],
+            { cancelable: true }
+        );
+    }
+
     return (
         <View style={styles.info}>
             <Spacer>
@@ -61,7 +86,7 @@ const ticketInfo = ({ _destination, _depart, _return, _Pdf_Flightticket }) => {
                         <Text style={styles.wikipedia}>כרטיס טיסה <Entypo name='ticket' size={13} /></Text>
                     </TouchableOpacity>
                     :
-                    <TouchableOpacity style={{ padding: 7 }} onPress={() => navigate('Chat', {})}>
+                    <TouchableOpacity style={{ padding: 7 }} onPress={askForTicket}>
                         <Text style={styles.wikipedia}>בקש את הכרטיס <Entypo name='ticket' size={13} /></Text>
                     </TouchableOpacity>
                 }
