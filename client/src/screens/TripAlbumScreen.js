@@ -69,14 +69,16 @@ const tripAlbumScreen = ({ navigation }) => {
     };
 
     saveToAlbumDb = async (imageUrl) => {
+
         const options = {
             method: "POST",
             headers: new Headers({
                 'Content-type': 'application/json; charset=UTF-8',
             }),
-            body: JSON.stringify(`http://proj.ruppin.ac.il/igroup4/prod/${imageUrl[0]}`)
+            body: JSON.stringify(`${imageUrl[0]}`)
         }
-        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/addToAlbum/${trip}`, options)
+
+        fetch(`http://proj.ruppin.ac.il/igroup4/prod/api/Trip/addToAlbum/${trip.TripID}`, options)
             .then(
                 () => {
                     let newImage = { url: `http://proj.ruppin.ac.il/igroup4/prod/${imageUrl[0]}` }
@@ -84,7 +86,7 @@ const tripAlbumScreen = ({ navigation }) => {
                     setImages(prevImages => [newImage, ...prevImages])
                 },
                 (error) => {
-                    console.log("err post=", error);
+                    console.log("err post imageUrl =", error);
                 });
     }
 
